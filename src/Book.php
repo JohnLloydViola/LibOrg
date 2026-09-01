@@ -49,6 +49,10 @@ class Book implements Borrowable
 
   public function borrow(): void
   {
+    if ($this->availableQuantity <= 0) {
+      throw new ItemNotAvailableException();
+    }
+
     $this->availableQuantity--;
   }
 
