@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace App;
 
-class Book 
+class Book implements Borrowable
 {
   private int $availableQuantity;
 
@@ -45,5 +45,15 @@ class Book
   public function getAvailableQuantity(): int
   {
     return $this->availableQuantity;
+  }
+
+  public function borrow(): void
+  {
+    $this->availableQuantity--;
+  }
+
+  public function returnItem(): void
+  {
+    $this->availableQuantity++;
   }
 }
