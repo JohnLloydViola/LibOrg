@@ -58,6 +58,8 @@ class Book implements Borrowable
 
   public function returnItem(): void
   {
-    $this->availableQuantity++;
+    if ($this->availableQuantity < $this->quantity) {
+      $this->availableQuantity++;
+    }
   }
 }
