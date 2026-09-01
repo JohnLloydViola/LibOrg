@@ -5,28 +5,18 @@ namespace App;
 
 class Book 
 {
+  private int $availableQuantity;
+
   public function __construct(
-    private int $id,
-    private string $bookId,
     private string $title,
     private string $author,
     private string $category,
     private int $publicationYear,
-    private int $quantity,
-    private int $availableQuantity
+    private int $quantity
   ) {
+    $this->availableQuantity = $this->quantity;
   }
-
-  public function getId(): int
-  {
-    return $this->id;
-  }
-
-  public function getBookId(): string
-  {
-    return $this->bookId;
-  }
-
+  
   public function getTitle(): string
   {
     return $this->title;
