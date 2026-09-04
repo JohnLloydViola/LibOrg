@@ -13,7 +13,7 @@
     <div class="content">
       <div class="add-book">
         <h1>Books</h1>
-        <button>Add Book</button>
+        <button id="open-add-book-modal-btn">Add Book</button>
       </div>
       
       <div class="table-section">
@@ -237,5 +237,24 @@
 
     </div>
   </div>
+
+  <dialog id="add-book-modal"> 
+    <p>Test test</p>
+    <button id="close-add-book-modal-btn"> Close</button>
+  </dialog>
+
+  <script>
+    const addBookModal = document.getElementById('add-book-modal');
+    const openAddBookModalBtn = document.getElementById('open-add-book-modal-btn');
+    const closeAddBookModalBtn = document.getElementById('close-add-book-modal-btn');
+
+    openAddBookModalBtn.addEventListener('click', ()=>{
+      addBookModal.showModal();
+    });
+
+    closeAddBookModalBtn.addEventListener('click', ()=>{
+      addBookModal.close();
+    });
+  </script>
 </body>
 </html>
