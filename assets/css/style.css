@@ -7,11 +7,15 @@
 :root {
   --primary-purple: #4F2DBD;
   --dark-purple: #17104F;
+  --page-background: #FAFAFE;
+  --border-radius: 0.4rem;
 }
 
 body {
   font-family: 'Poppins', sans-serif;
+  background-color: var(--page-background);
 }
+
 
 
 /* sidebar style */
@@ -66,4 +70,99 @@ body {
 .navigation-links img {
   width: 1.563rem;
   height: 1.563rem;
+}
+
+/*Book page styling */
+.content {
+  padding: 1rem 2.5rem;
+  width: 90%;
+}
+
+.book-container {
+  display: flex;
+  flex-direction: row;
+}
+
+.add-book {
+  display: flex;
+  justify-content: space-between;
+  margin: 1rem 0;
+}
+
+/*table section styling */
+.table-section {
+  background-color: white;
+  padding: 1rem;
+}
+
+.table-section table {
+  width:100%;
+  border-collapse: collapse;
+}
+
+tr {
+  text-align: left;
+}
+
+tr:first-child {
+  background-color: var(--page-background);
+}
+
+th,
+td {
+  padding: 1rem;
+}
+
+td {
+  border-bottom: 1px solid black;
+}
+
+.table-title {
+  width: 20%;
+}
+
+.table-action {
+  width: 10%;
+}
+
+.filter {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 1rem;
+}
+
+.entries {
+  padding: 1.5rem 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.pagination {
+  display:flex;
+  flex-direction: row;
+  list-style: none;
+}
+
+.pagination li a {
+  text-decoration: none;
+  display:block;
+  padding: 0.5rem 0.9rem;
+  color:black;
+}
+
+.active {
+  background-color: var(--primary-purple);
+  color:white !important;
+  border-radius: var(--border-radius);
+}
+
+input[type="text"] {
+  padding: 0.5rem;
+  width: 40ch;
+}
+
+select {
+  padding: 0.4rem;
 }
