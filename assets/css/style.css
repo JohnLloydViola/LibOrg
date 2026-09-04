@@ -16,8 +16,6 @@ body {
   background-color: var(--page-background);
 }
 
-
-
 /* sidebar style */
 .sidebar {
   background-color: var(--dark-purple);
@@ -90,17 +88,39 @@ body {
 }
 
 /*this is inside book page Modal styling*/
+dialog {
+  border:none;
+  outline: none;
+}
 
 #add-book-modal {
   position: fixed;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 60%;
+  width: 20%;
+  padding: 1rem;
+  text-align:center;
+}
+
+#add-book-modal h1{
+  margin: 1rem 0.5rem;
 }
 
 .modal-information {
   width: 100%;
+}
+
+.modal-information > div {
+  margin: 1rem 0;
+}
+
+.modal-information div > * {
+  margin: 0.5rem;
+}
+
+.modal-input {
+  text-align:left;
 }
 
 /*table section styling */
@@ -172,7 +192,9 @@ td {
   border-radius: var(--border-radius);
 }
 
-input[type="text"] {
+input[type="text"],
+input[type="number"],
+.modal-category {
   padding: 0.5rem;
   width: 40ch;
 }

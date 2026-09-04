@@ -238,33 +238,47 @@
     </div>
   </div>
 
-  <dialog class="modal" id="add-book-modal"> 
+  <!--Modal dialogue para sa add book button-->
+  <dialog id="add-book-modal"> 
+    <div><h1>ADD BOOK</h1> </div>
     <form class="modal-information" action="../actions/BookStore.php" method="POST">
-      <label for="title">Title</label><br>
-      <input type="text" id="title" name="title"><br>
+      <div class="modal-input"> 
+        <label for="title">Title</label><br>
+        <input type="text" id="title" name="title" placeholder="Enter Book title"><br>
+      </div>
       
-      <label for="author">Author</label><br>
-      <input type="text" id="author" name="author"><br>
+      <div class="modal-input"> 
+        <label for="author">Author</label><br>
+        <input type="text" id="author" name="author" placeholder="Enter author"><br>
+      </div>
+  
+      <div class="modal-input"> 
+        <label for="category">Category</label><br>
+          <select id="category" name="category" class="modal-category"> 
+          <option value="science">Science</option>
+          <option value="technology">Technology</option>
+          <option value="fantasy">Fantasy</option>
+          <option value="romance">Romance</option>
+          <option value="education">Education</option>
+          <option value="business">Business</option>
+          <option value="health">Health</option>
+        </select><br>
+      </div>
 
-      <label for="category">Category</label><br>
-      <select id="category" name="category"> 
-        <option value="science">Science</option>
-        <option value="technology">Technology</option>
-        <option value="fantasy">Fantasy</option>
-        <option value="romance">Romance</option>
-        <option value="education">Education</option>
-        <option value="business">Business</option>
-        <option value="health">Health</option>
-      </select><br>
-
-      <label for="year">Year</label><br>
-      <input type="number" id="year" name="publication_year"><br>
-
-      <label for="quantity">Quantity</label><br>
-      <input type="number" id="quantity" name="quantity"><br>
-
-      <button type="submit">Save Book</button>
-      <button type="button" id="close-add-book-modal-btn"> cancel</button>
+      <div class="modal-input"> 
+        <label for="year">Year</label><br>
+        <input type="number" id="year" name="publication_year" placeholder="Enter publication year"><br>
+      </div>
+    
+      <div class="modal-input"> 
+        <label for="quantity">Quantity</label><br>
+        <input type="number" id="quantity" name="quantity" placeholder="Enter quantity"><br>
+      </div>
+      
+      <div> 
+        <button type="submit">Save Book</button>
+        <button type="button" id="close-add-book-modal-btn"> cancel</button>
+      </div>
     </form>
   </dialog>
 
