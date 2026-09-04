@@ -238,23 +238,36 @@
     </div>
   </div>
 
-  <dialog id="add-book-modal"> 
-    <p>Test test</p>
-    <button id="close-add-book-modal-btn"> Close</button>
+  <dialog class="modal" id="add-book-modal"> 
+    <form class="modal-information">
+      <label for="title">Title</label><br>
+      <input type="text" id="title"><br>
+      
+      <label for="author">Author</label><br>
+      <input type="text" id="author"><br>
+
+      <label for="category">Category</label><br>
+      <select id="category"> 
+        <option value="science">Science</option>
+        <option value="technology">Technology</option>
+        <option value="fantasy">Fantasy</option>
+        <option value="romance">Romance</option>
+        <option value="education">Education</option>
+        <option value="business">Business</option>
+        <option value="health">Health</option>
+      </select><br>
+
+      <label for="year">Year</label><br>
+      <input type="number" id="year"><br>
+
+      <label for="quantity">Quantity</label><br>
+      <input type="number" id="quantity"><br>
+
+      <button type="submit">Save Book</button>
+      <button type="button" id="close-add-book-modal-btn"> cancel</button>
+    </form>
   </dialog>
 
-  <script>
-    const addBookModal = document.getElementById('add-book-modal');
-    const openAddBookModalBtn = document.getElementById('open-add-book-modal-btn');
-    const closeAddBookModalBtn = document.getElementById('close-add-book-modal-btn');
-
-    openAddBookModalBtn.addEventListener('click', ()=>{
-      addBookModal.showModal();
-    });
-
-    closeAddBookModalBtn.addEventListener('click', ()=>{
-      addBookModal.close();
-    });
-  </script>
+  <script src="../assets/js/script.js"></script>
 </body>
 </html>

@@ -89,6 +89,20 @@ body {
   margin: 1rem 0;
 }
 
+/*this is inside book page Modal styling*/
+
+#add-book-modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 60%;
+}
+
+.modal-information {
+  width: 100%;
+}
+
 /*table section styling */
 .table-section {
   background-color: white;
@@ -166,3 +180,4 @@ input[type="text"] {
 select {
   padding: 0.4rem;
 }
+
