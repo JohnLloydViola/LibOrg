@@ -5,7 +5,6 @@ require_once __DIR__ . '/../config/Database.php';
 require_once __DIR__ . '/../actions/BookRead.php';
 
 $books = getBooks($conn); 
-
 ?>
 
 <!DOCTYPE html>
@@ -74,10 +73,20 @@ $books = getBooks($conn);
               <td><?=$book['quantity']?></td>
               <td><?=$book['available_quantity']?></td>
               <td> 
-                <div>
-                  <button><img src="../assets/images/Edit.png" alt="Edit"></button> 
-                  <button><img src="../assets/images/Delete.png" alt="delete"></button> 
-                </div>
+                <button 
+                  type="button" 
+                  class="open-edit-book-modal-btn"
+                  data-id="<?=$book['id'] ?>"
+                  data-title="<?=htmlspecialchars($book['title'])?>"
+                  data-author="<?=htmlspecialchars($book['author'])?>"
+                  data-category="<?=htmlspecialchars($book['category'])?>"
+                  data-publication_year="<?=$book['publication_year']?>"
+                  data-quantity="<?=$book['quantity']?>">
+
+                  <img src="../assets/images/Edit.png" alt="Edit">
+                </button> 
+                
+                <button><img src="../assets/images/Delete.png" alt="delete"></button> 
               </td>
           </tr>
           <?php endforeach ?>
@@ -146,6 +155,52 @@ $books = getBooks($conn);
       <div> 
         <button type="submit">Save Book</button>
         <button type="button" id="close-add-book-modal-btn"> cancel</button>
+      </div>
+    </form>
+  </dialog>
+
+  <!--Modal dialogue para sa Edit book button-->
+  <dialog id="edit-book-modal"> 
+    <div><h1>EDIT BOOK</h1> </div>
+    <form class="modal-information" action="../actions/BookUpdate.php" method="POST">
+      <input type="hidden" id="edit-id" name="id">
+
+      <div class="modal-input"> 
+        <label for="edit-title">Title</label><br>
+        <input type="text" id="edit-title" name="title" placeholder="Enter Book title"><br>
+      </div>
+      
+      <div class="modal-input"> 
+        <label for="edit-author">Author</label><br>
+        <input type="text" id="edit-author" name="author" placeholder="Enter author"><br>
+      </div>
+  
+      <div class="modal-input"> 
+        <label for="edit-category">Category</label><br>
+          <select id="edit-category" name="category" class="modal-category"> 
+          <option value="science">Science</option>
+          <option value="technology">Technology</option>
+          <option value="fantasy">Fantasy</option>
+          <option value="romance">Romance</option>
+          <option value="education">Education</option>
+          <option value="business">Business</option>
+          <option value="health">Health</option>
+        </select><br>
+      </div>
+
+      <div class="modal-input"> 
+        <label for="edit-year">Year</label><br>
+        <input type="number" id="edit-year" name="publication_year" placeholder="Enter publication year"><br>
+      </div>
+    
+      <div class="modal-input"> 
+        <label for="edit-quantity">Quantity</label><br>
+        <input type="number" id="edit-quantity" name="quantity" placeholder="Enter quantity"><br>
+      </div>
+      
+      <div> 
+        <button type="submit">Save Book</button>
+        <button type="button" id="close-edit-book-modal-btn"> cancel</button>
       </div>
     </form>
   </dialog>

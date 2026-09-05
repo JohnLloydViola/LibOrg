@@ -11,4 +11,3 @@ function getBooks(PDO $conn): array
 
   return $stmt->fetchAll();
 }
-?>
