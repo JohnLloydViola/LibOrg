@@ -1,3 +1,13 @@
+<?php 
+declare(strict_types=1);
+
+require_once __DIR__ . '/../config/Database.php';
+require_once __DIR__ . '/../actions/BookRead.php';
+
+$books = getBooks($conn); 
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -54,165 +64,23 @@
             <th class="table-action">Action</th>
           </tr>
 
-          <tr>
-            <td>B001</td>
-            <td>The Alchemist</td>
-            <td>Paulo Coelho</td>
-            <td>Fiction</td>
-            <td>1988</td>
-            <td>5</td>
-            <td>3</td>
-            <td> 
-              <div>
-                <button><img src="../assets/images/Edit.png" alt="Edit"></button> 
-                <button><img src="../assets/images/Delete.png" alt="delete"></button> 
-              </div>
-            </td>
+          <?php foreach($books as $book): ?> 
+            <tr>
+              <td><?='B'. str_pad((string) $book['id'], 3, "0", STR_PAD_LEFT)?></td>
+              <td><?= htmlspecialchars($book['title'])?></td>
+              <td><?= htmlspecialchars($book['author'])?></td>
+              <td><?=htmlspecialchars($book['category'])?></td>
+              <td><?=$book['publication_year']?></td>
+              <td><?=$book['quantity']?></td>
+              <td><?=$book['available_quantity']?></td>
+              <td> 
+                <div>
+                  <button><img src="../assets/images/Edit.png" alt="Edit"></button> 
+                  <button><img src="../assets/images/Delete.png" alt="delete"></button> 
+                </div>
+              </td>
           </tr>
-
-         <tr>
-            <td>B001</td>
-            <td>The Alchemist</td>
-            <td>Paulo Coelho</td>
-            <td>Fiction</td>
-            <td>1988</td>
-            <td>5</td>
-            <td>3</td>
-            <td> 
-              <div>
-                <button><img src="../assets/images/Edit.png" alt="Edit"></button> 
-                <button><img src="../assets/images/Delete.png" alt="delete"></button> 
-              </div>
-            </td>
-          </tr>
-
-           <tr>
-            <td>B001</td>
-            <td>The Alchemist</td>
-            <td>Paulo Coelho</td>
-            <td>Fiction</td>
-            <td>1988</td>
-            <td>5</td>
-            <td>3</td>
-            <td> 
-              <div>
-                <button><img src="../assets/images/Edit.png" alt="Edit"></button> 
-                <button><img src="../assets/images/Delete.png" alt="delete"></button> 
-              </div>
-            </td>
-          </tr>
-
-          <tr>
-            <td>B001</td>
-            <td>The Alchemist</td>
-            <td>Paulo Coelho</td>
-            <td>Fiction</td>
-            <td>1988</td>
-            <td>5</td>
-            <td>3</td>
-            <td> 
-              <div>
-                <button><img src="../assets/images/Edit.png" alt="Edit"></button> 
-                <button><img src="../assets/images/Delete.png" alt="delete"></button> 
-              </div>
-            </td>
-          </tr>
-
-           <tr>
-            <td>B001</td>
-            <td>The Alchemist</td>
-            <td>Paulo Coelho</td>
-            <td>Fiction</td>
-            <td>1988</td>
-            <td>5</td>
-            <td>3</td>
-            <td> 
-              <div>
-                <button><img src="../assets/images/Edit.png" alt="Edit"></button> 
-                <button><img src="../assets/images/Delete.png" alt="delete"></button> 
-              </div>
-            </td>
-          </tr>
-
-          <tr>
-            <td>B001</td>
-            <td>The Alchemist</td>
-            <td>Paulo Coelho</td>
-            <td>Fiction</td>
-            <td>1988</td>
-            <td>5</td>
-            <td>3</td>
-            <td> 
-              <div>
-                <button><img src="../assets/images/Edit.png" alt="Edit"></button> 
-                <button><img src="../assets/images/Delete.png" alt="delete"></button> 
-              </div>
-            </td>
-          </tr>
-
-           <tr>
-            <td>B001</td>
-            <td>The Alchemist</td>
-            <td>Paulo Coelho</td>
-            <td>Fiction</td>
-            <td>1988</td>
-            <td>5</td>
-            <td>3</td>
-            <td> 
-              <div>
-                <button><img src="../assets/images/Edit.png" alt="Edit"></button> 
-                <button><img src="../assets/images/Delete.png" alt="delete"></button> 
-              </div>
-            </td>
-          </tr>
-
-           <tr>
-            <td>B001</td>
-            <td>The Alchemist</td>
-            <td>Paulo Coelho</td>
-            <td>Fiction</td>
-            <td>1988</td>
-            <td>5</td>
-            <td>3</td>
-            <td> 
-              <div>
-                <button><img src="../assets/images/Edit.png" alt="Edit"></button> 
-                <button><img src="../assets/images/Delete.png" alt="delete"></button> 
-              </div>
-            </td>
-          </tr>
-
-           <tr>
-            <td>B001</td>
-            <td>The Alchemist</td>
-            <td>Paulo Coelho</td>
-            <td>Fiction</td>
-            <td>1988</td>
-            <td>5</td>
-            <td>3</td>
-            <td> 
-              <div>
-                <button><img src="../assets/images/Edit.png" alt="Edit"></button> 
-                <button><img src="../assets/images/Delete.png" alt="delete"></button> 
-              </div>
-            </td>
-          </tr>
-
-           <tr>
-            <td>B001</td>
-            <td>The Alchemist</td>
-            <td>Paulo Coelho</td>
-            <td>Fiction</td>
-            <td>1988</td>
-            <td>5</td>
-            <td>3</td>
-            <td> 
-              <div>
-                <button><img src="../assets/images/Edit.png" alt="Edit"></button> 
-                <button><img src="../assets/images/Delete.png" alt="delete"></button> 
-              </div>
-            </td>
-          </tr>
+          <?php endforeach ?>
         </table>
 
         <div class="entries"> 
