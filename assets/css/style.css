@@ -97,7 +97,8 @@ dialog {
 
 #add-book-modal,
 #edit-book-modal,
-#add-member-modal {
+#add-member-modal,
+#edit-member-modal {
   position: fixed;
   top: 50%;
   left: 50%;
@@ -108,7 +109,9 @@ dialog {
 }
 
 #add-book-modal h1,
-#add-member-modal h1{
+#edit-book-modal h1,
+#add-member-modal h1,
+#edit-member-modal h1{
   margin: 1rem 0.5rem;
 }
 

@@ -130,6 +130,39 @@ $members = getMembers($conn);
     </form>
   </dialog>
 
+  <!--Modal dialogue para sa Edit Member button-->
+  <dialog id="edit-member-modal"> 
+    <div><h1>EDIT MEMBER</h1> </div>
+    <form class="modal-information" action="../actions/member/MemberUpdate.php" method="POST">
+      <input type="hidden" id="edit-id" name="id">
+
+      <div class="modal-input"> 
+        <label for="edit-full-name">Full Name</label><br>
+        <input type="text" id="edit-full-name" name="full_name" placeholder="Enter Full Name"><br>
+      </div>
+      
+      <div class="modal-input"> 
+        <label for="edit-email">Email</label><br>
+        <input type="email" id="edit-email" name="email" placeholder="Enter Email"><br>
+      </div>
+  
+      <div class="modal-input"> 
+        <label for="edit-phone-number">Phone Number</label><br>
+        <input type="text" id="edit-phone-number" name="phone_number" placeholder="Enter Phone Number"><br>
+      </div>
+    
+      <div class="modal-input"> 
+        <label for="edit-address">Address</label><br>
+        <input type="text" id="edit-address" name="address" placeholder="Enter Address"><br>
+      </div>
+      
+      <div> 
+        <button type="submit">Save Member</button>
+        <button type="button" id="close-edit-member-modal-btn">cancel</button>
+      </div>
+    </form>
+  </dialog>
+
   <script src="../assets/js/MembersPage.js"></script>
 </body>
 </html>
