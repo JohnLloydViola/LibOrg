@@ -58,7 +58,7 @@ $members = getMembers($conn);
                   data-full-name="<?=htmlspecialchars($member['full_name'])?>"
                   data-email="<?=htmlspecialchars($member['email'])?>"
                   data-phone-number="<?=htmlspecialchars($member['phone_number'])?>"
-                  data-adress="<?=htmlspecialchars($member['address'])?>">
+                  data-address="<?=htmlspecialchars($member['address'])?>">
 
                   <img src="../assets/images/Edit.png" alt="Edit">
                 </button> 
@@ -102,7 +102,7 @@ $members = getMembers($conn);
    <!--Modal dialogue para sa add member button-->
   <dialog id="add-member-modal"> 
     <div><h1>ADD MEMBER</h1> </div>
-    <form class="modal-information" action="../actions/book/BookStore.php" method="POST">
+    <form class="modal-information" action="../actions/member/MemberStore.php" method="POST">
       <div class="modal-input"> 
         <label for="full_name">Full Name</label><br>
         <input type="text" id="full_name" name="full_name" placeholder="Enter Member Name"><br>
@@ -115,7 +115,7 @@ $members = getMembers($conn);
   
       <div class="modal-input"> 
         <label for="phone_number">Phone Number</label><br>
-        <input type="number" id="phone_number" name="phone_number" placeholder="Enter Phone Number"><br>
+        <input type="text" id="phone_number" name="phone_number" placeholder="Enter Phone Number"><br>
       </div>
     
       <div class="modal-input"> 
