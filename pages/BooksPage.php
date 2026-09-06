@@ -86,7 +86,13 @@ $books = getBooks($conn);
                   <img src="../assets/images/Edit.png" alt="Edit">
                 </button> 
                 
-                <button><img src="../assets/images/Delete.png" alt="delete"></button> 
+                <form action="../actions/BookDelete.php" method="POST">
+                   <input type="hidden" name="id" value="<?=$book['id']?>">
+
+                  <button type="submit">
+                    <img src="../assets/images/Delete.png" alt="delete">
+                  </button>
+                </form>
               </td>
           </tr>
           <?php endforeach ?>
