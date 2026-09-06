@@ -129,5 +129,7 @@ $members = getMembers($conn);
       </div>
     </form>
   </dialog>
+
+  <script src="../assets/js/MembersPage.js"></script>
 </body>
 </html>

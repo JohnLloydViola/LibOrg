@@ -211,6 +211,6 @@ $books = getBooks($conn);
     </form>
   </dialog>
 
-  <script src="../assets/js/script.js"></script>
+  <script src="../assets/js/BooksPage.js"></script>
 </body>
 </html>
