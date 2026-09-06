@@ -76,12 +76,14 @@ body {
   width: 90%;
 }
 
-.book-container {
+.book-container,
+.member-container {
   display: flex;
   flex-direction: row;
 }
 
-.add-book {
+.add-book,
+.add-member {
   display: flex;
   justify-content: space-between;
   margin: 1rem 0;

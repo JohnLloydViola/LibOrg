@@ -1,1 +1,133 @@
-<?php ?>
+<?php 
+declare(strict_types=1);
+
+require_once __DIR__ . "/../config/Database.php";
+require_once __DIR__ . "/../actions/member/MemberRead.php";
+
+$members = getMembers($conn);
+?>
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link rel="stylesheet" href="../assets/css/style.css">
+</head>
+<body>
+  <div class="member-container"> 
+    <?php include "../includes/SideBar.php" ?>
+
+    <div class="content">
+      <div class="add-member">
+        <h1>Members</h1>
+        <button id="open-add-member-modal-btn">Add Member</button>
+      </div> 
+
+      <div class="table-section"> 
+        <div class="filter"> 
+          <div>
+            <input name="memberName" type="text" placeholder="Search member...">
+          </div>
+        </div>
+
+        <table>
+          <tr>
+            <th>ID</th>
+            <th>FULL NAME</th>
+            <th>EMAIL</th>
+            <th>PHONE</th>
+            <th>ADDRESS</th>
+            <th>Action</th>
+          </tr>
+
+          <?php foreach($members as $member): ?> 
+            <tr>
+              <td><?='M'. str_pad((string) $member['id'], 3, "0", STR_PAD_LEFT)?></td>
+              <td><?= htmlspecialchars($member['full_name'])?></td>
+              <td><?= htmlspecialchars($member['email'])?></td>
+              <td><?=htmlspecialchars($member['phone_number'])?></td>
+              <td><?=htmlspecialchars($member['address'])?></td>
+              <td> 
+                <button 
+                  type="button" 
+                  class="open-edit-member-modal-btn"
+                  data-id="<?=$member['id'] ?>"
+                  data-full-name="<?=htmlspecialchars($member['full_name'])?>"
+                  data-email="<?=htmlspecialchars($member['email'])?>"
+                  data-phone-number="<?=htmlspecialchars($member['phone_number'])?>"
+                  data-adress="<?=htmlspecialchars($member['address'])?>">
+
+                  <img src="../assets/images/Edit.png" alt="Edit">
+                </button> 
+                
+                <form action="../actions/book/BookDelete.php" method="POST">
+                   <input type="hidden" name="id" value="<?=$member['id']?>">
+
+                  <button type="submit">
+                    <img src="../assets/images/Delete.png" alt="delete">
+                  </button>
+                </form>
+              </td>
+          </tr>
+          <?php endforeach ?>
+        </table>
+
+         <div class="entries"> 
+          <div> 
+            <p>Showing 1 to 10 of 1 entries</p>
+          </div>
+
+          <nav>
+            <ul class="pagination">
+              <li><a href="#" class="prev">&laquo; Prev</a></li>
+              <li><a href="#" class="active">1</a></li>
+              <li><a href="#">2</a></li>
+              <li><a href="#">3</a></li>
+              <li><a href="#">4</a></li>
+              <li><a href="#">5</a></li>
+              <li><a href="#" class="next">Next &raquo;</a></li>
+            </ul>
+          </nav>
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+   <!--Modal dialogue para sa add member button-->
+  <dialog id="add-member-modal"> 
+    <div><h1>ADD MEMBER</h1> </div>
+    <form class="modal-information" action="../actions/book/BookStore.php" method="POST">
+      <div class="modal-input"> 
+        <label for="full_name">Full Name</label><br>
+        <input type="text" id="full_name" name="full_name" placeholder="Enter Member Name"><br>
+      </div>
+      
+      <div class="modal-input"> 
+        <label for="email">Email</label><br>
+        <input type="email" id="email" name="email" placeholder="Enter Email"><br>
+      </div>
+  
+      <div class="modal-input"> 
+        <label for="phone_number">Phone Number</label><br>
+        <input type="number" id="phone_number" name="phone_number" placeholder="Enter Phone Number"><br>
+      </div>
+    
+      <div class="modal-input"> 
+        <label for="address">Address</label><br>
+        <input type="text" id="address" name="address" placeholder="Enter Address"><br>
+      </div>
+      
+      <div> 
+        <button type="submit">Save Member</button>
+        <button type="button" id="close-add-member-modal-btn"> cancel</button>
+      </div>
+    </form>
+  </dialog>
+</body>
+</html>
