@@ -1,43 +1,50 @@
 <?php 
 declare(strict_types=1);
 
-require_once __DIR__ . '/../config/Database.php'; 
+require_once __DIR__ . "/../../config/Database.php";
 
-if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-  header('Location: ../pages/BooksPage.php');
+if($_SERVER['REQUEST_METHOD'] !== 'POST') {
+  header('Location: ../../pages/BooksPage.php');
   exit;
 }
 
+$id = (int) ($_POST['id'] ?? '');
 $title = trim($_POST['title'] ?? '');
 $author = trim($_POST['author'] ?? '');
 $category = trim($_POST['category'] ?? '');
 $publication_year = (int) ($_POST['publication_year'] ?? '');
 $quantity = (int) ($_POST['quantity'] ?? '');
 
-addBook(
+updateBook(
   $conn,
+  $id,
   $title,
   $author,
   $category,
   $publication_year,
   $quantity
 );
-header('Location: ../pages/BooksPage.php');
-exit();
 
-function addBook(
+header('Location: ../../pages/BooksPage.php');
+exit;
+
+function updateBook(
   PDO $conn,
+  int $id,
   string $title,
   string $author,
   string $category,
   int $publication_year,
   int $quantity
-): void {
-  $availableQuantity = $quantity;
-
-  $sql = "INSERT INTO books 
-  (title, author, category, publication_year, quantity, available_quantity)
-  VALUES (:title, :author, :category, :publication_year, :quantity, :available_quantity)";
+): void 
+{
+  $sql = "UPDATE books 
+          SET title = :title,
+              author = :author,
+              category = :category,
+              publication_year = :publication_year,
+              quantity = :quantity
+          WHERE id = :id";
 
   $stmt = $conn->prepare($sql);
 
@@ -47,6 +54,6 @@ function addBook(
     ':category' => $category,
     ':publication_year' => $publication_year,
     ':quantity' => $quantity,
-    ':available_quantity' => $availableQuantity
+    ':id' => $id
   ]);
 }

@@ -1,7 +1,7 @@
 <?php 
 declare(strict_types=1);
 
-require_once __DIR__ . '/../config/Database.php';
+require_once __DIR__ . '/../../config/Database.php';
 
 function getBooks(PDO $conn): array 
 {

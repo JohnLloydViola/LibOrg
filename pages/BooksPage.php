@@ -2,7 +2,7 @@
 declare(strict_types=1);
 
 require_once __DIR__ . '/../config/Database.php';
-require_once __DIR__ . '/../actions/BookRead.php';
+require_once __DIR__ . '/../actions/book/BookRead.php';
 
 $books = getBooks($conn); 
 ?>
@@ -86,7 +86,7 @@ $books = getBooks($conn);
                   <img src="../assets/images/Edit.png" alt="Edit">
                 </button> 
                 
-                <form action="../actions/BookDelete.php" method="POST">
+                <form action="../actions/book/BookDelete.php" method="POST">
                    <input type="hidden" name="id" value="<?=$book['id']?>">
 
                   <button type="submit">
@@ -124,7 +124,7 @@ $books = getBooks($conn);
   <!--Modal dialogue para sa add book button-->
   <dialog id="add-book-modal"> 
     <div><h1>ADD BOOK</h1> </div>
-    <form class="modal-information" action="../actions/BookStore.php" method="POST">
+    <form class="modal-information" action="../actions/book/BookStore.php" method="POST">
       <div class="modal-input"> 
         <label for="title">Title</label><br>
         <input type="text" id="title" name="title" placeholder="Enter Book title"><br>
@@ -168,7 +168,7 @@ $books = getBooks($conn);
   <!--Modal dialogue para sa Edit book button-->
   <dialog id="edit-book-modal"> 
     <div><h1>EDIT BOOK</h1> </div>
-    <form class="modal-information" action="../actions/BookUpdate.php" method="POST">
+    <form class="modal-information" action="../actions/book/BookUpdate.php" method="POST">
       <input type="hidden" id="edit-id" name="id">
 
       <div class="modal-input"> 
