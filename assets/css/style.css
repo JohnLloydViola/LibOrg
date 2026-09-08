@@ -77,7 +77,8 @@ body {
 }
 
 .book-container,
-.member-container {
+.member-container,
+.transaction-container {
   display: flex;
   flex-direction: row;
 }
