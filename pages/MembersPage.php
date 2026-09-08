@@ -63,7 +63,7 @@ $members = getMembers($conn);
                   <img src="../assets/images/Edit.png" alt="Edit">
                 </button> 
                 
-                <form action="../actions/book/BookDelete.php" method="POST">
+                <form action="../actions/member/MemberDelete.php" method="POST">
                    <input type="hidden" name="id" value="<?=$member['id']?>">
 
                   <button type="submit">
