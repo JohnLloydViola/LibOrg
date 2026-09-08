@@ -84,7 +84,7 @@ body {
 }
 
 .add-book,
-.add-memberm,
+.add-member,
 .borrow-book {
   display: flex;
   justify-content: space-between;

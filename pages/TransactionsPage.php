@@ -57,8 +57,11 @@ $books = getBooks($conn);
               <td><?= htmlspecialchars($transaction['full_name'])?></td>
               <td><?= htmlspecialchars($transaction['title'])?></td>
               <td><?=htmlspecialchars($transaction['status'])?></td>
-              <td> 
-                <button type="button">Return Book</button> 
+              <td>
+                <form action="../actions/transaction/TransactionReturn.php" method="POST"> 
+                  <input type="hidden" name="id" value="<?=$transaction['id']?>">
+                  <button type="submit">Return Book</button> 
+                </form> 
               </td>
           </tr>
           <?php endforeach ?>

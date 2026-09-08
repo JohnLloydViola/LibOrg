@@ -4,18 +4,22 @@ declare(strict_types=1);
 require_once __DIR__ . "/../../vendor/autoload.php";
 require_once __DIR__ . "/../../config/Database.php";
 
-if($_SERVER["REQUEST_METHOD"] !== "POST") {
+if($_SERVER['REQUEST_METHOD'] !== "POST") {
   header("Location: ../../pages/TransactionsPage.php");
   exit;
 }
 
-$member_id = (int) ($_POST["member_id"] ?? "");
-$book_id = (int) ($_POST["book_id"] ?? "");
+$id = (int) ($_POST["id"] ?? "");
 
-$bookData = getBook($conn, $book_id);
+$transaction = getTransaction($conn, $id);
 
+if ($transaction["status"] === "returned") {
+  header("Location: ../../pages/TransactionsPage.php");
+  exit;
+}
 
-//Dito ako gumamit ng src class na book.
+$bookData = getBook($conn, $transaction["book_id"]);
+
 $book = new App\Book(
   $bookData["title"],
   $bookData["author"],
@@ -25,15 +29,29 @@ $book = new App\Book(
   $bookData["available_quantity"],
 );
 
+$book->returnItem();
 
-$book->borrow();
+updateBookAvailability($conn, $transaction["book_id"], $book->getAvailableQuantity());
 
-updateBookAvailability($conn, $book_id, $book->getAvailableQuantity());
-
-addTransaction($conn, $member_id, $book_id);
+updateTransactionStatus($conn, $id);
 
 header("Location: ../../pages/TransactionsPage.php");
 exit;
+
+function getTransaction(PDO $conn, int $id): array
+{
+  $sql = "SELECT *
+          FROM transactions
+          WHERE id = :id";
+
+  $stmt = $conn->prepare($sql);
+
+  $stmt->execute([
+    ":id" => $id
+  ]);
+
+  return $stmt->fetch();
+}
 
 function getBook(PDO $conn, int $book_id): array
 {
@@ -68,20 +86,16 @@ function updateBookAvailability(
   ]);
 }
 
-function addTransaction(
-  PDO $conn,
-  int $member_id,
-  int $book_id
-): void
+function updateTransactionStatus(PDO $conn, int $id): void
 {
-  $sql = "INSERT INTO transactions (member_id, book_id, status)
-          VALUES (:member_id, :book_id, :status)";
+  $sql = "UPDATE transactions
+          SET status = :status
+          WHERE id = :id";
 
   $stmt = $conn->prepare($sql);
 
   $stmt->execute([
-    ":member_id" => $member_id,
-    ":book_id" => $book_id,
-    ":status" => "borrowed"
+    ":status" => "returned",
+    ":id" => $id
   ]);
 }

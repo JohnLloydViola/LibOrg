@@ -43,7 +43,8 @@ function updateBook(
               author = :author,
               category = :category,
               publication_year = :publication_year,
-              quantity = :quantity
+              quantity = :quantity,
+              available_quantity = :available_quantity
           WHERE id = :id";
 
   $stmt = $conn->prepare($sql);
@@ -54,6 +55,7 @@ function updateBook(
     ':category' => $category,
     ':publication_year' => $publication_year,
     ':quantity' => $quantity,
+    ':available_quantity' => $quantity,
     ':id' => $id
   ]);
 }
