@@ -84,7 +84,8 @@ body {
 }
 
 .add-book,
-.add-member {
+.add-memberm,
+.borrow-book {
   display: flex;
   justify-content: space-between;
   margin: 1rem 0;
@@ -99,7 +100,8 @@ dialog {
 #add-book-modal,
 #edit-book-modal,
 #add-member-modal,
-#edit-member-modal {
+#edit-member-modal,
+#borrow-book-modal {
   position: fixed;
   top: 50%;
   left: 50%;
@@ -112,7 +114,8 @@ dialog {
 #add-book-modal h1,
 #edit-book-modal h1,
 #add-member-modal h1,
-#edit-member-modal h1{
+#edit-member-modal h1,
+#borrow-book-modal h1{
   margin: 1rem 0.5rem;
 }
 

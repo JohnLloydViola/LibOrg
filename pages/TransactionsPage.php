@@ -5,6 +5,8 @@ require_once __DIR__ . "/../actions/transaction/TransactionRead.php";
 require_once __DIR__ . "/../config/Database.php";
 
 $transactions = getTransactions($conn);
+$members = getMembers($conn);
+$books = getBooks($conn);
 ?>
 
 <!DOCTYPE html>
@@ -20,8 +22,9 @@ $transactions = getTransactions($conn);
     <?php include "../includes/SideBar.php"?>
 
     <div class="content">
-      <div class="add-member">
+      <div class="borrow-book">
         <h1>Transactions</h1>
+        <button id="open-borrow-book-modal-btn">Borrow Book</button>
       </div> 
 
       <div class="table-section"> 
@@ -45,6 +48,7 @@ $transactions = getTransactions($conn);
             <th>MEMBER</th>
             <th>BOOK</th>
             <th>STATUS</th>
+            <th>ACTION</th>
           </tr>
 
           <?php foreach($transactions as $transaction): ?> 
@@ -53,6 +57,9 @@ $transactions = getTransactions($conn);
               <td><?= htmlspecialchars($transaction['full_name'])?></td>
               <td><?= htmlspecialchars($transaction['title'])?></td>
               <td><?=htmlspecialchars($transaction['status'])?></td>
+              <td> 
+                <button type="button">Return Book</button> 
+              </td>
           </tr>
           <?php endforeach ?>
         </table>
@@ -80,6 +87,46 @@ $transactions = getTransactions($conn);
     </div>
 
   </div>
+
+  <!--Modal dialogue para sa Borrow button-->
+  <dialog id="borrow-book-modal"> 
+    <div><h1>BORROW BOOK</h1> </div>
+
+    <form class="modal-information" action="../actions/transaction/TransactionStore.php" method="POST">
+      <div class="modal-input"> 
+        <label for="member_id">Select Member</label><br>
+
+        <select name="member_id" class="modal-category">
+          <option disabled selected value="">Select Member</option> 
+          <?php foreach ($members as $member): ?>
+            <option value="<?= $member['id'] ?>">
+              <?= htmlspecialchars($member['full_name']) ?>
+            </option>
+          <?php endforeach; ?>
+        </select>
+      </div>
+      
+      <div class="modal-input"> 
+        <label for="book_id">Select Book</label><br>
+        
+        <select name="book_id" class="modal-category"> 
+          <option disabled selected value= "">Select Book</option> 
+          <?php foreach ($books as $book): ?>
+            <option value="<?= $book['id'] ?>">
+              <?= htmlspecialchars($book['title']) ?>
+              (Available: <?= $book['available_quantity'] ?>)
+            </option>
+          <?php endforeach; ?>
+        </select>
+      </div>
+
+      <div> 
+        <button type="submit">Borrow</button>
+        <button type="button" id="close-borrow-book-modal-btn">cancel</button>
+      </div>
+    </form>
+  </dialog>
   
+  <script src="../assets/js/TransactionsPage.js"></script>
 </body>
 </html>
