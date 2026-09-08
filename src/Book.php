@@ -12,9 +12,10 @@ class Book implements Borrowable
     private string $author,
     private string $category,
     private int $publicationYear,
-    private int $quantity
+    private int $quantity,
+    ?int $availableQuantity = null
   ) {
-    $this->availableQuantity = $this->quantity;
+    $this->availableQuantity = $availableQuantity ?? $this->quantity;
   }
   
   public function getTitle(): string
