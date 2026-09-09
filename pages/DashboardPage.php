@@ -1,3 +1,14 @@
+<?php 
+declare(strict_types=1);
+
+require_once __DIR__ . "/../config/Database.php";
+require_once __DIR__ . "/../actions/dashboard/DashboardRead.php";
+
+$totalBooks = getTotalBooks($conn);
+$totalMembers =  getTotalMembers($conn);
+$totalBorrowed = getTotalBorrowed($conn);
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -22,7 +33,7 @@
             </div>
 
             <div class="total-books-desc">
-              <p> <span>120</span> <br> Total Books</p>
+              <p> <span><?=$totalBooks?></span> <br> Total Books</p>
             </div>
           </div>
 
@@ -32,7 +43,7 @@
             </div>
 
             <div class="total-members-desc">
-              <p> <span>120</span> <br> Total Members</p>
+              <p> <span><?=$totalMembers?></span> <br> Total Members</p>
             </div>
           </div>
 
@@ -42,7 +53,7 @@
             </div>
 
             <div class="total-borrowed-desc">
-              <p> <span>120</span> <br> Currently Borrowed</p>
+              <p> <span><?=$totalBorrowed?></span> <br> Currently Borrowed</p>
             </div>
           </div>
         </div>
@@ -56,7 +67,6 @@
                 <th>MEMBER</th>
                 <th>BOOK</th>
                 <th>STATUS</th>
-                <th>ACTION</th>
               </tr>
 
               <?php foreach($transactions as $transaction): ?> 
@@ -65,20 +75,6 @@
                   <td><?= htmlspecialchars($transaction['full_name'])?></td>
                   <td><?= htmlspecialchars($transaction['title'])?></td>
                   <td><?=htmlspecialchars($transaction['status'])?></td>
-                  <td>
-                    <form action="../actions/transaction/TransactionReturn.php" method="POST"> 
-                      <input type="hidden" name="id" value="<?=$transaction['id']?>">
-                      <button type="submit">Return Book</button> 
-                    </form>
-                    
-                    <form action="../actions/transaction/TransactionDelete.php" method="POST">
-                      <input type="hidden" name="id" value="<?=$transaction['id']?>">
-
-                      <button type="submit">
-                        <img src="../assets/images/Delete.png" alt="delete">
-                      </button>
-                    </form>
-                  </td>
                 </tr>
               <?php endforeach ?>
         </table>

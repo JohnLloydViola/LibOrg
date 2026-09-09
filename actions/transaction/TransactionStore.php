@@ -14,6 +14,8 @@ $book_id = (int) ($_POST["book_id"] ?? "");
 
 $memberData = getMember($conn, $member_id);
 
+
+//Dito ako guamit ng src class na member
 $member = new App\Member(
   $memberData["full_name"],
   $memberData["email"],
