@@ -61,7 +61,15 @@ $books = getBooks($conn);
                 <form action="../actions/transaction/TransactionReturn.php" method="POST"> 
                   <input type="hidden" name="id" value="<?=$transaction['id']?>">
                   <button type="submit">Return Book</button> 
-                </form> 
+                </form>
+                
+                <form action="../actions/transaction/TransactionDelete.php" method="POST">
+                   <input type="hidden" name="id" value="<?=$transaction['id']?>">
+
+                  <button type="submit">
+                    <img src="../assets/images/Delete.png" alt="delete">
+                  </button>
+                </form>
               </td>
           </tr>
           <?php endforeach ?>
