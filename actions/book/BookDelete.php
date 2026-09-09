@@ -20,6 +20,21 @@ function deleteBook(
   int $id
 ): void 
 {
+  //check muna kung merong transactions before deleting this book
+  $sql = "SELECT id
+          FROM transactions
+          WHERE book_id = :id";
+
+  $stmt = $conn->prepare($sql);
+
+  $stmt->execute([
+    ':id' => $id
+  ]);
+
+  if ($stmt->fetch()) {
+    return;
+  }
+
   $sql = "DELETE 
           FROM books
           WHERE id = :id";

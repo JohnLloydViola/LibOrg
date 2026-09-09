@@ -20,6 +20,21 @@ function deleteMember(
   int $id
 ): void
 {
+  //check din kung merong naka reference dito na transaction then return do not delete.
+  $sql = "SELECT id
+          FROM transactions
+          WHERE member_id = :id";
+
+  $stmt = $conn->prepare($sql);
+
+  $stmt->execute([
+    ":id" => $id
+  ]);
+
+  if ($stmt->fetch()) {
+    return;
+  }
+
   $sql = "DELETE 
           FROM members
           WHERE id = :id";

@@ -38,6 +38,30 @@ function updateBook(
   int $quantity
 ): void 
 {
+  // Kunin ang current quantity at available quantity
+  $sql = "SELECT quantity, available_quantity
+          FROM books
+          WHERE id = :id";
+
+  $stmt = $conn->prepare($sql);
+
+  $stmt->execute([
+    ':id' => $id
+  ]);
+
+  $book = $stmt->fetch();
+
+  // Bilangin kung ilang copies ang na borrowed
+  $borrowedQuantity = $book['quantity'] - $book['available_quantity'];
+
+  // wag payagan ang bagong quantity na mas mababa sa borrowed copies
+  if ($quantity < $borrowedQuantity) {
+    return;
+  }
+
+  // Calculate ang bagong available quantity
+  $availableQuantity = $quantity - $borrowedQuantity;
+
   $sql = "UPDATE books 
           SET title = :title,
               author = :author,
@@ -55,7 +79,7 @@ function updateBook(
     ':category' => $category,
     ':publication_year' => $publication_year,
     ':quantity' => $quantity,
-    ':available_quantity' => $quantity,
+    ':available_quantity' => $availableQuantity,
     ':id' => $id
   ]);
 }
