@@ -12,6 +12,15 @@ if($_SERVER["REQUEST_METHOD"] !== "POST") {
 $member_id = (int) ($_POST["member_id"] ?? "");
 $book_id = (int) ($_POST["book_id"] ?? "");
 
+$memberData = getMember($conn, $member_id);
+
+$member = new App\Member(
+  $memberData["full_name"],
+  $memberData["email"],
+  $memberData["phone_number"],
+  $memberData["address"]
+);
+
 $bookData = getBook($conn, $book_id);
 
 
@@ -25,8 +34,13 @@ $book = new App\Book(
   $bookData["available_quantity"],
 );
 
-
 $book->borrow();
+
+$transaction = new App\Transaction(
+  $member,
+  $book,
+  "borrowed"
+);
 
 updateBookAvailability($conn, $book_id, $book->getAvailableQuantity());
 
@@ -35,7 +49,28 @@ addTransaction($conn, $member_id, $book_id);
 header("Location: ../../pages/TransactionsPage.php");
 exit;
 
-function getBook(PDO $conn, int $book_id): array
+function getMember(
+  PDO $conn,
+  int $member_id
+): array
+{
+  $sql = "SELECT *
+          FROM members
+          WHERE id = :id";
+
+  $stmt = $conn->prepare($sql);
+
+  $stmt->execute([
+    ":id" => $member_id
+  ]);
+
+  return $stmt->fetch();
+}
+
+function getBook(
+  PDO $conn,
+  int $book_id
+): array
 {
   $sql = "SELECT *
           FROM books
@@ -85,3 +120,4 @@ function addTransaction(
     ":status" => "borrowed"
   ]);
 }
+
