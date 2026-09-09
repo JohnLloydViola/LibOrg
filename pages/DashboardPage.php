@@ -5,8 +5,9 @@ require_once __DIR__ . "/../config/Database.php";
 require_once __DIR__ . "/../actions/dashboard/DashboardRead.php";
 
 $totalBooks = getTotalBooks($conn);
-$totalMembers =  getTotalMembers($conn);
+$totalMembers = getTotalMembers($conn);
 $totalBorrowed = getTotalBorrowed($conn);
+$transactions = getRecentTransactions($conn);
 ?>
 
 <!DOCTYPE html>
@@ -58,7 +59,7 @@ $totalBorrowed = getTotalBorrowed($conn);
           </div>
         </div>
 
-        <div class="table-section">
+        <div class="table-section transaction">
             <h2>Recent Transactions</h2>
 
             <table>
@@ -78,7 +79,15 @@ $totalBorrowed = getTotalBorrowed($conn);
                 </tr>
               <?php endforeach ?>
         </table>
+
+        <div id="view-all" class="entries"> 
+          <div> 
+            <a href="./TransactionsPage.php">View All Transactions</a>
+            <img src="../assets/images/ArrowRight.png" alt="View all transactions Arrow right">
+          </div>
+        </div>
     </div>
+
   </div>
 </div>
 </body>

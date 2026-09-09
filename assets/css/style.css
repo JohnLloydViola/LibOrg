@@ -71,11 +71,14 @@ body {
 }
 
 /*Dashbaord styling*/
-
 .dashboard-stats{
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 2.5rem;
+}
+
+.transaction {
+  margin: 1rem 0;
 }
 
 .total-item {
@@ -126,11 +129,28 @@ body {
   width: 50px;
 }
 
+#view-all {
+  justify-content: end;
+}
+
+#view-all a{
+  text-decoration: none;
+  color: var(--primary-purple);
+  font-weight: 600;
+}
+#view-all > div {
+  display:flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
+}
+
 /*Book page styling */
 .content {
   padding: 1rem 2.5rem;
   width: 90%;
 }
+
 .dashboard-container,
 .book-container,
 .member-container,

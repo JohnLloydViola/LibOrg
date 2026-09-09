@@ -37,3 +37,19 @@ function getTotalBorrowed(PDO $conn): int
 
   return (int) $stmt->fetchColumn();
 }
+
+function getRecentTransactions(PDO $conn): array
+{
+  $sql = "SELECT transactions.id, members.full_name, books.title, transactions.status
+          FROM transactions
+          INNER JOIN members
+          ON transactions.member_id = members.id
+          INNER JOIN books
+          ON transactions.book_id = books.id
+          ORDER BY transactions.id DESC
+          LIMIT 5";
+
+  $stmt = $conn->query($sql);
+
+  return $stmt->fetchAll();
+}
