@@ -7,6 +7,7 @@
 :root {
   --primary-purple: #4F2DBD;
   --dark-purple: #17104F;
+  --hover-purple: #351D82;
   --page-background: #FAFAFE;
   --border-radius: 0.4rem;
 }
@@ -62,7 +63,7 @@ body {
 }
 
 .navigation-links a:hover {
-  background-color: var(--primary-purple);
+  background-color: var(--hover-purple);
 }
 
 .navigation-links img {
@@ -275,10 +276,14 @@ td {
   color:black;
 }
 
-.active {
+.pagination a.active {
   background-color: var(--primary-purple);
   color:white !important;
   border-radius: var(--border-radius);
+}
+
+.navigation-links a.active {
+  background-color: var(--primary-purple);
 }
 
 input[type="text"],
@@ -292,4 +297,3 @@ input[type="email"],
 select {
   padding: 0.4rem;
 }
-
