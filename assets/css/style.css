@@ -228,7 +228,7 @@ tr {
   text-align: left;
 }
 
-tr:first-child {
+table thead tr:first-child {
   background-color: var(--page-background);
 }
 

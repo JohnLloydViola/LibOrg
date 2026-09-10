@@ -28,7 +28,7 @@ $books = getBooks($conn);
       <div class="table-section">
         <div class="filter"> 
           <div>
-            <input name="bookName" type="text" placeholder="Search books...">
+            <input id="book-search" name="bookName" type="text" placeholder="Search books...">
           </div>
          
           <div>
@@ -52,50 +52,54 @@ $books = getBooks($conn);
         </div>
         
         <table>
-          <tr>
-            <th>ID</th>
-            <th class="table-title">Title</th>
-            <th>Author</th>
-            <th>Category</th>
-            <th>Year</th>
-            <th>Quantity</th>
-            <th>Available</th>
-            <th class="table-action">Action</th>
-          </tr>
-
-          <?php foreach($books as $book): ?> 
+          <thead>
             <tr>
-              <td><?='B'. str_pad((string) $book['id'], 3, "0", STR_PAD_LEFT)?></td>
-              <td><?= htmlspecialchars($book['title'])?></td>
-              <td><?= htmlspecialchars($book['author'])?></td>
-              <td><?=htmlspecialchars($book['category'])?></td>
-              <td><?=$book['publication_year']?></td>
-              <td><?=$book['quantity']?></td>
-              <td><?=$book['available_quantity']?></td>
-              <td> 
-                <button 
-                  type="button" 
-                  class="open-edit-book-modal-btn"
-                  data-id="<?=$book['id'] ?>"
-                  data-title="<?=htmlspecialchars($book['title'])?>"
-                  data-author="<?=htmlspecialchars($book['author'])?>"
-                  data-category="<?=htmlspecialchars($book['category'])?>"
-                  data-publication_year="<?=$book['publication_year']?>"
-                  data-quantity="<?=$book['quantity']?>">
+              <th>ID</th>
+              <th class="table-title">Title</th>
+              <th>Author</th>
+              <th>Category</th>
+              <th>Year</th>
+              <th>Quantity</th>
+              <th>Available</th>
+              <th class="table-action">Action</th>
+            </tr>
+          </thead>
 
-                  <img src="../assets/images/Edit.png" alt="Edit">
-                </button> 
-                
-                <form action="../actions/book/BookDelete.php" method="POST">
-                   <input type="hidden" name="id" value="<?=$book['id']?>">
+          <tbody id="books-table-body"> 
+            <?php foreach($books as $book): ?> 
+              <tr>
+                <td><?='B'. str_pad((string) $book['id'], 3, "0", STR_PAD_LEFT)?></td>
+                <td><?= htmlspecialchars($book['title'])?></td>
+                <td><?= htmlspecialchars($book['author'])?></td>
+                <td><?=htmlspecialchars($book['category'])?></td>
+                <td><?=$book['publication_year']?></td>
+                <td><?=$book['quantity']?></td>
+                <td><?=$book['available_quantity']?></td>
+                <td> 
+                  <button 
+                    type="button" 
+                    class="open-edit-book-modal-btn"
+                    data-id="<?=$book['id'] ?>"
+                    data-title="<?=htmlspecialchars($book['title'])?>"
+                    data-author="<?=htmlspecialchars($book['author'])?>"
+                    data-category="<?=htmlspecialchars($book['category'])?>"
+                    data-publication_year="<?=$book['publication_year']?>"
+                    data-quantity="<?=$book['quantity']?>">
 
-                  <button type="submit">
-                    <img src="../assets/images/Delete.png" alt="delete">
-                  </button>
-                </form>
-              </td>
-          </tr>
-          <?php endforeach ?>
+                    <img src="../assets/images/Edit.png" alt="Edit">
+                  </button> 
+                  
+                  <form action="../actions/book/BookDelete.php" method="POST">
+                    <input type="hidden" name="id" value="<?=$book['id']?>">
+
+                    <button type="submit">
+                      <img src="../assets/images/Delete.png" alt="delete">
+                    </button>
+                  </form>
+                </td>
+            </tr>
+            <?php endforeach ?>
+          </tbody>  
         </table>
 
         <div class="entries"> 
@@ -211,6 +215,7 @@ $books = getBooks($conn);
     </form>
   </dialog>
 
+  <script src="../assets/js/axios.min.js"></script>
   <script src="../assets/js/BooksPage.js"></script>
 </body>
 </html>
