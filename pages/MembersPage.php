@@ -29,50 +29,54 @@ $members = getMembers($conn);
       <div class="table-section"> 
         <div class="filter"> 
           <div>
-            <input name="memberName" type="text" placeholder="Search member...">
+            <input id="member-search" name="memberName" type="text" placeholder="Search member name...">
           </div>
         </div>
 
         <table>
-          <tr>
-            <th>ID</th>
-            <th>FULL NAME</th>
-            <th>EMAIL</th>
-            <th>PHONE</th>
-            <th>ADDRESS</th>
-            <th>Action</th>
-          </tr>
-
-          <?php foreach($members as $member): ?> 
+          <thead>
             <tr>
-              <td><?='M'. str_pad((string) $member['id'], 3, "0", STR_PAD_LEFT)?></td>
-              <td><?= htmlspecialchars($member['full_name'])?></td>
-              <td><?= htmlspecialchars($member['email'])?></td>
-              <td><?=htmlspecialchars($member['phone_number'])?></td>
-              <td><?=htmlspecialchars($member['address'])?></td>
-              <td> 
-                <button 
-                  type="button" 
-                  class="open-edit-member-modal-btn"
-                  data-id="<?=$member['id'] ?>"
-                  data-full-name="<?=htmlspecialchars($member['full_name'])?>"
-                  data-email="<?=htmlspecialchars($member['email'])?>"
-                  data-phone-number="<?=htmlspecialchars($member['phone_number'])?>"
-                  data-address="<?=htmlspecialchars($member['address'])?>">
+              <th>ID</th>
+              <th>FULL NAME</th>
+              <th>EMAIL</th>
+              <th>PHONE</th>
+              <th>ADDRESS</th>
+              <th>Action</th>
+            </tr>
+          </thead>
 
-                  <img src="../assets/images/Edit.png" alt="Edit">
-                </button> 
-                
-                <form action="../actions/member/MemberDelete.php" method="POST">
-                   <input type="hidden" name="id" value="<?=$member['id']?>">
+          <tbody id="member-table-body">
+            <?php foreach($members as $member): ?> 
+              <tr>
+                <td><?='M'. str_pad((string) $member['id'], 3, "0", STR_PAD_LEFT)?></td>
+                <td><?= htmlspecialchars($member['full_name'])?></td>
+                <td><?= htmlspecialchars($member['email'])?></td>
+                <td><?=htmlspecialchars($member['phone_number'])?></td>
+                <td><?=htmlspecialchars($member['address'])?></td>
+                <td> 
+                  <button 
+                    type="button" 
+                    class="open-edit-member-modal-btn"
+                    data-id="<?=$member['id'] ?>"
+                    data-full-name="<?=htmlspecialchars($member['full_name'])?>"
+                    data-email="<?=htmlspecialchars($member['email'])?>"
+                    data-phone-number="<?=htmlspecialchars($member['phone_number'])?>"
+                    data-address="<?=htmlspecialchars($member['address'])?>">
 
-                  <button type="submit">
-                    <img src="../assets/images/Delete.png" alt="delete">
-                  </button>
-                </form>
-              </td>
-          </tr>
-          <?php endforeach ?>
+                    <img src="../assets/images/Edit.png" alt="Edit">
+                  </button> 
+                  
+                  <form action="../actions/member/MemberDelete.php" method="POST">
+                    <input type="hidden" name="id" value="<?=$member['id']?>">
+
+                    <button type="submit">
+                      <img src="../assets/images/Delete.png" alt="delete">
+                    </button>
+                  </form>
+                </td>
+            </tr>
+            <?php endforeach ?>
+          </tbody>
         </table>
 
          <div class="entries"> 
@@ -163,6 +167,7 @@ $members = getMembers($conn);
     </form>
   </dialog>
 
+  <script src="../assets/js/axios.min.js"></script>
   <script src="../assets/js/MembersPage.js"></script>
 </body>
 </html>

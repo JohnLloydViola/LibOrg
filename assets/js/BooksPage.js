@@ -46,7 +46,7 @@ closeEditBookModalBtn.addEventListener('click', () => {
   editBookModal.close();
 });
 
-// Search, category filter, and availability sorting sa bookspage
+// Search, category filter, and availability sorting sa bookspage and loading books
 const bookSearch = document.getElementById('book-search');
 const bookCategory = document.getElementById('book-category');
 const bookSort = document.getElementById('book-sort');
@@ -62,7 +62,6 @@ async function loadBooks() {
     );
 
     renderBooks(response.data);
-
   } catch (error) {
     console.log('Error loading books');
   }
