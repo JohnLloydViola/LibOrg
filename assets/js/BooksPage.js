@@ -61,6 +61,21 @@ closeEditBookModalBtn.addEventListener('click', () => {
   editBookModal.close();
 });
 
+//Book category select
+const bookCategory = document.getElementById('book-category');
+
+bookCategory.addEventListener('change', async (event) => {
+  const search = bookSearch.value 
+  const category = event.target.value;
+
+  try {
+    const response = await axios.get(`../actions/book/BookSearch.php?title=${encodeURIComponent(search)}&category=${encodeURIComponent(category)}`);
+    
+    renderBooks(response.data);
+  } catch (error) {
+    console.log('Error category filter');
+  }
+});
 
 // Render books
 function renderBooks(books) {

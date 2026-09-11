@@ -32,8 +32,8 @@ $books = getBooks($conn);
           </div>
          
           <div>
-            <select name="categories"> 
-              <option value="" disabled selected hidden>All categories</option>
+            <select id="book-category" name="categories"> 
+              <option value="" selected>All categories</option>
               <option value="science">Science</option>
               <option value="technology">Technology</option>
               <option value="fantasy">Fantasy</option>
@@ -43,10 +43,10 @@ $books = getBooks($conn);
               <option value="health">Health</option>
             </select>
 
-            <select name="availability"> 
-              <option value="" disabled selected hidden>All availability</option>
-              <option value="science">Ascending</option>
-              <option value="technology">Descending</option>
+            <select name="sort"> 
+              <option value="" selected>All availability</option>
+              <option value="asc">Ascending</option>
+              <option value="desc">Descending</option>
             </select>
           </div>
         </div>
