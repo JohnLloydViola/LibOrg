@@ -11,24 +11,6 @@ closeAddBookModalBtn.addEventListener('click', () => {
   addBookModal.close();
 });
 
-
-//search GET using axios kinakausap yung BookSearch.php
-const bookSearch = document.getElementById('book-search');
-const booksTableBody = document.getElementById('books-table-body');
-
-bookSearch.addEventListener('input', async (event) => {
-  try {
-    const response = await axios.get(
-      `../actions/book/BookSearch.php?title=${encodeURIComponent(event.target.value)}`
-    );
-
-    renderBooks(response.data);
-
-  } catch (error) {
-    console.log('Error get');
-  }
-});
-
 // Edit book modal
 const editBookModal = document.getElementById('edit-book-modal');
 const closeEditBookModalBtn = document.getElementById('close-edit-book-modal-btn');
@@ -39,6 +21,9 @@ const editAuthor = document.getElementById('edit-author');
 const editCategory = document.getElementById('edit-category');
 const editYear = document.getElementById('edit-year');
 const editQuantity = document.getElementById('edit-quantity');
+
+//Event listener sa books table body
+const booksTableBody = document.getElementById('books-table-body');
 
 booksTableBody.addEventListener('click', (event) => {
   const button = event.target.closest('.open-edit-book-modal-btn');
@@ -61,23 +46,44 @@ closeEditBookModalBtn.addEventListener('click', () => {
   editBookModal.close();
 });
 
-//Book category select
+// Search, category filter, and availability sorting sa bookspage
+const bookSearch = document.getElementById('book-search');
 const bookCategory = document.getElementById('book-category');
+const bookSort = document.getElementById('book-sort');
 
-bookCategory.addEventListener('change', async (event) => {
-  const search = bookSearch.value 
-  const category = event.target.value;
+async function loadBooks() {
+  const search = bookSearch.value;
+  const category = bookCategory.value;
+  const sort = bookSort.value;
 
   try {
-    const response = await axios.get(`../actions/book/BookSearch.php?title=${encodeURIComponent(search)}&category=${encodeURIComponent(category)}`);
-    
+    const response = await axios.get(
+      `../actions/book/BookSearch.php?title=${encodeURIComponent(search)}&category=${encodeURIComponent(category)}&sort=${encodeURIComponent(sort)}`
+    );
+
     renderBooks(response.data);
+
   } catch (error) {
-    console.log('Error category filter');
+    console.log('Error loading books');
   }
+}
+
+// Search listener event
+bookSearch.addEventListener('input', () => {
+  loadBooks();
 });
 
-// Render books
+// Category listener event
+bookCategory.addEventListener('change', () => {
+  loadBooks();
+});
+
+// Sort listener event
+bookSort.addEventListener('change', () => {
+  loadBooks();
+});
+
+// Render books sa table body sa bookspage
 function renderBooks(books) {
   booksTableBody.innerHTML = '';
 

@@ -12,15 +12,17 @@ require_once __DIR__ . "/../../config/Database.php";
 //Search using search input
 $search = trim($_GET["title"] ?? "");
 $category = trim($_GET["category"] ?? "");
+$sort = trim($_GET["sort"] ?? "");
 
-$books = searchBooks($conn, $search, $category);
+$books = searchBooks($conn, $search, $category, $sort);
 
 echo json_encode($books);
 
 function searchBooks(
   PDO $conn, 
   string $search, 
-  string $category
+  string $category,
+  string $sort
 ): array 
 {
   $sql = "SELECT *
@@ -36,6 +38,12 @@ function searchBooks(
     $sql .= " AND category = :category";
 
     $parameters[":category"] = $category;
+  }
+
+  if ($sort === "asc") {
+    $sql .= " ORDER BY available_quantity ASC";
+  } elseif ($sort === "desc") {
+    $sql .= " ORDER BY available_quantity DESC";
   }
 
   $stmt = $conn->prepare($sql);

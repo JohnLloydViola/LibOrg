@@ -43,8 +43,8 @@ $books = getBooks($conn);
               <option value="health">Health</option>
             </select>
 
-            <select name="sort"> 
-              <option value="" selected>All availability</option>
+            <select id="book-sort" name="sort"> 
+              <option value="" selected>Sort</option>
               <option value="asc">Ascending</option>
               <option value="desc">Descending</option>
             </select>
