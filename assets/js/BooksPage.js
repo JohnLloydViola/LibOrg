@@ -184,16 +184,38 @@ function renderPagination() {
     return;
   }
 
-
   pagination.innerHTML = `
     <li><a href="#" class="prev">&laquo; Prev</a></li>
   `;
 
-  for (let page = 1; page <= totalPages; page++) {
+  let startPage = Math.max(1, currentPage - 2);
+  let endPage = Math.min(totalPages, startPage + 4);
+
+  // Adjust start page if we're near the last page
+  startPage = Math.max(1, endPage - 4);
+
+  // Show first page and ellipsis like ...
+  if (startPage > 1) {
+    pagination.innerHTML += `
+      <li><a href="#">1</a></li>
+      <li><span>...</span></li>
+    `;
+  }
+
+  // Show page numbers
+  for (let page = startPage; page <= endPage; page++) {
     pagination.innerHTML += `
       <li>
         <a href="#" class="${page === currentPage ? 'active' : ''}">${page}</a>
       </li>
+    `;
+  }
+
+  // Show ellipsis and last page
+  if (endPage < totalPages) {
+    pagination.innerHTML += `
+      <li><span>...</span></li>
+      <li><a href="#">${totalPages}</a></li>
     `;
   }
 
