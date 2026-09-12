@@ -22,7 +22,7 @@ const editCategory = document.getElementById('edit-category');
 const editYear = document.getElementById('edit-year');
 const editQuantity = document.getElementById('edit-quantity');
 
-//Event listener sa books table body
+// Event listener sa books table body
 const booksTableBody = document.getElementById('books-table-body');
 
 booksTableBody.addEventListener('click', (event) => {
@@ -51,6 +51,48 @@ const bookSearch = document.getElementById('book-search');
 const bookCategory = document.getElementById('book-category');
 const bookSort = document.getElementById('book-sort');
 
+// UI pagination logic
+const bookEntries = document.getElementById('book-entries');
+let currentPage = 1;
+let totalPages;
+
+const pagination = document.getElementById('book-pagination');
+
+pagination.addEventListener('click', (event) => {
+  event.preventDefault();
+
+  const button = event.target.closest('a');
+
+  if (!button) {
+    return;
+  }
+
+  if (button.classList.contains('prev')) {
+    if (currentPage > 1) {
+      currentPage--;
+      loadBooks();
+    }
+
+    return;
+  }
+
+  if (button.classList.contains('next')) {
+    if (currentPage < totalPages) {
+      currentPage++;
+      loadBooks();
+    }
+
+    return;
+  }
+
+  const page = Number(button.textContent);
+
+  if (page >= 1 && page <= totalPages) {
+    currentPage = page;
+    loadBooks();
+  }
+});
+
 async function loadBooks() {
   const search = bookSearch.value;
   const category = bookCategory.value;
@@ -58,10 +100,20 @@ async function loadBooks() {
 
   try {
     const response = await axios.get(
-      `../actions/book/BookSearch.php?title=${encodeURIComponent(search)}&category=${encodeURIComponent(category)}&sort=${encodeURIComponent(sort)}`
-    );
+      `../actions/book/BookSearch.php?title=${encodeURIComponent(search)}&category=${encodeURIComponent(category)}&sort=${encodeURIComponent(sort)}&page=${encodeURIComponent(currentPage)}`);
 
-    renderBooks(response.data);
+    const totalBooks = response.data.total;
+
+    totalPages = Math.ceil(totalBooks / 6);
+
+    // About sa showing or display of entries
+    const startEntry = totalBooks === 0 ? 0 : (currentPage - 1) * 6 + 1;
+    const endEntry = Math.min(currentPage * 6, totalBooks);
+    bookEntries.textContent = `Showing ${startEntry} to ${endEntry} of ${totalBooks} entries`;
+
+    renderPagination();
+
+    renderBooks(response.data.books);
   } catch (error) {
     console.log('Error loading books');
   }
@@ -69,16 +121,19 @@ async function loadBooks() {
 
 // Search listener event
 bookSearch.addEventListener('input', () => {
+  currentPage = 1;
   loadBooks();
 });
 
 // Category listener event
 bookCategory.addEventListener('change', () => {
+  currentPage = 1;
   loadBooks();
 });
 
 // Sort listener event
 bookSort.addEventListener('change', () => {
+  currentPage = 1;
   loadBooks();
 });
 
@@ -122,3 +177,29 @@ function renderBooks(books) {
     `;
   });
 }
+
+function renderPagination() {
+  if (totalPages === 0) {
+    pagination.innerHTML = '';
+    return;
+  }
+
+
+  pagination.innerHTML = `
+    <li><a href="#" class="prev">&laquo; Prev</a></li>
+  `;
+
+  for (let page = 1; page <= totalPages; page++) {
+    pagination.innerHTML += `
+      <li>
+        <a href="#" class="${page === currentPage ? 'active' : ''}">${page}</a>
+      </li>
+    `;
+  }
+
+  pagination.innerHTML += `
+    <li><a href="#" class="next">Next &raquo;</a></li>
+  `;
+}
+
+loadBooks();

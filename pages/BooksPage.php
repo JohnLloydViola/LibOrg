@@ -104,17 +104,13 @@ $books = getBooks($conn);
 
         <div class="entries"> 
           <div> 
-            <p>Showing 1 to 10 of 1 entries</p>
+            <p id="book-entries">Showing 1 to 10 of 1 entries</p>
           </div>
 
           <nav>
-            <ul class="pagination">
+            <ul class="pagination" id="book-pagination">
               <li><a href="#" class="prev">&laquo; Prev</a></li>
-              <li><a href="#" class="active">1</a></li>
-              <li><a href="#">2</a></li>
-              <li><a href="#">3</a></li>
-              <li><a href="#">4</a></li>
-              <li><a href="#">5</a></li>
+
               <li><a href="#" class="next">Next &raquo;</a></li>
             </ul>
           </nav>

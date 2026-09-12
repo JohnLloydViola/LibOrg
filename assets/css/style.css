@@ -148,7 +148,7 @@ body {
 
 /*Book page styling */
 .content {
-  padding: 1rem 2.5rem;
+  padding: 1rem 10rem;
   width: 90%;
 }
 
@@ -167,6 +167,7 @@ body {
   display: flex;
   justify-content: space-between;
   margin: 1rem 0;
+  padding: 0 1rem;
 }
 
 /*this is modal styling*/
@@ -194,7 +195,7 @@ dialog {
 #add-member-modal h1,
 #edit-member-modal h1,
 #borrow-book-modal h1{
-  margin: 1rem 0.5rem;
+  padding: 1rem 0.5rem;
 }
 
 .modal-information {
