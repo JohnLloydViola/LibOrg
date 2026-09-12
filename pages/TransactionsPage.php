@@ -30,12 +30,12 @@ $books = getBooks($conn);
       <div class="table-section"> 
         <div class="filter"> 
           <div>
-            <input name="transaction" type="text" placeholder="Search Transactions...">
+            <input id="transaction-search" name="transaction" type="text" placeholder="Search by Member Name...">
           </div>
 
           <div> 
-            <select name="status"> 
-              <option selected disabled>All Status</option>
+            <select id="transaction-status" name="status"> 
+              <option value="" selected>All Status</option>
               <option value="borrowed">Borrowed</option>
               <option value="returned">Returned</option>
             </select>
@@ -43,36 +43,40 @@ $books = getBooks($conn);
         </div>
 
         <table>
-          <tr>
-            <th>ID</th>
-            <th>MEMBER</th>
-            <th>BOOK</th>
-            <th>STATUS</th>
-            <th>ACTION</th>
-          </tr>
-
-          <?php foreach($transactions as $transaction): ?> 
+          <thead>
             <tr>
-              <td><?='T'. str_pad((string) $transaction['id'], 3, "0", STR_PAD_LEFT)?></td>
-              <td><?= htmlspecialchars($transaction['full_name'])?></td>
-              <td><?= htmlspecialchars($transaction['title'])?></td>
-              <td><?=htmlspecialchars($transaction['status'])?></td>
-              <td>
-                <form action="../actions/transaction/TransactionReturn.php" method="POST"> 
-                  <input type="hidden" name="id" value="<?=$transaction['id']?>">
-                  <button type="submit">Return Book</button> 
-                </form>
-                
-                <form action="../actions/transaction/TransactionDelete.php" method="POST">
-                   <input type="hidden" name="id" value="<?=$transaction['id']?>">
+              <th>ID</th>
+              <th>MEMBER</th>
+              <th>BOOK</th>
+              <th>STATUS</th>
+              <th>ACTION</th>
+            </tr>
+          </thead>
 
-                  <button type="submit">
-                    <img src="../assets/images/Delete.png" alt="delete">
-                  </button>
-                </form>
-              </td>
-          </tr>
-          <?php endforeach ?>
+          <tbody id="transaction-table-body">
+            <?php foreach($transactions as $transaction): ?> 
+              <tr>
+                <td><?='T'. str_pad((string) $transaction['id'], 3, "0", STR_PAD_LEFT)?></td>
+                <td><?= htmlspecialchars($transaction['full_name'])?></td>
+                <td><?= htmlspecialchars($transaction['title'])?></td>
+                <td><?=htmlspecialchars($transaction['status'])?></td>
+                <td>
+                  <form action="../actions/transaction/TransactionReturn.php" method="POST"> 
+                    <input type="hidden" name="id" value="<?=$transaction['id']?>">
+                    <button type="submit">Return Book</button> 
+                  </form>
+                  
+                  <form action="../actions/transaction/TransactionDelete.php" method="POST">
+                    <input type="hidden" name="id" value="<?=$transaction['id']?>">
+
+                    <button type="submit">
+                      <img src="../assets/images/Delete.png" alt="delete">
+                    </button>
+                  </form>
+                </td>
+              </tr>
+            <?php endforeach ?>
+          </tbody>
         </table>
 
          <div class="entries"> 
@@ -137,7 +141,8 @@ $books = getBooks($conn);
       </div>
     </form>
   </dialog>
-  
+          
+  <script src="../assets/js/axios.min.js"></script>
   <script src="../assets/js/TransactionsPage.js"></script>
 </body>
 </html>
