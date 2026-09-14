@@ -8,7 +8,7 @@ $currentPage = basename($_SERVER["PHP_SELF"]);
   <div class="container">
     <div class="system-title-sidebar">
       <div>
-        <img src="../assets/images/Logo.png" class="title-logo" alt="Logo">
+        <img src="../assets/images/Logo.svg" class="title-logo" alt="Logo">
       </div>
 
       <div>
@@ -17,19 +17,19 @@ $currentPage = basename($_SERVER["PHP_SELF"]);
     </div>
 
     <div class="navigation-links">
-      <a href="../pages/DashboardPage.php" class="<?= $currentPage === "DashboardPage.php" ? "active" : "" ?>"><img src="../assets/images/Dashboard.png" alt="Dashboard">
+      <a href="../pages/DashboardPage.php" class="<?= $currentPage === "DashboardPage.php" ? "active" : "" ?>"><img src="../assets/images/Dashboard.svg" alt="Dashboard">
         Dashboard
       </a>
 
-      <a href="../pages/BooksPage.php" class="<?= $currentPage === "BooksPage.php" ? "active" : "" ?>"><img src="../assets/images/Book.png" alt="Books">
+      <a href="../pages/BooksPage.php" class="<?= $currentPage === "BooksPage.php" ? "active" : "" ?>"><img src="../assets/images/Book.svg" alt="Books">
         Books
       </a>
 
-      <a href="../pages/MembersPage.php" class="<?= $currentPage === "MembersPage.php" ? "active" : "" ?>"><img src="../assets/images/Members.png" alt="Members">
+      <a href="../pages/MembersPage.php" class="<?= $currentPage === "MembersPage.php" ? "active" : "" ?>"><img src="../assets/images/Members.svg" alt="Members">
         Members
       </a>
 
-      <a href="../pages/TransactionsPage.php" class="<?= $currentPage === "TransactionsPage.php" ? "active" : "" ?>"><img src="../assets/images/Transactions.png" alt="Transactions">
+      <a href="../pages/TransactionsPage.php" class="<?= $currentPage === "TransactionsPage.php" ? "active" : "" ?>"><img src="../assets/images/Transactions.svg" alt="Transactions">
         Transactions
       </a> 
     </div>

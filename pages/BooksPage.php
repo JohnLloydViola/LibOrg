@@ -22,13 +22,13 @@ $books = getBooks($conn);
     <div class="content">
       <div class="add-book">
         <h1>Books</h1>
-        <button id="open-add-book-modal-btn">Add Book</button>
+        <button id="open-add-book-modal-btn">+ Add Book</button>
       </div>
       
       <div class="table-section">
         <div class="filter"> 
           <div>
-            <input id="book-search" name="bookName" type="text" placeholder="Search books...">
+            <input id="book-search" name="bookName" type="text" placeholder="Search By Title...">
           </div>
          
           <div>
@@ -55,13 +55,13 @@ $books = getBooks($conn);
           <thead>
             <tr>
               <th>ID</th>
-              <th class="table-title">Title</th>
-              <th>Author</th>
-              <th>Category</th>
-              <th>Year</th>
-              <th>Quantity</th>
-              <th>Available</th>
-              <th class="table-action">Action</th>
+              <th style="width: 30%;">TITLE</th>
+              <th style="width: 25%;">AUTHOR</th>
+              <th>CATEGORY</th>
+              <th>YEAR</th>
+              <th>QUANTITY</th>
+              <th>AVAILABLE</th>
+              <th class="table-action">ACTION</th>
             </tr>
           </thead>
 
@@ -86,14 +86,14 @@ $books = getBooks($conn);
                     data-publication_year="<?=$book['publication_year']?>"
                     data-quantity="<?=$book['quantity']?>">
 
-                    <img src="../assets/images/Edit.png" alt="Edit">
+                    <img src="../assets/images/Edit.svg" alt="Edit">
                   </button> 
                   
                   <form action="../actions/book/BookDelete.php" method="POST">
                     <input type="hidden" name="id" value="<?=$book['id']?>">
 
                     <button type="submit">
-                      <img src="../assets/images/Delete.png" alt="delete">
+                      <img src="../assets/images/Delete.svg" alt="delete">
                     </button>
                   </form>
                 </td>
@@ -104,7 +104,7 @@ $books = getBooks($conn);
 
         <div class="entries"> 
           <div> 
-            <p id="book-entries">Showing 1 to 10 of 1 entries</p>
+            <p id="book-entries">Showing 0 to 0 of 0 entries</p>
           </div>
 
           <nav>
@@ -159,8 +159,8 @@ $books = getBooks($conn);
       </div>
       
       <div> 
-        <button type="submit">Save Book</button>
-        <button type="button" id="close-add-book-modal-btn"> cancel</button>
+        <button class="modal-submit" type="submit">Add Book</button>
+        <button class="modal-cancel" type="button" id="close-add-book-modal-btn">Cancel</button>
       </div>
     </form>
   </dialog>
@@ -205,8 +205,8 @@ $books = getBooks($conn);
       </div>
       
       <div> 
-        <button type="submit">Save Book</button>
-        <button type="button" id="close-edit-book-modal-btn"> cancel</button>
+        <button class="modal-submit" type="submit">Save Book</button>
+        <button class="modal-cancel" type="button" id="close-edit-book-modal-btn"> cancel</button>
       </div>
     </form>
   </dialog>

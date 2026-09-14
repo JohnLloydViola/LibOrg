@@ -99,8 +99,7 @@ async function loadBooks() {
   const sort = bookSort.value;
 
   try {
-    const response = await axios.get(
-      `../actions/book/BookSearch.php?title=${encodeURIComponent(search)}&category=${encodeURIComponent(category)}&sort=${encodeURIComponent(sort)}&page=${encodeURIComponent(currentPage)}`);
+    const response = await axios.get(`../actions/book/BookSearch.php?title=${encodeURIComponent(search)}&category=${encodeURIComponent(category)}&sort=${encodeURIComponent(sort)}&page=${encodeURIComponent(currentPage)}`);
 
     const totalBooks = response.data.total;
 
@@ -162,14 +161,14 @@ function renderBooks(books) {
             data-publication_year="${book.publication_year}"
             data-quantity="${book.quantity}">
 
-            <img src="../assets/images/Edit.png" alt="Edit">
+            <img src="../assets/images/Edit.svg" alt="Edit">
           </button>
 
           <form action="../actions/book/BookDelete.php" method="POST">
             <input type="hidden" name="id" value="${book.id}">
 
             <button type="submit">
-              <img src="../assets/images/Delete.png" alt="delete">
+              <img src="../assets/images/Delete.svg" alt="delete">
             </button>
           </form>
         </td>

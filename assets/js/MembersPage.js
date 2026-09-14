@@ -142,14 +142,14 @@ function renderMembers(members) {
             data-phone-number="${member.phone_number}"
             data-address="${member.address}">
 
-            <img src="../assets/images/Edit.png" alt="Edit">
+            <img src="../assets/images/Edit.svg" alt="Edit">
           </button>
 
           <form action="../actions/member/MemberDelete.php" method="POST">
             <input type="hidden" name="id" value="${member.id}">
 
             <button type="submit">
-              <img src="../assets/images/Delete.png" alt="delete">
+              <img src="../assets/images/Delete.svg" alt="delete">
             </button>
           </form>
         </td>

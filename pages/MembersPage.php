@@ -23,13 +23,13 @@ $members = getMembers($conn);
     <div class="content">
       <div class="add-member">
         <h1>Members</h1>
-        <button id="open-add-member-modal-btn">Add Member</button>
+        <button id="open-add-member-modal-btn">+ Add Member</button>
       </div> 
 
       <div class="table-section"> 
         <div class="filter"> 
           <div>
-            <input id="member-search" name="memberName" type="text" placeholder="Search member name...">
+            <input id="member-search" name="memberName" type="text" placeholder="Search By Full Name...">
           </div>
         </div>
 
@@ -37,10 +37,10 @@ $members = getMembers($conn);
           <thead>
             <tr>
               <th>ID</th>
-              <th>FULL NAME</th>
-              <th>EMAIL</th>
-              <th>PHONE</th>
-              <th>ADDRESS</th>
+              <th style="width:20%;">FULL NAME</th>
+              <th style="width:20%;">EMAIL</th>
+              <th style="width:20%;">PHONE</th>
+              <th style="width:20%;">ADDRESS</th>
               <th>Action</th>
             </tr>
           </thead>
@@ -63,14 +63,14 @@ $members = getMembers($conn);
                     data-phone-number="<?=htmlspecialchars($member['phone_number'])?>"
                     data-address="<?=htmlspecialchars($member['address'])?>">
 
-                    <img src="../assets/images/Edit.png" alt="Edit">
+                    <img src="../assets/images/Edit.svg" alt="Edit">
                   </button> 
                   
                   <form action="../actions/member/MemberDelete.php" method="POST">
                     <input type="hidden" name="id" value="<?=$member['id']?>">
 
                     <button type="submit">
-                      <img src="../assets/images/Delete.png" alt="delete">
+                      <img src="../assets/images/Delete.svg" alt="delete">
                     </button>
                   </form>
                 </td>
@@ -81,7 +81,7 @@ $members = getMembers($conn);
 
          <div class="entries"> 
           <div> 
-            <p id="member-entries">Showing 1 to 10 of 1 entries</p>
+            <p id="member-entries">Showing 0 to 0 of 0 entries</p>
           </div>
 
           <nav>
@@ -121,8 +121,8 @@ $members = getMembers($conn);
       </div>
       
       <div> 
-        <button type="submit">Save Member</button>
-        <button type="button" id="close-add-member-modal-btn"> cancel</button>
+        <button class="modal-submit" type="submit">Save Member</button>
+        <button class="modal-cancel" type="button" id="close-add-member-modal-btn"> cancel</button>
       </div>
     </form>
   </dialog>
@@ -154,8 +154,8 @@ $members = getMembers($conn);
       </div>
       
       <div> 
-        <button type="submit">Save Member</button>
-        <button type="button" id="close-edit-member-modal-btn">cancel</button>
+        <button class="modal-submit" type="submit">Save Member</button>
+        <button class="modal-cancel" type="button" id="close-edit-member-modal-btn">cancel</button>
       </div>
     </form>
   </dialog>

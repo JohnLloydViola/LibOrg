@@ -30,7 +30,7 @@ $books = getBooks($conn);
       <div class="table-section"> 
         <div class="filter"> 
           <div>
-            <input id="transaction-search" name="transaction" type="text" placeholder="Search by Member Name...">
+            <input id="transaction-search" name="transaction" type="text" placeholder="Search By Member...">
           </div>
 
           <div> 
@@ -46,8 +46,8 @@ $books = getBooks($conn);
           <thead>
             <tr>
               <th>ID</th>
-              <th>MEMBER</th>
-              <th>BOOK</th>
+              <th style="width: 35%;">MEMBER</th>
+              <th style="width: 35%;">BOOK</th>
               <th>STATUS</th>
               <th>ACTION</th>
             </tr>
@@ -59,17 +59,21 @@ $books = getBooks($conn);
                 <td><?='T'. str_pad((string) $transaction['id'], 3, "0", STR_PAD_LEFT)?></td>
                 <td><?= htmlspecialchars($transaction['full_name'])?></td>
                 <td><?= htmlspecialchars($transaction['title'])?></td>
-                <td><?=htmlspecialchars($transaction['status'])?></td>
+                <td>
+                  <span class="<?=htmlspecialchars($transaction['status']) === "borrowed" ? "borrowed": "returned"?> status"> 
+                    <?=htmlspecialchars($transaction['status'])?>
+                  </span>
+                </td>
                 <td>
                   <form action="../actions/transaction/TransactionReturn.php" method="POST"> 
                     <input type="hidden" name="id" value="<?=$transaction['id']?>">
-                    <button type="submit">Return Book</button> 
+                    <button class="return-book" type="submit">Return Book</button> 
                   </form>
                   
                   <form action="../actions/transaction/TransactionDelete.php" method="POST">
                     <input type="hidden" name="id" value="<?=$transaction['id']?>">
 
-                    <button type="submit">
+                    <button class="delete-book" type="submit">
                       <img src="../assets/images/Delete.png" alt="delete">
                     </button>
                   </form>
@@ -81,7 +85,7 @@ $books = getBooks($conn);
 
          <div class="entries"> 
           <div> 
-            <p id="transaction-entries">Showing 1 to 10 of 1 entries</p>
+            <p id="transaction-entries">Showing 0 to 0 of 0 entries</p>
           </div>
 
           <nav>

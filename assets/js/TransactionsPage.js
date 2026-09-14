@@ -104,18 +104,22 @@ function renderTransactions(transactions) {
         <td>T${String(transaction.id).padStart(3, '0')}</td>
         <td>${transaction.full_name}</td>
         <td>${transaction.title}</td>
-        <td>${transaction.status}</td>
+        <td>
+          <span class="${transaction.status === 'borrowed' ? 'borrowed' : 'returned'} status">
+            ${transaction.status}
+          </span>
+        </td>
         <td>
           <form action="../actions/transaction/TransactionReturn.php" method="POST">
             <input type="hidden" name="id" value="${transaction.id}">
-            <button type="submit">Return Book</button>
+            <button class="return-book" type="submit">Return Book</button>
           </form>
 
           <form action="../actions/transaction/TransactionDelete.php" method="POST">
             <input type="hidden" name="id" value="${transaction.id}">
 
-            <button type="submit">
-              <img src="../assets/images/Delete.png" alt="delete">
+            <button class="delete-book" type="submit">
+              <img src="../assets/images/Delete.svg" alt="delete">
             </button>
           </form>
         </td>
