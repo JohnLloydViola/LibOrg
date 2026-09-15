@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 require_once __DIR__ . "/../../config/Database.php";
 
+session_start();
+
 if($_SERVER["REQUEST_METHOD"] !== "POST") {
   header("Location: ../../pages/TransactionsPage.php");
   exit;
@@ -70,4 +72,6 @@ function transactionDelete(
   $stmt->execute([
     ":id" => $id
   ]);
+
+  $_SESSION["transactionDeleteSuccess"] = 'Transaction with ID: ' . $id . ' Has Been Deleted';
 }

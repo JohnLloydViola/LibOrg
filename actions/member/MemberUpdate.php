@@ -19,11 +19,14 @@ $phone_number = trim($_POST["phone_number"] ?? "");
 $address = trim($_POST["address"] ?? "");
 
 if (!validateMember($full_name, $email, $phone_number, $address)) {
+  $_SESSION["editMemberUnsuccessful"] = 'ID: ' . $id . ' Edit Failed';
+
   header("Location: ../../pages/MembersPage.php");
   exit();
 }
 
 updateMember($conn, $id, $full_name, $email, $phone_number, $address);
+
 header("Location: ../../pages/MembersPage.php");
 exit;
 
@@ -49,6 +52,8 @@ function updateMember(
     ":address" => $address,
     ":id" => $id
   ]);
+
+  $_SESSION["editMemberSuccessful"] = 'ID: ' . $id . ' Edited Successfully';
 }
 
 function validateMember(

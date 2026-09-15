@@ -7,6 +7,6 @@ class ItemNotAvailableException extends \Exception
 {
   public function __construct()
   {
-    parent::__construct('Item not available for borrowing.');
+    parent::__construct('Not Available For Borrowing');
   }
 }

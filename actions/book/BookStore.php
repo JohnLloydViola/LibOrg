@@ -22,6 +22,8 @@ $quantity = trim($_POST['quantity'] ?? '');
 
 if (!validateBook($title, $author, $category, $publication_year, $quantity)) {
   //since midterm phase palang, redirection muna. automatic i close kasi yung modal pag ka redirect since refresh yun.
+  $_SESSION["bookUnsuccessful"] = "Failed To Add Book";
+
   header('Location: ../../pages/BooksPage.php');
   exit;
 }
@@ -37,8 +39,6 @@ addBook(
   $publication_year,
   $quantity
 );
-
-$_SESSION["bookSuccess"] = 'Book "' . $title . '" Added Successfully.';
 
 header('Location: ../../pages/BooksPage.php');
 exit();
@@ -67,6 +67,8 @@ function addBook(
     ':quantity' => $quantity,
     ':available_quantity' => $availableQuantity
   ]);
+
+  $_SESSION["bookSuccess"] = 'Book "' . $title . '" Added Successfully.';
 }
 
 function validateBook(
@@ -95,6 +97,10 @@ function validateBook(
     $_SESSION["bookErrors"]["publication_year"] = "Publication Year is Required";
   }elseif ((int) $publication_year <= 0) {
     $_SESSION["bookErrors"]["publication_year"] = "Invalid Year";
+  } elseif ((int) $publication_year < 1000) {
+    $_SESSION["bookErrors"]["publication_year"] = "Invalid Year";
+  } elseif ((int) $publication_year > (int) date("Y")) {
+    $_SESSION["bookErrors"]["publication_year"] = "Publication Year Cannot Be In The Future";
   }
 
   if ($quantity === "") {

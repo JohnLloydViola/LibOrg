@@ -4,16 +4,33 @@ declare(strict_types=1);
 require_once __DIR__ . "/../../vendor/autoload.php";
 require_once __DIR__ . "/../../config/Database.php";
 
+session_start();
+
 if($_SERVER["REQUEST_METHOD"] !== "POST") {
   header("Location: ../../pages/TransactionsPage.php");
   exit;
 }
 
+unset($_SESSION["transactionErrors"]);
+
 $member_id = (int) ($_POST["member_id"] ?? "");
 $book_id = (int) ($_POST["book_id"] ?? "");
 
-$memberData = getMember($conn, $member_id);
+if ($member_id <= 0) {
+  $_SESSION["transactionErrors"]["memberSelect"] = "Member Is Required";
+  $_SESSION["transactionUnsuccessful"] = "Failed To Borrow Book";
 
+  header("Location: ../../pages/TransactionsPage.php");
+  exit;
+} elseif ($book_id <= 0) {
+  $_SESSION["transactionErrors"]["bookSelect"] = "Book Is Required";
+  $_SESSION["transactionUnsuccessful"] = "Failed To Borrow Book";
+
+  header("Location: ../../pages/TransactionsPage.php");
+  exit;
+}
+
+$memberData = getMember($conn, $member_id);
 
 //Dito ako guamit ng src class na member
 $member = new App\Member(
@@ -36,7 +53,15 @@ $book = new App\Book(
   $bookData["available_quantity"],
 );
 
-$book->borrow();
+//Hulihin yung exception na ItemNotAvailable
+try {
+  $book->borrow();
+} catch (App\ItemNotAvailableException $e) {
+  $_SESSION["transactionNotAvailable"] = '"' . $book->getTitle() . '" ' . $e->getMessage();
+
+  header("Location: ../../pages/TransactionsPage.php");
+  exit;
+}
 
 $transaction = new App\Transaction(
   $member,
@@ -111,6 +136,9 @@ function addTransaction(
   int $book_id
 ): void
 {
+  $memberName = getMemberName($conn, $member_id);
+  $bookName = getBookName($conn, $book_id);
+
   $sql = "INSERT INTO transactions (member_id, book_id, status)
           VALUES (:member_id, :book_id, :status)";
 
@@ -121,5 +149,47 @@ function addTransaction(
     ":book_id" => $book_id,
     ":status" => "borrowed"
   ]);
+
+  $_SESSION["transactionSuccess"] = '"' . $memberName . '" Borrowed "' . $bookName . '" Successfully';
+}
+
+function getMemberName(
+  PDO $conn,
+  int $id
+): string
+{
+  $sql = "SELECT *
+          FROM members
+          WHERE id = :id";
+
+  $stmt = $conn->prepare($sql);
+
+  $stmt->execute([
+    ":id" => $id
+  ]);
+
+  $member = $stmt->fetch();
+
+  return $member["full_name"];
+}
+
+function getBookName(
+  PDO $conn,
+  int $id
+): string
+{
+  $sql = "SELECT *
+          FROM books
+          WHERE id = :id";
+
+  $stmt = $conn->prepare($sql);
+
+  $stmt->execute([
+    ":id" => $id
+  ]);
+
+  $book = $stmt->fetch();
+
+  return $book["title"];
 }
 

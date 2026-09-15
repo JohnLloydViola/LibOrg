@@ -20,8 +20,9 @@ $publication_year = trim($_POST['publication_year'] ?? '');
 $quantity = trim($_POST['quantity'] ?? '');
 
 if (!validateBook($title, $author, $category, $publication_year, $quantity)) {
+  $_SESSION["bookEditUnsuccessful"] = 'ID: ' . $id . ' Edit Failed';
+
   header("Location: ../../pages/BooksPage.php");
-  
   exit;
 }
 
@@ -97,6 +98,8 @@ function updateBook(
     ':available_quantity' => $availableQuantity,
     ':id' => $id
   ]);
+
+  $_SESSION["bookEditSuccessful"] = 'ID: ' . $id . ' Edited Successfully';
 }
 
 function validateBook(
@@ -113,7 +116,7 @@ function validateBook(
 
   if ($author === "") {
     $_SESSION["editBookErrors"]["author"] = "Author is Required";
-  }elseif (!preg_match('/[a-zA-Z]/', $author)) {
+  } elseif (!preg_match('/[a-zA-Z]/', $author)) {
     $_SESSION["editBookErrors"]["author"] = "Author must contain letters";
   } 
 
@@ -123,13 +126,17 @@ function validateBook(
 
   if ($publication_year === "") {
     $_SESSION["editBookErrors"]["publication_year"] = "Publication Year is Required";
-  }elseif ((int) $publication_year <= 0) {
+  } elseif ((int) $publication_year <= 0) {
     $_SESSION["editBookErrors"]["publication_year"] = "Invalid Year";
+  } elseif ((int) $publication_year < 1000) {
+    $_SESSION["editBookErrors"]["publication_year"] = "Invalid Year";
+  } elseif ((int) $publication_year > (int) date("Y")) {
+    $_SESSION["editBookErrors"]["publication_year"] = "Publication Year Cannot Be In The Future";
   }
 
   if ($quantity === "") {
     $_SESSION["editBookErrors"]["quantity"] = "Quantity is Required";
-  }elseif ((int) $quantity <= 0) {
+  } elseif ((int) $quantity <= 0) {
     $_SESSION["editBookErrors"]["quantity"] = "Invalid Quantity";
   }
 

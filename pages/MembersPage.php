@@ -8,9 +8,15 @@ require_once __DIR__ . "/../actions/member/MemberRead.php";
 
 $memberErrors = $_SESSION["memberErrors"] ?? [];
 
-$editMemberErrors = $_SESSION["editMemberErrors"] ?? [];
-
 $memberSuccess = $_SESSION["memberSuccess"] ??  "";
+
+$memberUnsuccessful = $_SESSION["memberUnsuccessful"] ?? "";
+
+$editMemberSuccessful = $_SESSION["editMemberSuccessful"] ?? "";
+
+$editMemberUnsuccessful = $_SESSION["editMemberUnsuccessful"] ?? "";
+
+$editMemberErrors = $_SESSION["editMemberErrors"] ?? [];
 
 $memberDeleteSuccess = $_SESSION["memberDeleteSuccess"] ?? "";
 
@@ -37,6 +43,24 @@ $members = getMembers($conn);
         <p class="success"><?=htmlspecialchars($memberSuccess)?></p>
 
         <?php unset($_SESSION['memberSuccess']) ?>
+      <?php endif; ?>
+
+      <?php if ($memberUnsuccessful !== ""): ?>
+        <p class="deleted"><?=htmlspecialchars($memberUnsuccessful)?></p>
+
+        <?php unset($_SESSION['memberUnsuccessful']) ?>
+      <?php endif; ?>
+
+      <?php if ($editMemberSuccessful !== ""): ?>
+        <p class="success"><?=htmlspecialchars($editMemberSuccessful)?></p>
+
+        <?php unset($_SESSION['editMemberSuccessful']) ?>
+      <?php endif; ?>
+
+      <?php if ($editMemberUnsuccessful !== ""): ?>
+        <p class="deleted"><?=htmlspecialchars($editMemberUnsuccessful)?></p>
+
+        <?php unset($_SESSION['editMemberUnsuccessful']) ?>
       <?php endif; ?>
 
       <?php if ($memberDeleteSuccess !== ""): ?>

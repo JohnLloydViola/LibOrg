@@ -12,6 +12,12 @@ $editBookErrors = $_SESSION["editBookErrors"] ?? [];
 
 $bookSuccess = $_SESSION["bookSuccess"] ?? "";
 
+$bookUnsuccessful = $_SESSION["bookUnsuccessful"] ?? "";
+
+$bookEditSuccessful = $_SESSION["bookEditSuccessful"] ?? "";
+
+$bookEditUnsuccessful = $_SESSION["bookEditUnsuccessful"] ?? "";
+
 $bookDeleteSuccess = $_SESSION["bookDeleteSuccess"] ?? "";
 
 $bookDeleteUnsuccessfull = $_SESSION["bookDeleteUnsuccessfull"] ?? "";
@@ -36,6 +42,24 @@ $books = getBooks($conn);
         <p class="success"><?=htmlspecialchars($bookSuccess)?></p>
 
         <?php unset($_SESSION['bookSuccess']) ?>
+      <?php endif; ?>
+
+      <?php if ($bookUnsuccessful !== ""): ?>
+        <p class="deleted"><?=htmlspecialchars($bookUnsuccessful)?></p>
+
+        <?php unset($_SESSION['bookUnsuccessful']) ?>
+      <?php endif; ?>
+
+      <?php if ($bookEditSuccessful !== ""): ?>
+        <p class="success"><?=htmlspecialchars($bookEditSuccessful)?></p>
+
+        <?php unset($_SESSION['bookEditSuccessful']) ?>
+      <?php endif; ?>
+
+      <?php if ($bookEditUnsuccessful !== ""): ?>
+        <p class="deleted"><?=htmlspecialchars($bookEditUnsuccessful)?></p>
+
+        <?php unset($_SESSION['bookEditUnsuccessful']) ?>
       <?php endif; ?>
 
       <?php if ($bookDeleteSuccess !== ""): ?>

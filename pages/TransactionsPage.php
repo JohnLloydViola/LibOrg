@@ -1,8 +1,24 @@
 <?php 
 declare(strict_types=1);
 
+session_start();
+
 require_once __DIR__ . "/../actions/transaction/TransactionRead.php";
 require_once __DIR__ . "/../config/Database.php";
+
+$transactionErrors = $_SESSION["transactionErrors"] ?? [];
+
+$transactionSuccess = $_SESSION["transactionSuccess"] ?? "";
+
+$transactionUnsuccessful = $_SESSION["transactionUnsuccessful"] ?? "";
+
+$transactionReturnSuccess = $_SESSION["transactionReturnSuccess"] ?? "";
+
+$transactionReturnWarning = $_SESSION["transactionReturnWarning"] ?? "";
+
+$transactionDeleteSuccess = $_SESSION["transactionDeleteSuccess"] ?? "";
+
+$transactionNotAvailable = $_SESSION["transactionNotAvailable"] ?? "";
 
 $transactions = getTransactions($conn);
 $members = getMembers($conn);
@@ -22,6 +38,42 @@ $books = getBooks($conn);
     <?php include "../includes/SideBar.php"?>
 
     <div class="content">
+      <?php if ($transactionSuccess !== ""): ?>
+        <p class="success"><?=htmlspecialchars($transactionSuccess)?></p>
+
+        <?php unset($_SESSION['transactionSuccess']) ?>
+      <?php endif; ?>
+
+      <?php if ($transactionReturnSuccess !== ""): ?>
+        <p class="success"><?=htmlspecialchars($transactionReturnSuccess)?></p>
+
+        <?php unset($_SESSION['transactionReturnSuccess']) ?>
+      <?php endif; ?>
+
+      <?php if ($transactionReturnWarning !== ""): ?>
+        <p class="deleted"><?=htmlspecialchars($transactionReturnWarning)?></p>
+
+        <?php unset($_SESSION['transactionReturnWarning']) ?>
+      <?php endif; ?>
+
+      <?php if ($transactionDeleteSuccess !== ""): ?>
+        <p class="deleted"><?=htmlspecialchars($transactionDeleteSuccess)?></p>
+
+        <?php unset($_SESSION['transactionDeleteSuccess']) ?>
+      <?php endif; ?>
+
+      <?php if ($transactionNotAvailable !== ""): ?>
+        <p class="deleted"><?=htmlspecialchars($transactionNotAvailable)?></p>
+
+        <?php unset($_SESSION['transactionNotAvailable']) ?>
+      <?php endif; ?>
+
+      <?php if ($transactionUnsuccessful !== ""): ?>
+        <p class="deleted"><?=htmlspecialchars($transactionUnsuccessful)?></p>
+
+        <?php unset($_SESSION['transactionUnsuccessful']) ?>
+      <?php endif; ?>
+
       <div class="borrow-book">
         <h1>Transactions</h1>
         <button id="open-borrow-book-modal-btn">Borrow Book</button>
@@ -106,7 +158,13 @@ $books = getBooks($conn);
 
     <form class="modal-information" action="../actions/transaction/TransactionStore.php" method="POST">
       <div class="modal-input"> 
-        <label for="member_id">Select Member</label><br>
+        <div class="input-label"> 
+          <label for="member_id">Select Member</label>
+
+          <?php if (isset($transactionErrors["memberSelect"])): ?>
+            <p class="error">*<?= htmlspecialchars($transactionErrors["memberSelect"]) ?></p>
+          <?php endif; ?>
+        </div>
 
         <select name="member_id" class="modal-category">
           <option disabled selected value="">Select Member</option> 
@@ -119,8 +177,14 @@ $books = getBooks($conn);
       </div>
       
       <div class="modal-input"> 
-        <label for="book_id">Select Book</label><br>
-        
+        <div class="input-label"> 
+          <label for="book_id">Select Book</label>
+
+          <?php if (isset($transactionErrors["bookSelect"])): ?>
+            <p class="error">*<?= htmlspecialchars($transactionErrors["bookSelect"]) ?></p>
+          <?php endif; ?>
+        </div>
+       
         <select name="book_id" class="modal-category"> 
           <option disabled selected value= "">Select Book</option> 
           <?php foreach ($books as $book): ?>
@@ -133,8 +197,8 @@ $books = getBooks($conn);
       </div>
 
       <div> 
-        <button type="submit">Borrow</button>
-        <button type="button" id="close-borrow-book-modal-btn">cancel</button>
+        <button class="modal-submit" type="submit">Borrow</button>
+        <button class="modal-cancel" type="button" id="close-borrow-book-modal-btn">cancel</button>
       </div>
     </form>
   </dialog>

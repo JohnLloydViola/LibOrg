@@ -19,6 +19,8 @@ $phone_number = trim($_POST["phone_number"] ?? "");
 $address = trim($_POST["address"] ?? "");
 
 if (!validateMember($full_name, $email, $phone_number, $address)) {
+  $_SESSION["memberUnsuccessful"] = "Failed To Add Member";
+
   header("Location: ../../pages/MembersPage.php");
   exit;
 }
