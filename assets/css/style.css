@@ -10,12 +10,16 @@
   --hover-purple: #351D82;
   --page-background: #FAFAFE;
   --border-thin: 1px solid rgba(211, 210, 210, 0.4);
-  --border-radius: 0.4rem;
   --green-main: #39854f;
   --green-bg: #d0e9d6;
   --orange-main: #fa6142;
   --orange-bg: #fcdac7;
+  --error-color: #dc2626;
+  --error-bg: #eebbbb;
+  --sucess-color: #16a34a;
+  --sucess-bg: #dcfce7;
   --box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+  --border-radius: 0.4rem;
 }
 
 body {
@@ -269,8 +273,36 @@ dialog {
   text-align:left;
 }
 
-/*table section styling */
+.modal-input > div {
+  margin: 0;
+}
 
+.input-label {
+  display: flex;
+}
+
+.error {
+  color: var(--error-color);
+  font-size: 0.7rem;
+}
+
+.success {
+  color: var(--sucess-color);
+  font-size: 0.8rem;
+  background-color: var(--sucess-bg);
+  padding: 0.5rem 1rem;
+  border-radius: var(--border-radius);
+}
+
+.deleted {
+  color: var(--error-color);
+  font-size: 0.8rem;
+  background-color:var(--error-bg);
+  padding: 0.5rem 1rem;
+  border-radius: var(--border-radius);
+}
+
+/*table section styling */
 .table-section {
   background-color: white;
   padding: 1.5rem;
