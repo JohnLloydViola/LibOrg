@@ -12,9 +12,9 @@ $editBookErrors = $_SESSION["editBookErrors"] ?? [];
 
 $bookSuccess = $_SESSION["bookSuccess"] ?? "";
 
-$bookDeleteUnsuccessfull = $_SESSION["bookDeleteUnsuccessfull"] ?? "";
-
 $bookDeleteSuccess = $_SESSION["bookDeleteSuccess"] ?? "";
+
+$bookDeleteUnsuccessfull = $_SESSION["bookDeleteUnsuccessfull"] ?? "";
 
 $books = getBooks($conn); 
 ?>

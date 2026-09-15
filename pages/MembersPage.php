@@ -1,8 +1,20 @@
 <?php 
 declare(strict_types=1);
 
+session_start();
+
 require_once __DIR__ . "/../config/Database.php";
 require_once __DIR__ . "/../actions/member/MemberRead.php";
+
+$memberErrors = $_SESSION["memberErrors"] ?? [];
+
+$editMemberErrors = $_SESSION["editMemberErrors"] ?? [];
+
+$memberSuccess = $_SESSION["memberSuccess"] ??  "";
+
+$memberDeleteSuccess = $_SESSION["memberDeleteSuccess"] ?? "";
+
+$memberDeleteUnsuccessful = $_SESSION["memberDeleteUnsuccessful"] ?? "";
 
 $members = getMembers($conn);
 ?>
@@ -21,6 +33,24 @@ $members = getMembers($conn);
     <?php include "../includes/SideBar.php" ?>
 
     <div class="content">
+      <?php if ($memberSuccess !== ""): ?>
+        <p class="success"><?=htmlspecialchars($memberSuccess)?></p>
+
+        <?php unset($_SESSION['memberSuccess']) ?>
+      <?php endif; ?>
+
+      <?php if ($memberDeleteSuccess !== ""): ?>
+        <p class="deleted"><?=htmlspecialchars($memberDeleteSuccess)?></p>
+
+        <?php unset($_SESSION['memberDeleteSuccess']) ?>
+      <?php endif; ?>
+
+      <?php if ($memberDeleteUnsuccessful !== ""): ?>
+        <p class="deleted"><?=htmlspecialchars($memberDeleteUnsuccessful)?></p>
+
+        <?php unset($_SESSION['memberDeleteUnsuccessful']) ?>
+      <?php endif; ?>
+
       <div class="add-member">
         <h1>Members</h1>
         <button id="open-add-member-modal-btn">+ Add Member</button>
@@ -99,25 +129,54 @@ $members = getMembers($conn);
    <!--Modal dialogue para sa add member button-->
   <dialog id="add-member-modal"> 
     <div><h1>ADD MEMBER</h1> </div>
+    
     <form class="modal-information" action="../actions/member/MemberStore.php" method="POST">
       <div class="modal-input"> 
-        <label for="full_name">Full Name</label><br>
-        <input type="text" id="full_name" name="full_name" placeholder="Enter Member Name"><br>
+        <div class="input-label"> 
+          <label for="full_name">Full Name</label><br>
+
+          <?php if (isset($memberErrors["full_name"])): ?>
+            <p class="error">*<?= htmlspecialchars($memberErrors["full_name"]) ?></p>
+          <?php endif; ?>
+        </div>
+
+        <input type="text" id="full_name" name="full_name" placeholder="Enter Member Name" required><br>
       </div>
       
       <div class="modal-input"> 
-        <label for="email">Email</label><br>
-        <input type="email" id="email" name="email" placeholder="Enter Email"><br>
+        <div class="input-label"> 
+          <label for="email">Email</label><br>
+
+          <?php if (isset($memberErrors["email"])): ?>
+            <p class="error">*<?= htmlspecialchars($memberErrors["email"]) ?></p>
+          <?php endif; ?>
+        </div>
+        
+        <input type="email" id="email" name="email" placeholder="Enter Email" required><br>
       </div>
   
       <div class="modal-input"> 
-        <label for="phone_number">Phone Number</label><br>
-        <input type="text" id="phone_number" name="phone_number" placeholder="Enter Phone Number"><br>
+        <div class="input-label"> 
+          <label for="phone_number">Phone Number</label><br>
+
+          <?php if (isset($memberErrors["phone_number"])): ?>
+            <p class="error">*<?= htmlspecialchars($memberErrors["phone_number"]) ?></p>
+          <?php endif; ?>
+        </div>
+       
+        <input type="text" id="phone_number" name="phone_number" placeholder="eg. 09xxxxxxxxx" maxlength="11" required><br>
       </div>
     
       <div class="modal-input"> 
-        <label for="address">Address</label><br>
-        <input type="text" id="address" name="address" placeholder="Enter Address"><br>
+        <div class="input-label"> 
+          <label for="address">Address</label><br>
+
+          <?php if (isset($memberErrors["address"])): ?>
+            <p class="error">*<?= htmlspecialchars($memberErrors["address"]) ?></p>
+          <?php endif; ?>
+        </div>
+ 
+        <input type="text" id="address" name="address" placeholder="Enter Address" required><br>
       </div>
       
       <div> 
@@ -134,23 +193,51 @@ $members = getMembers($conn);
       <input type="hidden" id="edit-id" name="id">
 
       <div class="modal-input"> 
-        <label for="edit-full-name">Full Name</label><br>
-        <input type="text" id="edit-full-name" name="full_name" placeholder="Enter Full Name"><br>
+        <div class="input-label"> 
+          <label for="edit-full-name">Full Name</label><br>
+
+          <?php if (isset($editMemberErrors["full_name"])): ?>
+            <p class="error">*<?= htmlspecialchars($editMemberErrors["full_name"]) ?></p>
+          <?php endif; ?>
+        </div>
+       
+        <input type="text" id="edit-full-name" name="full_name" placeholder="Enter Full Name" required><br>
       </div>
       
       <div class="modal-input"> 
-        <label for="edit-email">Email</label><br>
-        <input type="email" id="edit-email" name="email" placeholder="Enter Email"><br>
+        <div class="input-label"> 
+          <label for="edit-email">Email</label><br>
+
+          <?php if (isset($editMemberErrors["email"])): ?>
+            <p class="error">*<?= htmlspecialchars($editMemberErrors["email"]) ?></p>
+          <?php endif; ?>
+        </div>
+
+        <input type="email" id="edit-email" name="email" placeholder="Enter Email" required><br>
       </div>
   
       <div class="modal-input"> 
-        <label for="edit-phone-number">Phone Number</label><br>
-        <input type="text" id="edit-phone-number" name="phone_number" placeholder="Enter Phone Number"><br>
+        <div class="input-label"> 
+          <label for="edit-phone-number">Phone Number</label><br>
+
+          <?php if (isset($editMemberErrors["phone_number"])): ?>
+            <p class="error">*<?= htmlspecialchars($editMemberErrors["phone_number"]) ?></p>
+          <?php endif; ?>
+        </div>
+        
+        <input type="text" id="edit-phone-number" name="phone_number" placeholder="Enter Phone Number" maxlength="11" required><br>
       </div>
     
       <div class="modal-input"> 
-        <label for="edit-address">Address</label><br>
-        <input type="text" id="edit-address" name="address" placeholder="Enter Address"><br>
+        <div class="input-label"> 
+          <label for="edit-address">Address</label><br>
+
+          <?php if (isset($editMemberErrors["address"])): ?>
+            <p class="error">*<?= htmlspecialchars($editMemberErrors["address"]) ?></p>
+          <?php endif; ?>
+        </div>
+       
+        <input type="text" id="edit-address" name="address" placeholder="Enter Address" required><br>
       </div>
       
       <div> 
