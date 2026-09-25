@@ -15,12 +15,13 @@ $transactions = getRecentTransactions($conn);
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
+  <title>Dashboard</title>
   <link rel="stylesheet" href="../assets/css/style.css">
+  <link rel="icon" href="../assets/images/Dashboard.svg">
 </head>
 <body>
   <div class="dashboard-container"> 
-    <?php include "../includes/SideBar.php" ?>
+    <?php include "../includes/Sidebar.php" ?>
 
     <div class="content"> 
        <div class="dashboard-title">

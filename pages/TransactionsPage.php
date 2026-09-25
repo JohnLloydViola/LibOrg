@@ -30,12 +30,13 @@ $books = getBooks($conn);
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
+  <title>Transactions</title>
   <link rel="stylesheet" href="../assets/css/style.css">
+  <link rel="icon" href="../assets/images/Transactions.svg">
 </head>
 <body>
   <div class="transaction-container"> 
-    <?php include "../includes/SideBar.php"?>
+    <?php include "../includes/Sidebar.php"?>
 
     <div class="content">
       <?php if ($transactionSuccess !== ""): ?>
@@ -126,7 +127,7 @@ $books = getBooks($conn);
                     <input type="hidden" name="id" value="<?=$transaction['id']?>">
 
                     <button class="delete-book" type="submit">
-                      <img src="../assets/images/Delete.png" alt="delete">
+                      <img src="../assets/images/Delete.svg" alt="delete">
                     </button>
                   </form>
                 </td>

@@ -31,12 +31,13 @@ $members = getMembers($conn);
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
+  <title>Members</title>
   <link rel="stylesheet" href="../assets/css/style.css">
+  <link rel="icon" href="../assets/images/Members.svg">
 </head>
 <body>
   <div class="member-container"> 
-    <?php include "../includes/SideBar.php" ?>
+    <?php include "../includes/Sidebar.php" ?>
 
     <div class="content">
       <?php if ($memberSuccess !== ""): ?>
