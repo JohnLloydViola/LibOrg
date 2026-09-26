@@ -1,10 +1,10 @@
 <?php
 declare(strict_types=1);
 
-$host = 'sql111.infinityfree.com';
-$dbname = 'if0_42995694_liborg_db';
-$user = 'if0_42995694';
-$pass = 'zeVkd6hR0Gfr';
+$host = 'localhost';
+$dbname = 'liborg_db';
+$user = 'root';
+$pass = '';
 
 try {
     $conn = new PDO(
