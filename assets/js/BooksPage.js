@@ -99,7 +99,14 @@ async function loadBooks() {
   const sort = bookSort.value;
 
   try {
-    const response = await axios.get(`../actions/book/BookSearch.php?title=${encodeURIComponent(search)}&category=${encodeURIComponent(category)}&sort=${encodeURIComponent(sort)}&page=${encodeURIComponent(currentPage)}`);
+    const response = await axios.get("../api/books/index.php", {
+      params: {
+        title: search,
+        category: category,
+        sort: sort,
+        page: currentPage
+      }
+    });
 
     const totalBooks = response.data.total;
 
