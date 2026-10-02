@@ -143,14 +143,11 @@ $bookDeleteUnsuccessfull = $_SESSION["bookDeleteUnsuccessfull"] ?? "";
   <dialog id="add-book-modal"> 
     <div><h1>ADD BOOK</h1> </div>
 
-    <form class="modal-information" action="../actions/book/BookStore.php" method="POST">
+    <form class="modal-information" id="add-book-form">
       <div class="modal-input"> 
         <div class="input-label"> 
           <label for="title">Title</label><br>
-
-          <?php if (isset($bookErrors["title"])): ?>
-            <p class="error">*<?= htmlspecialchars($bookErrors["title"]) ?></p>
-          <?php endif; ?>
+          <p class="error" id="title-error"></p>
         </div>
 
         <input type="text" id="title" name="title" placeholder="Enter Book title" required><br>
@@ -159,10 +156,7 @@ $bookDeleteUnsuccessfull = $_SESSION["bookDeleteUnsuccessfull"] ?? "";
       <div class="modal-input"> 
         <div class="input-label"> 
            <label for="author">Author</label><br>
-
-            <?php if (isset($bookErrors["author"])): ?>
-              <p class="error">*<?= htmlspecialchars($bookErrors["author"]) ?></p>
-            <?php endif; ?>
+           <p class="error" id="author-error"></p>
         </div>
 
         <input type="text" id="author" name="author" placeholder="Enter author" required><br>
@@ -171,10 +165,7 @@ $bookDeleteUnsuccessfull = $_SESSION["bookDeleteUnsuccessfull"] ?? "";
       <div class="modal-input">
         <div class="input-label"> 
           <label for="category">Category</label><br>
-
-          <?php if (isset($bookErrors["category"])): ?>
-            <p class="error">*<?= htmlspecialchars($bookErrors["category"]) ?></p>
-          <?php endif; ?>
+          <p class="error" id="category-error"></p>
         </div> 
 
           <select id="category" name="category" class="modal-category" required> 
@@ -192,10 +183,7 @@ $bookDeleteUnsuccessfull = $_SESSION["bookDeleteUnsuccessfull"] ?? "";
       <div class="modal-input"> 
         <div class="input-label"> 
           <label for="year">Year</label><br>
-            
-          <?php if (isset($bookErrors["publication_year"])): ?>
-            <p class="error">*<?= htmlspecialchars($bookErrors["publication_year"]) ?></p>
-          <?php endif; ?>
+          <p class="error" id="year-error"></p>
         </div>
     
         <input type="number" id="year" name="publication_year" placeholder="Enter publication year" min="1" required><br>
@@ -204,10 +192,7 @@ $bookDeleteUnsuccessfull = $_SESSION["bookDeleteUnsuccessfull"] ?? "";
       <div class="modal-input"> 
         <div class="input-label"> 
           <label for="quantity">Quantity</label><br>
-
-          <?php if (isset($bookErrors["quantity"])): ?>
-            <p class="error">*<?= htmlspecialchars($bookErrors["quantity"]) ?></p>
-          <?php endif; ?>
+          <p class="error" id="quantity-error"></p>
         </div>
         
         <input type="number" id="quantity" name="quantity" placeholder="Enter quantity" min="1" required><br>

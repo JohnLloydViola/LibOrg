@@ -11,6 +11,67 @@ closeAddBookModalBtn.addEventListener('click', () => {
   addBookModal.close();
 });
 
+// Add book gamit axios
+const addBookForm = document.getElementById('add-book-form');
+
+addBookForm.addEventListener('submit', async (event) => {
+  event.preventDefault();
+
+  // Clear previous validation errors
+  const errorFields = ['title', 'author', 'category', 'year', 'quantity'];
+
+  errorFields.forEach((field) => {
+    document.getElementById(`${field}-error`).textContent = '';
+  });
+
+  const bookData = {
+    title: document.getElementById('title').value,
+    author: document.getElementById('author').value,
+    category: document.getElementById('category').value,
+    publication_year: document.getElementById('year').value,
+    quantity: document.getElementById('quantity').value
+  };
+
+  try {
+    const response = await axios.post('../api/books/create.php', bookData);
+
+    alert(response.data.message);
+    addBookModal.close();
+    addBookForm.reset();
+    currentPage = 1;
+    loadBooks();
+  } catch (error) {
+    console.error(
+      'Error adding book:',
+      error.response ? error.response.data : error
+    );
+
+    if (error.response && error.response.status === 422) {
+      const errors = error.response.data.errors;
+
+      // Display validation errors
+      Object.keys(errors).forEach((field) => {
+        const errorId = field === 'publication_year'
+          ? 'year-error'
+          : `${field}-error`;
+
+        const errorElement = document.getElementById(errorId);
+
+        if (errorElement) {
+          errorElement.textContent = `*${errors[field]}`;
+        }
+      });
+    } else {
+      const errorMessage =
+        error.response &&
+        error.response.data &&
+        error.response.data.message;
+
+      alert(errorMessage || 'Failed to add book. Please try again.');
+    }
+  }
+});
+
 // Edit book modal
 const editBookModal = document.getElementById('edit-book-modal');
 const closeEditBookModalBtn = document.getElementById('close-edit-book-modal-btn');
