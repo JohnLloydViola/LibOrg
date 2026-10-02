@@ -3,18 +3,6 @@ declare(strict_types=1);
 
 session_start();
 
-$bookErrors = $_SESSION["bookErrors"] ?? [];
-
-$editBookErrors = $_SESSION["editBookErrors"] ?? [];
-
-$bookSuccess = $_SESSION["bookSuccess"] ?? "";
-
-$bookUnsuccessful = $_SESSION["bookUnsuccessful"] ?? "";
-
-$bookEditSuccessful = $_SESSION["bookEditSuccessful"] ?? "";
-
-$bookEditUnsuccessful = $_SESSION["bookEditUnsuccessful"] ?? "";
-
 $bookDeleteSuccess = $_SESSION["bookDeleteSuccess"] ?? "";
 
 $bookDeleteUnsuccessfull = $_SESSION["bookDeleteUnsuccessfull"] ?? "";
@@ -34,30 +22,10 @@ $bookDeleteUnsuccessfull = $_SESSION["bookDeleteUnsuccessfull"] ?? "";
     <?php include "../includes/Sidebar.php"; ?>
 
     <div class="content">
-      <?php if ($bookSuccess !== ""): ?>
-        <p class="success"><?=htmlspecialchars($bookSuccess)?></p>
+      <p class="success" id="book-success" hidden></p>
 
-        <?php unset($_SESSION['bookSuccess']) ?>
-      <?php endif; ?>
-
-      <?php if ($bookUnsuccessful !== ""): ?>
-        <p class="deleted"><?=htmlspecialchars($bookUnsuccessful)?></p>
-
-        <?php unset($_SESSION['bookUnsuccessful']) ?>
-      <?php endif; ?>
-
-      <?php if ($bookEditSuccessful !== ""): ?>
-        <p class="success"><?=htmlspecialchars($bookEditSuccessful)?></p>
-
-        <?php unset($_SESSION['bookEditSuccessful']) ?>
-      <?php endif; ?>
-
-      <?php if ($bookEditUnsuccessful !== ""): ?>
-        <p class="deleted"><?=htmlspecialchars($bookEditUnsuccessful)?></p>
-
-        <?php unset($_SESSION['bookEditUnsuccessful']) ?>
-      <?php endif; ?>
-
+      <p class="deleted" id="book-failed" hidden></p>
+      
       <?php if ($bookDeleteSuccess !== ""): ?>
         <p class="deleted"><?=htmlspecialchars($bookDeleteSuccess)?></p>
 
@@ -206,85 +174,75 @@ $bookDeleteUnsuccessfull = $_SESSION["bookDeleteUnsuccessfull"] ?? "";
   </dialog>
 
   <!--Modal dialogue para sa Edit book button-->
-  <dialog id="edit-book-modal"> 
-    <div><h1>EDIT BOOK</h1> </div>
-    <form class="modal-information" action="../actions/book/BookUpdate.php" method="POST">
-      <input type="hidden" id="edit-id" name="id">
+<dialog id="edit-book-modal"> 
+  <div><h1>EDIT BOOK</h1> </div>
+  <form class="modal-information" id="edit-book-form">
+    <input type="hidden" id="edit-id" name="id">
 
-      <div class="modal-input"> 
-        <div class="input-label"> 
-          <label for="edit-title">Title</label><br>
+    <div class="modal-input"> 
+      <div class="input-label"> 
+        <label for="edit-title">Title</label><br>
 
-          <?php if (isset($editBookErrors["title"])): ?>
-            <p class="error">*<?= htmlspecialchars($editBookErrors["title"]) ?></p>
-          <?php endif; ?>
-        </div>
-  
-        <input type="text" id="edit-title" name="title" placeholder="Enter Book title" required><br>
-      </div>
-      
-      <div class="modal-input"> 
-        <div class="input-label"> 
-          <label for="edit-author">Author</label><br>
-
-          <?php if (isset($editBookErrors["author"])): ?>
-            <p class="error">*<?= htmlspecialchars($editBookErrors["author"]) ?></p>
-          <?php endif; ?>
-        </div>
-       
-        <input type="text" id="edit-author" name="author" placeholder="Enter author" required><br>
-      </div>
-  
-      <div class="modal-input"> 
-        <div class="input-label"> 
-          <label for="edit-category">Category</label><br>
-
-          <?php if (isset($editBookErrors["category"])): ?>
-            <p class="error">*<?= htmlspecialchars($editBookErrors["category"]) ?></p>
-          <?php endif; ?>
-        </div>
-    
-        <select id="edit-category" name="category" class="modal-category" required> 
-          <option value="science">Science</option>
-          <option value="technology">Technology</option>
-          <option value="fantasy">Fantasy</option>
-          <option value="romance">Romance</option>
-          <option value="education">Education</option>
-          <option value="business">Business</option>
-          <option value="health">Health</option>
-        </select><br>
+        <p class="error" id="edit-title-error"></p>
       </div>
 
-      <div class="modal-input"> 
-        <div class="input-label"> 
-          <label for="edit-year">Year</label><br>
+      <input type="text" id="edit-title" name="title" placeholder="Enter Book title" required><br>
+    </div>
 
-          <?php if (isset($editBookErrors["publication_year"])): ?>
-            <p class="error">*<?= htmlspecialchars($editBookErrors["publication_year"]) ?></p>
-          <?php endif; ?>
-        </div>
-        
-        <input type="number" id="edit-year" name="publication_year" placeholder="Enter publication year" min="1" required><br>
-      </div>
-    
-      <div class="modal-input"> 
-        <div class="input-label"> 
-          <label for="edit-quantity">Quantity</label><br>
+    <div class="modal-input"> 
+      <div class="input-label"> 
+        <label for="edit-author">Author</label><br>
 
-          <?php if (isset($editBookErrors["quantity"])): ?>
-            <p class="error">*<?= htmlspecialchars($editBookErrors["quantity"]) ?></p>
-          <?php endif; ?>
-        </div>
-      
-        <input type="number" id="edit-quantity" name="quantity" placeholder="Enter quantity" min="1" required><br>
+        <p class="error" id="edit-author-error"></p>
       </div>
-      
-      <div> 
-        <button class="modal-submit" type="submit">Save Book</button>
-        <button class="modal-cancel" type="button" id="close-edit-book-modal-btn"> cancel</button>
+
+      <input type="text" id="edit-author" name="author" placeholder="Enter author" required><br>
+    </div>
+
+    <div class="modal-input">
+      <div class="input-label"> 
+        <label for="edit-category">Category</label><br>
+
+        <p class="error" id="edit-category-error"></p>
       </div>
-    </form>
-  </dialog>
+
+      <select id="edit-category" name="category" class="modal-category" required> 
+        <option value="science">Science</option>
+        <option value="technology">Technology</option>
+        <option value="fantasy">Fantasy</option>
+        <option value="romance">Romance</option>
+        <option value="education">Education</option>
+        <option value="business">Business</option>
+        <option value="health">Health</option>
+      </select><br>
+    </div>
+
+    <div class="modal-input"> 
+      <div class="input-label"> 
+        <label for="edit-year">Year</label><br>
+
+        <p class="error" id="edit-year-error"></p>
+      </div>
+
+      <input type="number" id="edit-year" name="publication_year" placeholder="Enter publication year" min="1" required><br>
+    </div>
+
+    <div class="modal-input"> 
+      <div class="input-label"> 
+        <label for="edit-quantity">Quantity</label><br>
+
+        <p class="error" id="edit-quantity-error"></p>
+      </div>
+
+      <input type="number" id="edit-quantity" name="quantity" placeholder="Enter quantity" min="1" required><br>
+    </div>
+
+    <div> 
+      <button class="modal-submit" type="submit">Save Book</button>
+      <button class="modal-cancel" type="button" id="close-edit-book-modal-btn"> cancel</button>
+    </div>
+  </form>
+</dialog>
 
   <script src="../assets/js/axios.min.js"></script>
   <script src="../assets/js/BooksPage.js"></script>

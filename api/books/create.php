@@ -12,12 +12,8 @@ if ($_SERVER["REQUEST_METHOD"] !== "POST") {
   exit;
 }
 
-//Get submitted data from JSON or form data
+//Get submitted data from form darta
 $data = json_decode(file_get_contents("php://input"), true);
-
-if (!is_array($data)) {
-  $data = $_POST;
-}
 
 $title = trim((string) ($data["title"] ?? ""));
 $author = trim((string) ($data["author"] ?? ""));
@@ -31,7 +27,7 @@ $errors = validateBook($title, $author, $category, $publication_year, $quantity)
 if (!empty($errors)) {
   http_response_code(422);
   echo json_encode([
-    "message" => "Validation failed",
+    "message" => "Failed To Add Book",
     "errors" => $errors
   ]);
   exit;
@@ -41,7 +37,7 @@ $publication_year = (int) $publication_year;
 $quantity = (int) $quantity;
 
 try {
-  $bookId = addBook(
+  addBook(
     $conn,
     $title,
     $author,
@@ -52,12 +48,11 @@ try {
 
   http_response_code(201);
   echo json_encode([
-    "message" => "Book added successfully",
-    "id" => $bookId
+    "message" => 'Book "' . $title . '" Added Successfully.'
   ]);
 } catch (PDOException $error) {
   http_response_code(500);
-  echo json_encode(["message" => "Failed to add book"]);
+  echo json_encode(["message" => "Failed To Add Book"]);
 }
 
 function addBook(
@@ -67,7 +62,7 @@ function addBook(
   string $category,
   int $publication_year,
   int $quantity
-): int {
+): void {
   $availableQuantity = $quantity;
 
   $sql = "INSERT INTO books 
@@ -84,8 +79,6 @@ function addBook(
     ':quantity' => $quantity,
     ':available_quantity' => $availableQuantity
   ]);
-
-  return (int) $conn->lastInsertId();
 }
 
 function validateBook(
@@ -104,7 +97,7 @@ function validateBook(
 
   if ($author === "") {
     $errors["author"] = "Author is Required";
-  }elseif (!preg_match('/[a-zA-Z]/', $author)) {
+  } elseif (!preg_match('/[a-zA-Z]/', $author)) {
     $errors["author"] = "Author must contain letters";
   } 
 
@@ -114,7 +107,9 @@ function validateBook(
 
   if ($publication_year === "") {
     $errors["publication_year"] = "Publication Year is Required";
-  }elseif (!ctype_digit($publication_year) || (int) $publication_year < 1000) {
+  } elseif ((int) $publication_year <= 0) {
+    $errors["publication_year"] = "Invalid Year";
+  } elseif ((int) $publication_year < 1000) {
     $errors["publication_year"] = "Invalid Year";
   } elseif ((int) $publication_year > (int) date("Y")) {
     $errors["publication_year"] = "Publication Year Cannot Be In The Future";
@@ -122,7 +117,7 @@ function validateBook(
 
   if ($quantity === "") {
     $errors["quantity"] = "Quantity is Required";
-  }elseif (!ctype_digit($quantity) || (int) $quantity <= 0) {
+  } elseif ((int) $quantity <= 0) {
     $errors["quantity"] = "Invalid Quantity";
   }
 

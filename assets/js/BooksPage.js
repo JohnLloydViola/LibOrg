@@ -11,8 +11,12 @@ closeAddBookModalBtn.addEventListener('click', () => {
   addBookModal.close();
 });
 
+
 // Add book gamit axios
 const addBookForm = document.getElementById('add-book-form');
+
+const bookSuccess = document.getElementById('book-success');
+const bookFailed = document.getElementById('book-failed');
 
 addBookForm.addEventListener('submit', async (event) => {
   event.preventDefault();
@@ -24,6 +28,10 @@ addBookForm.addEventListener('submit', async (event) => {
     document.getElementById(`${field}-error`).textContent = '';
   });
 
+  // Clear previous success and error messages
+  bookSuccess.textContent = '';
+  bookSuccess.hidden = true;
+
   const bookData = {
     title: document.getElementById('title').value,
     author: document.getElementById('author').value,
@@ -33,19 +41,19 @@ addBookForm.addEventListener('submit', async (event) => {
   };
 
   try {
+    //pass yung object as post
     const response = await axios.post('../api/books/create.php', bookData);
 
-    alert(response.data.message);
+    // Display success message
+    bookSuccess.textContent = response.data.message;
+    bookSuccess.hidden = false;
+
     addBookModal.close();
     addBookForm.reset();
+    //Go back to page 1 after adding
     currentPage = 1;
     loadBooks();
   } catch (error) {
-    console.error(
-      'Error adding book:',
-      error.response ? error.response.data : error
-    );
-
     if (error.response && error.response.status === 422) {
       const errors = error.response.data.errors;
 
@@ -61,15 +69,8 @@ addBookForm.addEventListener('submit', async (event) => {
           errorElement.textContent = `*${errors[field]}`;
         }
       });
-    } else {
-      const errorMessage =
-        error.response &&
-        error.response.data &&
-        error.response.data.message;
-
-      alert(errorMessage || 'Failed to add book. Please try again.');
     }
-  }
+  } 
 });
 
 // Edit book modal
@@ -82,6 +83,68 @@ const editAuthor = document.getElementById('edit-author');
 const editCategory = document.getElementById('edit-category');
 const editYear = document.getElementById('edit-year');
 const editQuantity = document.getElementById('edit-quantity');
+
+// Edit book form using axios
+const editBookForm = document.getElementById('edit-book-form');
+
+editBookForm.addEventListener('submit', async (event) => {
+  event.preventDefault();
+
+  const errorFields = [
+  'edit-title-error',
+  'edit-author-error',
+  'edit-category-error',
+  'edit-year-error',
+  'edit-quantity-error'
+];
+
+errorFields.forEach((field) => {
+  document.getElementById(field).textContent = '';
+});
+
+  const bookData = {
+    id: editId.value,
+    title: editTitle.value,
+    author: editAuthor.value,
+    category: editCategory.value,
+    publication_year: editYear.value,
+    quantity: editQuantity.value
+  };
+
+  try {
+    const response = await axios.post('../api/books/update.php', bookData);
+
+    bookSuccess.textContent = response.data.message;
+    bookSuccess.hidden = false;
+
+    editBookModal.close();  
+    editBookForm.reset();
+
+    currentPage = 1;
+    loadBooks();
+  } catch (error) {
+    if (error.response && error.response.status === 422) {
+      const errors = error.response.data.errors;
+
+      document.getElementById('edit-title-error').textContent =
+        errors.title ? `*${errors.title}` : '';
+
+      document.getElementById('edit-author-error').textContent =
+        errors.author ? `*${errors.author}` : '';
+
+      document.getElementById('edit-category-error').textContent =
+        errors.category ? `*${errors.category}` : '';
+
+      document.getElementById('edit-year-error').textContent =
+        errors.publication_year ? `*${errors.publication_year}` : '';
+
+      document.getElementById('edit-quantity-error').textContent =
+        errors.quantity ? `*${errors.quantity}` : '';
+    } else {
+      console.error('Failed to update book:', error);
+    }
+  }
+});
 
 // Event listener sa books table body
 const booksTableBody = document.getElementById('books-table-body');
@@ -99,6 +162,18 @@ booksTableBody.addEventListener('click', (event) => {
   editCategory.value = button.dataset.category;
   editYear.value = button.dataset.publication_year;
   editQuantity.value = button.dataset.quantity;
+
+  const errorFields = [
+    'edit-title-error',
+    'edit-author-error',
+    'edit-category-error',
+    'edit-year-error',
+    'edit-quantity-error'
+  ];
+
+  errorFields.forEach((field) => {
+    document.getElementById(field).textContent = '';
+  });
 
   editBookModal.showModal();
 });
