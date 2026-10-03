@@ -89,17 +89,80 @@ pagination.addEventListener('click', (event) => {
   }
 });
 
+// Add member gamit axios
+const addMemberForm = document.getElementById('add-member-form');
+
 const memberSuccess = document.getElementById('member-success');
 const memberFailed = document.getElementById('member-failed');
 
-async function loadMembers() {
-  const search = memberSearch.value;
+addMemberForm.addEventListener('submit', async (event) => {
+  event.preventDefault();
 
-  memberSuccess.textContent = "";
+  // Clear previous validation errors
+  const errorFields = ['full_name', 'email', 'phone_number', 'address'];
+
+  errorFields.forEach((field) => {
+    document.getElementById(`${field}-error`).textContent = '';
+  });
+
+  // Clear previous success and error messages
+  memberSuccess.textContent = '';
   memberSuccess.hidden = true;
 
-  memberFailed.textContent = "";
+  memberFailed.textContent = '';
   memberFailed.hidden = true;
+
+  const memberData = {
+    full_name: document.getElementById('full_name').value,
+    email: document.getElementById('email').value,
+    phone_number: document.getElementById('phone_number').value,
+    address: document.getElementById('address').value
+  };
+
+  try {
+    // pass yung object as post
+    const response = await axios.post('../api/members/create.php', memberData);
+
+    // Display success message
+    memberSuccess.textContent = response.data.message;
+    memberSuccess.hidden = false;
+
+    addMemberModal.close();
+    addMemberForm.reset();
+
+    // Go back to page 1 after adding
+    currentPage = 1;
+    loadMembers();
+
+    // Hide errors pag successful add ng member
+    memberFailed.textContent = '';
+    memberFailed.hidden = true;
+  } catch (error) {
+    if (error.response && error.response.status === 422) {
+      const errors = error.response.data.errors;
+
+      // Display validation errors
+      Object.keys(errors).forEach((field) => {
+        const errorElement = document.getElementById(`${field}-error`);
+
+        if (errorElement) {
+          errorElement.textContent = `*${errors[field]}`;
+        }
+      });
+
+      memberFailed.textContent =
+        error.response.data.message || 'Validation errors occurred.';
+      memberFailed.hidden = false;
+    } else {
+      memberFailed.textContent = error.response?.data?.message || 'An error occurred while adding the member.';
+      memberFailed.hidden = false;
+      console.error('Failed to add member:', error);
+    }
+  }
+});
+
+async function loadMembers() {
+  const search = memberSearch.value;
 
   try {
     const response = await axios.get('../api/members/index.php', {

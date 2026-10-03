@@ -77,7 +77,7 @@ addBookForm.addEventListener('submit', async (event) => {
       bookFailed.textContent = error.response.data.message || "Validation errors occurred.";
       bookFailed.hidden = false;
     } else {
-      bookFailed.textContent = error.response.data.message || "An error occurred while adding the book.";
+      bookFailed.textContent = error.response?.data?.message || "An error occurred while adding the book.";
       bookFailed.hidden = false;
       console.error('Failed to add book:', error);
     }
@@ -212,8 +212,8 @@ booksTableBody.addEventListener('click', async (event) => {
   try {
     const response = await axios.post('../api/books/delete.php', { id: id });
 
-    bookSuccess.textContent = response.data.message;
-    bookSuccess.hidden = false;
+    bookFailed.textContent = response.data.message;
+    bookFailed.hidden = false;
 
     loadBooks();
   } catch (error) {
