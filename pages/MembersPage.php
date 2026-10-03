@@ -150,63 +150,52 @@ $memberDeleteUnsuccessful = $_SESSION["memberDeleteUnsuccessful"] ?? "";
   </form>
   </dialog>
 
-  <!--Modal dialogue para sa Edit Member button-->
-  <dialog id="edit-member-modal"> 
-    <div><h1>EDIT MEMBER</h1> </div>
-    <form class="modal-information" action="../actions/member/MemberUpdate.php" method="POST">
+<!-- Modal dialogue para sa Edit Member button -->
+  <dialog id="edit-member-modal">
+    <div><h1>EDIT MEMBER</h1></div>
+
+    <form class="modal-information" id="edit-member-form">
       <input type="hidden" id="edit-id" name="id">
 
-      <div class="modal-input"> 
-        <div class="input-label"> 
+      <div class="modal-input">
+        <div class="input-label">
           <label for="edit-full-name">Full Name</label><br>
-
-          <?php if (isset($editMemberErrors["full_name"])): ?>
-            <p class="error">*<?= htmlspecialchars($editMemberErrors["full_name"]) ?></p>
-          <?php endif; ?>
+          <p class="error" id="edit-full_name-error"></p>
         </div>
-       
+
         <input type="text" id="edit-full-name" name="full_name" placeholder="Enter Full Name" required><br>
       </div>
-      
-      <div class="modal-input"> 
-        <div class="input-label"> 
-          <label for="edit-email">Email</label><br>
 
-          <?php if (isset($editMemberErrors["email"])): ?>
-            <p class="error">*<?= htmlspecialchars($editMemberErrors["email"]) ?></p>
-          <?php endif; ?>
+      <div class="modal-input">
+        <div class="input-label">
+          <label for="edit-email">Email</label><br>
+          <p class="error" id="edit-email-error"></p>
         </div>
 
         <input type="email" id="edit-email" name="email" placeholder="Enter Email" required><br>
       </div>
-  
-      <div class="modal-input"> 
-        <div class="input-label"> 
-          <label for="edit-phone-number">Phone Number</label><br>
 
-          <?php if (isset($editMemberErrors["phone_number"])): ?>
-            <p class="error">*<?= htmlspecialchars($editMemberErrors["phone_number"]) ?></p>
-          <?php endif; ?>
+      <div class="modal-input">
+        <div class="input-label">
+          <label for="edit-phone-number">Phone Number</label><br>
+          <p class="error" id="edit-phone_number-error"></p>
         </div>
-        
+
         <input type="text" id="edit-phone-number" name="phone_number" placeholder="Enter Phone Number" maxlength="11" required><br>
       </div>
-    
-      <div class="modal-input"> 
-        <div class="input-label"> 
-          <label for="edit-address">Address</label><br>
 
-          <?php if (isset($editMemberErrors["address"])): ?>
-            <p class="error">*<?= htmlspecialchars($editMemberErrors["address"]) ?></p>
-          <?php endif; ?>
+      <div class="modal-input">
+        <div class="input-label">
+          <label for="edit-address">Address</label><br>
+          <p class="error" id="edit-address-error"></p>
         </div>
-       
+
         <input type="text" id="edit-address" name="address" placeholder="Enter Address" required><br>
       </div>
-      
-      <div> 
+
+      <div>
         <button class="modal-submit" type="submit">Save Member</button>
-        <button class="modal-cancel" type="button" id="close-edit-member-modal-btn">cancel</button>
+        <button class="modal-cancel" type="button" id="close-edit-member-modal-btn">Cancel</button>
       </div>
     </form>
   </dialog>

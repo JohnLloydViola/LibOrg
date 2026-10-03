@@ -21,6 +21,83 @@ const editEmail = document.getElementById('edit-email');
 const editPhoneNumber = document.getElementById('edit-phone-number');
 const editAddress = document.getElementById('edit-address');
 
+closeEditMemberModalBtn.addEventListener('click', () => {
+  editMemberModal.close();
+});
+
+// Edit Member form using axios
+const editMemberForm = document.getElementById('edit-member-form');
+
+editMemberForm.addEventListener('submit', async (event) => {
+  event.preventDefault();
+
+  const errorFields = [
+    'edit-full_name-error',
+    'edit-email-error',
+    'edit-phone_number-error',
+    'edit-address-error'
+  ];
+
+  errorFields.forEach((field) => {
+    document.getElementById(field).textContent = '';
+  });
+
+  const memberData = {
+    id: editId.value,
+    full_name: editFullName.value,
+    email: editEmail.value,
+    phone_number: editPhoneNumber.value,
+    address: editAddress.value
+  };
+
+  memberSuccess.textContent = '';
+  memberSuccess.hidden = true;
+
+  try {
+    const response = await axios.post('../api/members/update.php', memberData);
+
+    memberSuccess.textContent = response.data.message;
+    memberSuccess.hidden = false;
+
+    editMemberModal.close();
+    editMemberForm.reset();
+
+    currentPage = 1;
+    loadMembers();
+
+    // Hide errors after successful edit
+    memberFailed.textContent = '';
+    memberFailed.hidden = true;
+
+  } catch (error) {
+    if (error.response && error.response.status === 422) {
+      const errors = error.response.data.errors;
+
+      document.getElementById('edit-full_name-error').textContent =
+        errors.full_name ? `*${errors.full_name}` : '';
+
+      document.getElementById('edit-email-error').textContent =
+        errors.email ? `*${errors.email}` : '';
+
+      document.getElementById('edit-phone_number-error').textContent =
+        errors.phone_number ? `*${errors.phone_number}` : '';
+
+      document.getElementById('edit-address-error').textContent =
+        errors.address ? `*${errors.address}` : '';
+
+      memberFailed.textContent = error.response.data.message || 'Validation errors occurred.';
+      memberFailed.hidden = false;
+
+    } else {
+      memberFailed.textContent =
+        error.response?.data?.message || 'An error occurred while updating the member.';
+
+      memberFailed.hidden = false;
+      console.error('Failed to update member:', error);
+    }
+  }
+});
+
 //event listner sa memebrs body table
 const membersTable = document.getElementById('member-table-body');
 
@@ -37,11 +114,21 @@ membersTable.addEventListener('click', (event) => {
   editPhoneNumber.value = button.dataset.phoneNumber;
   editAddress.value = button.dataset.address;
 
-  editMemberModal.showModal();
-});
+  const errorFields = [
+    'edit-full_name-error',
+    'edit-email-error',
+    'edit-phone_number-error',
+    'edit-address-error'
+  ];
 
-closeEditMemberModalBtn.addEventListener('click', () => {
-  editMemberModal.close();
+  errorFields.forEach((field) => {
+    document.getElementById(field).textContent = '';
+  });
+
+  memberFailed.textContent = '';
+  memberFailed.hidden = true;
+
+  editMemberModal.showModal();
 });
 
 // Loading members according to members search input
