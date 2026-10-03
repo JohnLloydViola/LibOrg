@@ -11,6 +11,10 @@ closeAddMemberModalBtn.addEventListener('click', ()=>{
   addMemberModal.close();
 });
 
+// Banner messages
+const memberSuccess = document.getElementById('member-success');
+const memberFailed = document.getElementById('member-failed');
+
 // Para sa edit member modal behavior
 const editMemberModal = document.getElementById('edit-member-modal');
 const closeEditMemberModalBtn = document.getElementById('close-edit-member-modal-btn');
@@ -50,9 +54,12 @@ editMemberForm.addEventListener('submit', async (event) => {
     address: editAddress.value
   };
 
+  // clear banners
   memberSuccess.textContent = '';
   memberSuccess.hidden = true;
 
+  memberFailed.textContent = '';
+  memberFailed.hidden = true;
   try {
     const response = await axios.post('../api/members/update.php', memberData);
 
@@ -98,89 +105,8 @@ editMemberForm.addEventListener('submit', async (event) => {
   }
 });
 
-//event listner sa memebrs body table
-const membersTable = document.getElementById('member-table-body');
-
-membersTable.addEventListener('click', (event) => {
-  const button = event.target.closest('.open-edit-member-modal-btn');
-
-  if (!button) {
-    return;
-  }
-
-  editId.value = button.dataset.id;
-  editFullName.value = button.dataset.fullName;
-  editEmail.value = button.dataset.email;
-  editPhoneNumber.value = button.dataset.phoneNumber;
-  editAddress.value = button.dataset.address;
-
-  const errorFields = [
-    'edit-full_name-error',
-    'edit-email-error',
-    'edit-phone_number-error',
-    'edit-address-error'
-  ];
-
-  errorFields.forEach((field) => {
-    document.getElementById(field).textContent = '';
-  });
-
-  memberFailed.textContent = '';
-  memberFailed.hidden = true;
-
-  editMemberModal.showModal();
-});
-
-// Loading members according to members search input
-const memberSearch = document.getElementById('member-search');
-
-// UI pagination logic
-const memberEntries = document.getElementById('member-entries');
-let currentPage = 1;
-let totalPages;
-
-const pagination = document.getElementById('member-pagination');
-
-pagination.addEventListener('click', (event) => {
-  event.preventDefault();
-
-  const button = event.target.closest('a');
-
-  if (!button) {
-    return;
-  }
-
-  if (button.classList.contains('prev')) {
-    if (currentPage > 1) {
-      currentPage--;
-      loadMembers();
-    }
-
-    return;
-  }
-
-  if (button.classList.contains('next')) {
-    if (currentPage < totalPages) {
-      currentPage++;
-      loadMembers();
-    }
-
-    return;
-  }
-
-  const page = Number(button.textContent);
-
-  if (page >= 1 && page <= totalPages) {
-    currentPage = page;
-    loadMembers();
-  }
-});
-
 // Add member gamit axios
 const addMemberForm = document.getElementById('add-member-form');
-
-const memberSuccess = document.getElementById('member-success');
-const memberFailed = document.getElementById('member-failed');
 
 addMemberForm.addEventListener('submit', async (event) => {
   event.preventDefault();
@@ -248,6 +174,115 @@ addMemberForm.addEventListener('submit', async (event) => {
   }
 });
 
+// Event listener sa members table body
+const membersTable = document.getElementById('member-table-body');
+
+membersTable.addEventListener('click', async (event) => {
+  // Edit button
+  const editButton = event.target.closest('.open-edit-member-modal-btn');
+
+  if (editButton) {
+    editId.value = editButton.dataset.id;
+    editFullName.value = editButton.dataset.fullName;
+    editEmail.value = editButton.dataset.email;
+    editPhoneNumber.value = editButton.dataset.phoneNumber;
+    editAddress.value = editButton.dataset.address;
+
+    const errorFields = [
+      'edit-full_name-error',
+      'edit-email-error',
+      'edit-phone_number-error',
+      'edit-address-error'
+    ];
+
+    errorFields.forEach((field) => {
+      document.getElementById(field).textContent = '';
+    });
+
+    memberFailed.textContent = '';
+    memberFailed.hidden = true;
+
+    editMemberModal.showModal();
+    return;
+  }
+
+  // Delete button pag click ng delete kada row and API call
+  const deleteButton = event.target.closest('.delete-member-btn');
+
+  if (!deleteButton) {
+    return;
+  }
+
+  const id = deleteButton.dataset.id;
+
+  try {
+    const response = await axios.post('../api/members/delete.php', { id: id });
+
+    memberSuccess.textContent = response.data.message;
+    memberSuccess.hidden = false;
+
+    memberFailed.textContent = '';
+    memberFailed.hidden = true;
+
+    currentPage = 1;
+    loadMembers();
+  } catch (error) {
+    memberSuccess.textContent = '';
+    memberSuccess.hidden = true;
+
+    memberFailed.textContent = error.response?.data?.message || 'An error occurred while deleting the member.';
+    memberFailed.hidden = false;
+
+    console.error('Failed to delete member:', error);
+  }
+});
+
+// Loading members according to members search input
+const memberSearch = document.getElementById('member-search');
+
+// UI pagination logic
+const memberEntries = document.getElementById('member-entries');
+let currentPage = 1;
+let totalPages;
+
+const pagination = document.getElementById('member-pagination');
+
+pagination.addEventListener('click', (event) => {
+  event.preventDefault();
+
+  const button = event.target.closest('a');
+
+  if (!button) {
+    return;
+  }
+
+  if (button.classList.contains('prev')) {
+    if (currentPage > 1) {
+      currentPage--;
+      loadMembers();
+    }
+
+    return;
+  }
+
+  if (button.classList.contains('next')) {
+    if (currentPage < totalPages) {
+      currentPage++;
+      loadMembers();
+    }
+
+    return;
+  }
+
+  const page = Number(button.textContent);
+
+  if (page >= 1 && page <= totalPages) {
+    currentPage = page;
+    loadMembers();
+  }
+});
+
+
 async function loadMembers() {
   const search = memberSearch.value;
 
@@ -310,13 +345,12 @@ function renderMembers(members) {
             <img src="../assets/images/Edit.svg" alt="Edit">
           </button>
 
-          <form action="../actions/member/MemberDelete.php" method="POST">
-            <input type="hidden" name="id" value="${member.id}">
-
-            <button type="submit">
-              <img src="../assets/images/Delete.svg" alt="delete">
-            </button>
-          </form>
+          <button
+            type="button"
+            class="delete-member-btn"
+            data-id="${member.id}">
+            <img src="../assets/images/Delete.svg" alt="Delete">
+          </button>
         </td>
       </tr>
     `;

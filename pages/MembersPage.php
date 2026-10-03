@@ -1,19 +1,3 @@
-<?php 
-declare(strict_types=1);
-
-session_start();
-
-$editMemberSuccessful = $_SESSION["editMemberSuccessful"] ?? "";
-
-$editMemberUnsuccessful = $_SESSION["editMemberUnsuccessful"] ?? "";
-
-$editMemberErrors = $_SESSION["editMemberErrors"] ?? [];
-
-$memberDeleteSuccess = $_SESSION["memberDeleteSuccess"] ?? "";
-
-$memberDeleteUnsuccessful = $_SESSION["memberDeleteUnsuccessful"] ?? "";
-?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -32,33 +16,9 @@ $memberDeleteUnsuccessful = $_SESSION["memberDeleteUnsuccessful"] ?? "";
 
       <p class="deleted" id="member-failed" hidden></p>
 
-      <?php if ($editMemberSuccessful !== ""): ?>
-        <p class="success"><?=htmlspecialchars($editMemberSuccessful)?></p>
-
-        <?php unset($_SESSION['editMemberSuccessful']) ?>
-      <?php endif; ?>
-
-      <?php if ($editMemberUnsuccessful !== ""): ?>
-        <p class="deleted"><?=htmlspecialchars($editMemberUnsuccessful)?></p>
-
-        <?php unset($_SESSION['editMemberUnsuccessful']) ?>
-      <?php endif; ?>
-
-      <?php if ($memberDeleteSuccess !== ""): ?>
-        <p class="deleted"><?=htmlspecialchars($memberDeleteSuccess)?></p>
-
-        <?php unset($_SESSION['memberDeleteSuccess']) ?>
-      <?php endif; ?>
-
-      <?php if ($memberDeleteUnsuccessful !== ""): ?>
-        <p class="deleted"><?=htmlspecialchars($memberDeleteUnsuccessful)?></p>
-
-        <?php unset($_SESSION['memberDeleteUnsuccessful']) ?>
-      <?php endif; ?>
-
       <div class="add-member">
         <h1>Members</h1>
-        <button id="open-add-member-modal-btn">+ Add Member</button>
+        <button type="button" id="open-add-member-modal-btn">+ Add Member</button>
       </div> 
 
       <div class="table-section"> 
