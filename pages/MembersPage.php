@@ -3,9 +3,6 @@ declare(strict_types=1);
 
 session_start();
 
-require_once __DIR__ . "/../config/Database.php";
-require_once __DIR__ . "/../actions/member/MemberRead.php";
-
 $memberErrors = $_SESSION["memberErrors"] ?? [];
 
 $memberSuccess = $_SESSION["memberSuccess"] ??  "";
@@ -21,10 +18,7 @@ $editMemberErrors = $_SESSION["editMemberErrors"] ?? [];
 $memberDeleteSuccess = $_SESSION["memberDeleteSuccess"] ?? "";
 
 $memberDeleteUnsuccessful = $_SESSION["memberDeleteUnsuccessful"] ?? "";
-
-$members = getMembers($conn);
 ?>
-
 
 <!DOCTYPE html>
 <html lang="en">
@@ -40,6 +34,10 @@ $members = getMembers($conn);
     <?php include "../includes/Sidebar.php" ?>
 
     <div class="content">
+      <p class="success" id="member-success" hidden></p>
+
+      <p class="deleted" id="member-failed" hidden></p>
+
       <?php if ($memberSuccess !== ""): ?>
         <p class="success"><?=htmlspecialchars($memberSuccess)?></p>
 
@@ -101,36 +99,7 @@ $members = getMembers($conn);
           </thead>
 
           <tbody id="member-table-body">
-            <?php foreach($members as $member): ?> 
-              <tr>
-                <td><?='M'. str_pad((string) $member['id'], 3, "0", STR_PAD_LEFT)?></td>
-                <td><?= htmlspecialchars($member['full_name'])?></td>
-                <td><?= htmlspecialchars($member['email'])?></td>
-                <td><?=htmlspecialchars($member['phone_number'])?></td>
-                <td><?=htmlspecialchars($member['address'])?></td>
-                <td> 
-                  <button 
-                    type="button" 
-                    class="open-edit-member-modal-btn"
-                    data-id="<?=$member['id'] ?>"
-                    data-full-name="<?=htmlspecialchars($member['full_name'])?>"
-                    data-email="<?=htmlspecialchars($member['email'])?>"
-                    data-phone-number="<?=htmlspecialchars($member['phone_number'])?>"
-                    data-address="<?=htmlspecialchars($member['address'])?>">
-
-                    <img src="../assets/images/Edit.svg" alt="Edit">
-                  </button> 
-                  
-                  <form action="../actions/member/MemberDelete.php" method="POST">
-                    <input type="hidden" name="id" value="<?=$member['id']?>">
-
-                    <button type="submit">
-                      <img src="../assets/images/Delete.svg" alt="delete">
-                    </button>
-                  </form>
-                </td>
-            </tr>
-            <?php endforeach ?>
+            
           </tbody>
         </table>
 

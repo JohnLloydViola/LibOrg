@@ -89,13 +89,25 @@ pagination.addEventListener('click', (event) => {
   }
 });
 
+const memberSuccess = document.getElementById('member-success');
+const memberFailed = document.getElementById('member-failed');
+
 async function loadMembers() {
   const search = memberSearch.value;
 
+  memberSuccess.textContent = "";
+  memberSuccess.hidden = true;
+
+  memberFailed.textContent = "";
+  memberFailed.hidden = true;
+
   try {
-    const response = await axios.get(
-      `../actions/member/MemberSearch.php?name=${encodeURIComponent(search)}&page=${encodeURIComponent(currentPage)}`
-    );
+    const response = await axios.get('../api/members/index.php', {
+    params: {
+    name: search,
+    page: currentPage
+    }
+  });
 
     const totalMembers = response.data.total;
 
@@ -111,6 +123,9 @@ async function loadMembers() {
 
     renderMembers(response.data.members);
   } catch (error) {
+    memberFailed.textContent = error.response?.data?.message || 'An error occurred while fetching members.';
+    memberFailed.hidden = false;
+
     console.log('Errormember search');
   }
 }
