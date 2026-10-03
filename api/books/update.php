@@ -75,7 +75,7 @@ function updateBook(
   if (!$book) {
     http_response_code(404);
     echo json_encode([
-      "message" => "Edit Failed",
+      "message" => "Failed to Edit book",
       "errors" => [
         "id" => "Book not found"
       ]
@@ -90,7 +90,7 @@ function updateBook(
   if ($quantity < $borrowedQuantity) {
     http_response_code(422);
     echo json_encode([
-      "message" => "Edit Failed",
+      "message" => "Failed to Edit book",
       "errors" => [
         "quantity" => "New Quantity should not be lower than the borrowed quantity"
       ]

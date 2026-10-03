@@ -1,13 +1,3 @@
-<?php 
-declare(strict_types=1);
-
-session_start();
-
-$bookDeleteSuccess = $_SESSION["bookDeleteSuccess"] ?? "";
-
-$bookDeleteUnsuccessfull = $_SESSION["bookDeleteUnsuccessfull"] ?? "";
-?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -26,18 +16,6 @@ $bookDeleteUnsuccessfull = $_SESSION["bookDeleteUnsuccessfull"] ?? "";
 
       <p class="deleted" id="book-failed" hidden></p>
       
-      <?php if ($bookDeleteSuccess !== ""): ?>
-        <p class="deleted"><?=htmlspecialchars($bookDeleteSuccess)?></p>
-
-        <?php unset($_SESSION['bookDeleteSuccess']) ?>
-      <?php endif; ?>
-
-      <?php if ($bookDeleteUnsuccessfull !== ""): ?>
-        <p class="deleted"><?=htmlspecialchars($bookDeleteUnsuccessfull)?></p>
-
-        <?php unset($_SESSION['bookDeleteUnsuccessfull']) ?>
-      <?php endif; ?>
-
       <div class="add-book">
         <h1>Books</h1>
         <button id="open-add-book-modal-btn">+ Add Book</button>

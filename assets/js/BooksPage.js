@@ -53,6 +53,10 @@ addBookForm.addEventListener('submit', async (event) => {
     //Go back to page 1 after adding
     currentPage = 1;
     loadBooks();
+
+    // Hide error after successful add ng book
+    bookFailed.textContent = "";
+    bookFailed.hidden = true;
   } catch (error) {
     if (error.response && error.response.status === 422) {
       const errors = error.response.data.errors;
@@ -69,6 +73,13 @@ addBookForm.addEventListener('submit', async (event) => {
           errorElement.textContent = `*${errors[field]}`;
         }
       });
+
+      bookFailed.textContent = error.response.data.message || "Validation errors occurred.";
+      bookFailed.hidden = false;
+    } else {
+      bookFailed.textContent = error.response.data.message || "An error occurred while adding the book.";
+      bookFailed.hidden = false;
+      console.error('Failed to add book:', error);
     }
   } 
 });
@@ -91,12 +102,12 @@ editBookForm.addEventListener('submit', async (event) => {
   event.preventDefault();
 
   const errorFields = [
-  'edit-title-error',
-  'edit-author-error',
-  'edit-category-error',
-  'edit-year-error',
-  'edit-quantity-error'
-];
+    'edit-title-error',
+    'edit-author-error',
+    'edit-category-error',
+    'edit-year-error',
+    'edit-quantity-error'
+  ];
 
 errorFields.forEach((field) => {
   document.getElementById(field).textContent = '';
@@ -111,6 +122,9 @@ errorFields.forEach((field) => {
     quantity: editQuantity.value
   };
 
+  bookSuccess.textContent = "";
+  bookSuccess.hidden = true;
+
   try {
     const response = await axios.post('../api/books/update.php', bookData);
 
@@ -122,6 +136,10 @@ errorFields.forEach((field) => {
 
     currentPage = 1;
     loadBooks();
+
+    //Hide errors pag successful edit
+    bookFailed.textContent = "";
+    bookFailed.hidden = true;
   } catch (error) {
     if (error.response && error.response.status === 422) {
       const errors = error.response.data.errors;
@@ -140,7 +158,12 @@ errorFields.forEach((field) => {
 
       document.getElementById('edit-quantity-error').textContent =
         errors.quantity ? `*${errors.quantity}` : '';
+
+      bookFailed.textContent = error.response.data.message || "Validation errors occurred.";
+      bookFailed.hidden = false;
     } else {
+      bookFailed.textContent = error.response.data.message || "An error occurred while updating the book.";
+      bookFailed.hidden = false;
       console.error('Failed to update book:', error);
     }
   }
@@ -149,33 +172,56 @@ errorFields.forEach((field) => {
 // Event listener sa books table body
 const booksTableBody = document.getElementById('books-table-body');
 
-booksTableBody.addEventListener('click', (event) => {
-  const button = event.target.closest('.open-edit-book-modal-btn');
+booksTableBody.addEventListener('click', async (event) => {
+  // Edit button
+  const editButton = event.target.closest('.open-edit-book-modal-btn');
 
-  if (!button) {
+  if (editButton) {
+    editId.value = editButton.dataset.id;
+    editTitle.value = editButton.dataset.title;
+    editAuthor.value = editButton.dataset.author;
+    editCategory.value = editButton.dataset.category;
+    editYear.value = editButton.dataset.publication_year;
+    editQuantity.value = editButton.dataset.quantity;
+
+    const errorFields = [
+      'edit-title-error',
+      'edit-author-error',
+      'edit-category-error',
+      'edit-year-error',
+      'edit-quantity-error'
+    ];
+
+    errorFields.forEach((field) => {
+      document.getElementById(field).textContent = '';
+    });
+
+    editBookModal.showModal();
     return;
   }
 
-  editId.value = button.dataset.id;
-  editTitle.value = button.dataset.title;
-  editAuthor.value = button.dataset.author;
-  editCategory.value = button.dataset.category;
-  editYear.value = button.dataset.publication_year;
-  editQuantity.value = button.dataset.quantity;
+  // Delete button
+  const deleteButton = event.target.closest('.delete-book-btn');
 
-  const errorFields = [
-    'edit-title-error',
-    'edit-author-error',
-    'edit-category-error',
-    'edit-year-error',
-    'edit-quantity-error'
-  ];
+  if (!deleteButton) {
+    return;
+  }
 
-  errorFields.forEach((field) => {
-    document.getElementById(field).textContent = '';
-  });
+  const id = deleteButton.dataset.id;
 
-  editBookModal.showModal();
+  try {
+    const response = await axios.post('../api/books/delete.php', { id: id });
+
+    bookSuccess.textContent = response.data.message;
+    bookSuccess.hidden = false;
+
+    loadBooks();
+  } catch (error) {
+    bookFailed.textContent = error.response.data.message || 'An error occurred while deleting the book.';
+
+    bookFailed.hidden = false;
+    console.error('Failed to delete book:', error);
+  }
 });
 
 closeEditBookModalBtn.addEventListener('click', () => {
@@ -257,7 +303,9 @@ async function loadBooks() {
 
     renderBooks(response.data.books);
   } catch (error) {
-    console.log('Error loading books');
+    bookFailed.textContent = "An error occurred while loading the books.";
+    bookFailed.hidden = false;
+    console.error('Failed to load books:', error);
   }
 }
 
@@ -307,13 +355,12 @@ function renderBooks(books) {
             <img src="../assets/images/Edit.svg" alt="Edit">
           </button>
 
-          <form action="../actions/book/BookDelete.php" method="POST">
-            <input type="hidden" name="id" value="${book.id}">
-
-            <button type="submit">
-              <img src="../assets/images/Delete.svg" alt="delete">
-            </button>
-          </form>
+          <button
+            type="button"
+            class="delete-book-btn"
+            data-id="${book.id}">
+            <img src="../assets/images/Delete.svg" alt="delete">
+          </button>
         </td>
       </tr>
     `;
