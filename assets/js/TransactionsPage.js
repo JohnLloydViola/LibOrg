@@ -169,10 +169,9 @@ function renderTransactions(transactions) {
           </span>
         </td>
         <td>
-          <form action="../actions/transaction/TransactionReturn.php" method="POST">
-            <input type="hidden" name="id" value="${transaction.id}">
-            <button class="return-book" type="submit">Return Book</button>
-          </form>
+          <button class="return-book" type="button" data-id="${transaction.id}">
+            Return Book
+          </button>
 
           <form action="../actions/transaction/TransactionDelete.php" method="POST">
             <input type="hidden" name="id" value="${transaction.id}">
@@ -180,12 +179,40 @@ function renderTransactions(transactions) {
             <button class="delete-book" type="submit">
               <img src="../assets/images/Delete.svg" alt="delete">
             </button>
-          </form>
         </td>
       </tr>
     `;
   });
 }
+
+transactionsTable.addEventListener('click', async (event) => {
+  const returnButton = event.target.closest('.return-book');
+
+  if (!returnButton) {
+    return;
+  }
+
+  const id = returnButton.dataset.id;
+
+  try {
+    const response = await axios.post('../api/transactions/Return.php',{id});
+
+    // Display success message
+    transactionSucces.textContent = response.data.message;
+    transactionSucces.hidden = false;
+
+    // Refresh transaction options and table
+    loadTransactionOptions();
+    currentPage = 1;
+    loadTransactions();
+
+  } catch (error) {
+    transactionFailed.textContent = error.response?.data?.message || 'Failed to return book.';
+    transactionFailed.hidden = false;
+
+    console.error('Failed to return book:', error);
+  }
+});
 
 function renderPagination() {
   if (totalPages === 0) {
