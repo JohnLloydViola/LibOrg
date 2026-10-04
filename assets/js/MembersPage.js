@@ -97,7 +97,7 @@ editMemberForm.addEventListener('submit', async (event) => {
 
     } else {
       memberFailed.textContent =
-        error.response?.data?.message || 'An error occurred while updating the member.';
+      error.response?.data?.message || 'An error occurred while updating the member.';
 
       memberFailed.hidden = false;
       console.error('Failed to update member:', error);

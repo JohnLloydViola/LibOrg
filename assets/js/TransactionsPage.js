@@ -15,6 +15,15 @@ const transactionsTable = document.getElementById('transaction-table-body');
 const transactionSearch = document.getElementById('transaction-search');
 const transactionStatus = document.getElementById('transaction-status');
 
+
+// Select elements for member and book in the borrow book modal
+const memberSelect = document.getElementById('member_id');
+const bookSelect = document.getElementById('book_id');
+
+// Banner message
+const transactionSucces = document.getElementById('transaction-success');
+const transactionFailed = document.getElementById('transaction-failed');
+
 // UI pagination logic
 const transactionEntries = document.getElementById('transaction-entries');
 let currentPage = 1;
@@ -54,6 +63,56 @@ pagination.addEventListener('click', (event) => {
   if (page >= 1 && page <= totalPages) {
     currentPage = page;
     loadTransactions();
+  }
+});
+
+// Borrow book form
+const borrowBookForm = document.getElementById('borrow-book-form');
+
+// Error msg near the select input sa borrow book modal
+const memberError = document.getElementById('borrow-member-error');
+const bookError = document.getElementById('borrow-book-error');
+
+borrowBookForm.addEventListener('submit', async (event) => {
+  event.preventDefault();
+
+  // Caler yung previous messages sa banner
+  transactionSucces.textContent = '';
+  transactionSucces.hidden = true;
+
+  const transactionData = {
+    member_id: memberSelect.value,
+    book_id: bookSelect.value
+  };
+
+  try {
+    // Pass the object as POST data
+    const response = await axios.post('../api/transactions/Create.php', transactionData);
+
+    // Display success message
+    transactionSucces.textContent = response.data.message;
+    transactionSucces.hidden = false;
+
+    borrowBookModal.close();
+    borrowBookForm.reset();
+
+    // Reload transaction options and table
+    loadTransactionOptions();
+    currentPage = 1;
+    loadTransactions();
+
+    // Hide error after successful borrowing
+    transactionFailed.textContent = '';
+    transactionFailed.hidden = true;
+  } catch (error) {
+    if (error.response && error.response.status === 422) {
+      memberError.textContent = error.response.data.errors?.memberSelect || '';
+      bookError.textContent = error.response.data.errors?.bookSelect || '';
+    } else {
+      transactionFailed.textContent = error.response?.data?.message || 'Failed to borrow book.';
+      transactionFailed.hidden = false;
+      console.error('Failed to borrow book:', error);
+    }
   }
 });
 
@@ -170,4 +229,39 @@ function renderPagination() {
   `;
 }
 
+async function loadTransactionOptions() {
+  try {
+    const response = await axios.get(
+      '../api/transactions/TransactionOptions.php'
+    );
+
+    const { members, books } = response.data;
+
+
+    // Refresh everything so no duplicate sa old data.
+    memberSelect.innerHTML = '<option disabled selected value="">Select Member</option>';
+    bookSelect.innerHTML = '<option disabled selected value="">Select Book</option>';
+
+    members.forEach((member) => {
+      memberSelect.innerHTML += `
+        <option value="${member.id}">
+          ${member.full_name}
+        </option>
+      `;
+    });
+
+    books.forEach((book) => {
+      bookSelect.innerHTML += `
+        <option value="${book.id}" ${book.available_quantity <= 0 ? 'disabled' : ''}>
+          ${book.title} (Available: ${book.available_quantity})
+        </option>
+      `;
+    });
+  } catch (error) {
+    transactionFailed.textContent = error.response?.data?.message || 'An error occurred while loading transaction options.';
+    transactionFailed.hidden = false;
+  }
+}
+
+loadTransactionOptions();
 loadTransactions();

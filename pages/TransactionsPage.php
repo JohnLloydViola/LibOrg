@@ -39,6 +39,10 @@ $books = getBooks($conn);
     <?php include "../includes/Sidebar.php"?>
 
     <div class="content">
+      <p class="success" id="transaction-success" hidden></p>
+
+      <p class="deleted" id="transaction-failed" hidden></p>
+
       <?php if ($transactionSuccess !== ""): ?>
         <p class="success"><?=htmlspecialchars($transactionSuccess)?></p>
 
@@ -107,32 +111,7 @@ $books = getBooks($conn);
           </thead>
 
           <tbody id="transaction-table-body">
-            <?php foreach($transactions as $transaction): ?> 
-              <tr>
-                <td><?='T'. str_pad((string) $transaction['id'], 3, "0", STR_PAD_LEFT)?></td>
-                <td><?= htmlspecialchars($transaction['full_name'])?></td>
-                <td><?= htmlspecialchars($transaction['title'])?></td>
-                <td>
-                  <span class="<?=htmlspecialchars($transaction['status']) === "borrowed" ? "borrowed": "returned"?> status"> 
-                    <?=htmlspecialchars($transaction['status'])?>
-                  </span>
-                </td>
-                <td>
-                  <form action="../actions/transaction/TransactionReturn.php" method="POST"> 
-                    <input type="hidden" name="id" value="<?=$transaction['id']?>">
-                    <button class="return-book" type="submit">Return Book</button> 
-                  </form>
-                  
-                  <form action="../actions/transaction/TransactionDelete.php" method="POST">
-                    <input type="hidden" name="id" value="<?=$transaction['id']?>">
-
-                    <button class="delete-book" type="submit">
-                      <img src="../assets/images/Delete.svg" alt="delete">
-                    </button>
-                  </form>
-                </td>
-              </tr>
-            <?php endforeach ?>
+           
           </tbody>
         </table>
 
@@ -157,23 +136,16 @@ $books = getBooks($conn);
   <dialog id="borrow-book-modal"> 
     <div><h1>BORROW BOOK</h1> </div>
 
-    <form class="modal-information" action="../actions/transaction/TransactionStore.php" method="POST">
+    <form class="modal-information" id="borrow-book-form">
       <div class="modal-input"> 
         <div class="input-label"> 
           <label for="member_id">Select Member</label>
 
-          <?php if (isset($transactionErrors["memberSelect"])): ?>
-            <p class="error">*<?= htmlspecialchars($transactionErrors["memberSelect"]) ?></p>
-          <?php endif; ?>
+          <p class="error" id="borrow-member-error"></p>
         </div>
 
-        <select name="member_id" class="modal-category">
+        <select name="member_id" id="member_id" class="modal-category">
           <option disabled selected value="">Select Member</option> 
-          <?php foreach ($members as $member): ?>
-            <option value="<?= $member['id'] ?>">
-              <?= htmlspecialchars($member['full_name']) ?>
-            </option>
-          <?php endforeach; ?>
         </select>
       </div>
       
@@ -181,19 +153,11 @@ $books = getBooks($conn);
         <div class="input-label"> 
           <label for="book_id">Select Book</label>
 
-          <?php if (isset($transactionErrors["bookSelect"])): ?>
-            <p class="error">*<?= htmlspecialchars($transactionErrors["bookSelect"]) ?></p>
-          <?php endif; ?>
+          <p class="error" id="borrow-book-error"></p>
         </div>
        
-        <select name="book_id" class="modal-category"> 
+        <select name="book_id" id="book_id" class="modal-category"> 
           <option disabled selected value= "">Select Book</option> 
-          <?php foreach ($books as $book): ?>
-            <option value="<?= $book['id'] ?>">
-              <?= htmlspecialchars($book['title']) ?>
-              (Available: <?= $book['available_quantity'] ?>)
-            </option>
-          <?php endforeach; ?>
         </select>
       </div>
 
