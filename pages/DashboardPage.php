@@ -1,15 +1,3 @@
-<?php 
-declare(strict_types=1);
-
-require_once __DIR__ . "/../config/Database.php";
-require_once __DIR__ . "/../actions/dashboard/DashboardRead.php";
-
-$totalBooks = getTotalBooks($conn);
-$totalMembers = getTotalMembers($conn);
-$totalBorrowed = getTotalBorrowed($conn);
-$transactions = getRecentTransactions($conn);
-?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -24,6 +12,8 @@ $transactions = getRecentTransactions($conn);
     <?php include "../includes/Sidebar.php" ?>
 
     <div class="content"> 
+      <p class="deleted" id="recent-transactions-failed" hidden></p>
+
        <div class="dashboard-title">
           <h1>Dashboard</h1>
         </div>
@@ -35,7 +25,7 @@ $transactions = getRecentTransactions($conn);
             </div>
 
             <div class="total-books-desc">
-              <p> <span><?=$totalBooks?></span> <br> Total Books</p>
+              <p> <span id="total-books">0</span> <br> Total Books</p>
             </div>
           </div>
 
@@ -45,7 +35,7 @@ $transactions = getRecentTransactions($conn);
             </div>
 
             <div class="total-members-desc">
-              <p> <span><?=$totalMembers?></span> <br> Total Members</p>
+              <p> <span id="total-members">0</span> <br> Total Members</p>
             </div>
           </div>
 
@@ -55,7 +45,7 @@ $transactions = getRecentTransactions($conn);
             </div>
 
             <div class="total-borrowed-desc">
-              <p> <span><?=$totalBorrowed?></span> <br> Currently Borrowed</p>
+              <p> <span id="total-borrowed">0</span> <br> Currently Borrowed</p>
             </div>
           </div>
         </div>
@@ -73,19 +63,8 @@ $transactions = getRecentTransactions($conn);
                 </tr>
               </thead>
 
-              <tbody>
-                <?php foreach($transactions as $transaction): ?> 
-                  <tr>
-                    <td><?='T'. str_pad((string) $transaction['id'], 3, "0", STR_PAD_LEFT)?></td>
-                    <td><?= htmlspecialchars($transaction['full_name'])?></td>
-                    <td><?= htmlspecialchars($transaction['title'])?></td>
-                    <td>
-                      <span class="<?=htmlspecialchars($transaction['status']) === "borrowed" ? "borrowed": "returned"?> status"> 
-                        <?=htmlspecialchars($transaction['status'])?>
-                      </span>
-                    </td>
-                  </tr>
-                <?php endforeach ?>
+              <tbody id="recent-transactions-table-body">
+               
               </tbody>
         </table>
 
@@ -99,5 +78,8 @@ $transactions = getRecentTransactions($conn);
 
   </div>
 </div>
+
+<script src="../assets/js/axios.min.js"></script>
+<script src="../assets/js/DashboardPage.js"></script>
 </body>
 </html>
