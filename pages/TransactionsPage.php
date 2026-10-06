@@ -1,30 +1,3 @@
-<?php 
-declare(strict_types=1);
-
-session_start();
-
-require_once __DIR__ . "/../actions/transaction/TransactionRead.php";
-require_once __DIR__ . "/../config/Database.php";
-
-$transactionErrors = $_SESSION["transactionErrors"] ?? [];
-
-$transactionSuccess = $_SESSION["transactionSuccess"] ?? "";
-
-$transactionUnsuccessful = $_SESSION["transactionUnsuccessful"] ?? "";
-
-$transactionReturnSuccess = $_SESSION["transactionReturnSuccess"] ?? "";
-
-$transactionReturnWarning = $_SESSION["transactionReturnWarning"] ?? "";
-
-$transactionDeleteSuccess = $_SESSION["transactionDeleteSuccess"] ?? "";
-
-$transactionNotAvailable = $_SESSION["transactionNotAvailable"] ?? "";
-
-$transactions = getTransactions($conn);
-$members = getMembers($conn);
-$books = getBooks($conn);
-?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -42,42 +15,6 @@ $books = getBooks($conn);
       <p class="success" id="transaction-success" hidden></p>
 
       <p class="deleted" id="transaction-failed" hidden></p>
-
-      <?php if ($transactionSuccess !== ""): ?>
-        <p class="success"><?=htmlspecialchars($transactionSuccess)?></p>
-
-        <?php unset($_SESSION['transactionSuccess']) ?>
-      <?php endif; ?>
-
-      <?php if ($transactionReturnSuccess !== ""): ?>
-        <p class="success"><?=htmlspecialchars($transactionReturnSuccess)?></p>
-
-        <?php unset($_SESSION['transactionReturnSuccess']) ?>
-      <?php endif; ?>
-
-      <?php if ($transactionReturnWarning !== ""): ?>
-        <p class="deleted"><?=htmlspecialchars($transactionReturnWarning)?></p>
-
-        <?php unset($_SESSION['transactionReturnWarning']) ?>
-      <?php endif; ?>
-
-      <?php if ($transactionDeleteSuccess !== ""): ?>
-        <p class="deleted"><?=htmlspecialchars($transactionDeleteSuccess)?></p>
-
-        <?php unset($_SESSION['transactionDeleteSuccess']) ?>
-      <?php endif; ?>
-
-      <?php if ($transactionNotAvailable !== ""): ?>
-        <p class="deleted"><?=htmlspecialchars($transactionNotAvailable)?></p>
-
-        <?php unset($_SESSION['transactionNotAvailable']) ?>
-      <?php endif; ?>
-
-      <?php if ($transactionUnsuccessful !== ""): ?>
-        <p class="deleted"><?=htmlspecialchars($transactionUnsuccessful)?></p>
-
-        <?php unset($_SESSION['transactionUnsuccessful']) ?>
-      <?php endif; ?>
 
       <div class="borrow-book">
         <h1>Transactions</h1>

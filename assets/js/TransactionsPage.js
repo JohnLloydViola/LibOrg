@@ -173,12 +173,9 @@ function renderTransactions(transactions) {
             Return Book
           </button>
 
-          <form action="../actions/transaction/TransactionDelete.php" method="POST">
-            <input type="hidden" name="id" value="${transaction.id}">
-
-            <button class="delete-book" type="submit">
-              <img src="../assets/images/Delete.svg" alt="delete">
-            </button>
+          <button class="delete-book" type="button" data-id="${transaction.id}">
+            <img src="../assets/images/Delete.svg" alt="delete">
+          </button>
         </td>
       </tr>
     `;
@@ -211,6 +208,34 @@ transactionsTable.addEventListener('click', async (event) => {
     transactionFailed.hidden = false;
 
     console.error('Failed to return book:', error);
+  }
+});
+
+//Event listener for delete button in the transactions table
+transactionsTable.addEventListener('click', async (event) => {
+  const deleteButton = event.target.closest('.delete-book');
+
+  if (!deleteButton) return;
+
+  const id = deleteButton.dataset.id;
+
+  try {
+    const response = await axios.post('../api/transactions/Delete.php', { id });
+
+    transactionSucces.textContent = response.data.message;
+    transactionSucces.hidden = false;
+    transactionFailed.hidden = true;
+
+    loadTransactionOptions();
+    currentPage = 1;
+    loadTransactions();
+
+  } catch (error) {
+    transactionFailed.textContent = error.response?.data?.message || 'Failed to delete transaction.';
+    transactionFailed.hidden = false;
+    transactionSucces.hidden = true;
+
+    console.error('Failed to delete transaction:', error);
   }
 });
 
@@ -263,7 +288,6 @@ async function loadTransactionOptions() {
     );
 
     const { members, books } = response.data;
-
 
     // Refresh everything so no duplicate sa old data.
     memberSelect.innerHTML = '<option disabled selected value="">Select Member</option>';
