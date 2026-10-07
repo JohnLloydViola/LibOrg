@@ -71,11 +71,6 @@ editMemberForm.addEventListener('submit', async (event) => {
 
     currentPage = 1;
     loadMembers();
-
-    // Hide errors after successful edit
-    memberFailed.textContent = '';
-    memberFailed.hidden = true;
-
   } catch (error) {
     if (error.response && error.response.status === 422) {
       const errors = error.response.data.errors;
@@ -91,10 +86,6 @@ editMemberForm.addEventListener('submit', async (event) => {
 
       document.getElementById('edit-address-error').textContent =
         errors.address ? `*${errors.address}` : '';
-
-      memberFailed.textContent = error.response.data.message || 'Validation errors occurred.';
-      memberFailed.hidden = false;
-
     } else {
       memberFailed.textContent =
       error.response?.data?.message || 'An error occurred while updating the member.';
@@ -162,10 +153,6 @@ addMemberForm.addEventListener('submit', async (event) => {
           errorElement.textContent = `*${errors[field]}`;
         }
       });
-
-      memberFailed.textContent =
-        error.response.data.message || 'Validation errors occurred.';
-      memberFailed.hidden = false;
     } else {
       memberFailed.textContent = error.response?.data?.message || 'An error occurred while adding the member.';
       memberFailed.hidden = false;

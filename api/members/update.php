@@ -30,7 +30,6 @@ $errors = validateMember($full_name, $email, $phone_number, $address);
 if (!empty($errors)) {
   http_response_code(422);
   echo json_encode([
-    "message" => "Edit Failed",
     "errors" => $errors
   ]);
   exit;

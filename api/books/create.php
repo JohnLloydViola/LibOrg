@@ -27,7 +27,6 @@ $errors = validateBook($title, $author, $category, $publication_year, $quantity)
 if (!empty($errors)) {
   http_response_code(422);
   echo json_encode([
-    "message" => "Failed To Add Book",
     "errors" => $errors
   ]);
   exit;
