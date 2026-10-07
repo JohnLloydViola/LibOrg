@@ -132,9 +132,13 @@ async function loadTransactions() {
   const status = transactionStatus.value;
 
   try {
-    const response = await axios.get(
-      `../actions/transaction/TransactionSearch.php?name=${encodeURIComponent(search)}&status=${encodeURIComponent(status)}&page=${encodeURIComponent(currentPage)}`
-    );
+    const response = await axios.get('../api/transactions/index.php', {
+      params: {
+        name: search,
+        status: status,
+        page: currentPage
+      }
+    });
 
     const totalTransactions = response.data.total;
 
@@ -194,6 +198,10 @@ transactionsTable.addEventListener('click', async (event) => {
   try {
     const response = await axios.post('../api/transactions/Return.php',{id});
 
+    // Clear error message if the transaction is successful
+    transactionFailed.textContent = '';
+    transactionFailed.hidden = true;
+    
     // Display success message
     transactionSucces.textContent = response.data.message;
     transactionSucces.hidden = false;
