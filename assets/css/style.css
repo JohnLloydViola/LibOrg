@@ -18,6 +18,8 @@
   --error-bg: #eebbbb;
   --sucess-color: #16a34a;
   --sucess-bg: #dcfce7;
+  --grey-color: rgba(33, 33, 33);
+  --border-grey-color: rgba(53, 53, 53);
   --box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
   --border-radius: 0.4rem;
 }
@@ -25,6 +27,89 @@
 body {
   font-family: 'Poppins', sans-serif;
   background-color: var(--page-background);
+}
+
+/* Login stuff */
+.login {
+  width: 30%;
+  margin: 10rem auto;
+  color: white;
+  border-radius: var(--border-radius);
+  border: 1px solid black;
+}
+
+.welcome {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  background-color: var(--dark-purple);
+  padding: 1.2rem;
+  width: 100%;
+}
+
+.welcome-desc {
+  text-align: center;
+  line-height: 1.5;
+  font-size: 0.8rem;
+}
+
+.welcome-title {
+  font-size: 1.2rem;
+}
+
+.welcome-text {
+  font-size: 0.7rem;
+}
+
+.login-logo img {
+  background-color: var(--primary-purple);
+  padding: 0.5rem;
+  border-radius: var(--border-radius);
+  margin: 0 auto;
+  margin-bottom: 0.5rem;
+  display: block;
+}
+
+.login-info {
+  background-color: var(--grey-color);
+  padding: 1rem;
+}
+
+.login-info form div {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.8;
+  margin: 1rem 0;
+}
+
+.login-info form label {
+  font-size: 0.7rem;
+}
+
+.login-info form div input {
+  width: 100%;
+  background-color: var(--grey-color);
+  border-color: var(--border-grey-color);
+  color: white;
+}
+
+.login-info-title {
+  margin: 0.7rem 0;
+}
+
+.login-submit {
+  border: none;
+  background-color: var(--primary-purple);
+  color: white;
+  width: 100%;
+  padding: 1em;
+  border-radius: var(--border-radius);
+}
+
+.register {
+  text-align: center;
+  margin-top: 1rem;
+  font-size: 0.75rem;
 }
 
 /* sidebar style */
@@ -190,7 +275,7 @@ dialog {
   background-color: var(--page-background);
 }
 
-.modal-submit, 
+.modal-submit,
 .modal-cancel {
   background: none;
   border: none;
@@ -457,6 +542,7 @@ select {
 input[type="text"],
 input[type="number"],
 input[type="email"],
+input[type="password"],
 .modal-category {
   padding: 0.5rem;
   width: 40ch;
