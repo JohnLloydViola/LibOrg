@@ -72,8 +72,9 @@ updateTransactionStatus($conn, $id);
 $memberName = getMemberName($conn, (int) $transaction["member_id"]);
 
 echo json_encode([
-  "message" => '"' . $memberName . '" Returned the Book Successfully'
+  "message" => '"' . $memberName . '" Returned "' . $book->getTitle() . '" Successfully'
 ]);
+
 exit;
 
 function getTransaction(PDO $conn, int $id): array|false

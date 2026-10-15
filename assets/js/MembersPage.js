@@ -24,6 +24,7 @@ const editFullName = document.getElementById('edit-full-name');
 const editEmail = document.getElementById('edit-email');
 const editPhoneNumber = document.getElementById('edit-phone-number');
 const editAddress = document.getElementById('edit-address');
+const editPassword = document.getElementById('edit-password');
 
 closeEditMemberModalBtn.addEventListener('click', () => {
   editMemberModal.close();
@@ -36,10 +37,11 @@ editMemberForm.addEventListener('submit', async (event) => {
   event.preventDefault();
 
   const errorFields = [
-    'edit-full_name-error',
-    'edit-email-error',
-    'edit-phone_number-error',
-    'edit-address-error'
+  'edit-full_name-error',
+  'edit-email-error',
+  'edit-password-error',
+  'edit-phone_number-error',
+  'edit-address-error'
   ];
 
   errorFields.forEach((field) => {
@@ -47,11 +49,12 @@ editMemberForm.addEventListener('submit', async (event) => {
   });
 
   const memberData = {
-    id: editId.value,
-    full_name: editFullName.value,
-    email: editEmail.value,
-    phone_number: editPhoneNumber.value,
-    address: editAddress.value
+  id: editId.value,
+  full_name: editFullName.value,
+  email: editEmail.value,
+  password: editPassword.value,
+  phone_number: editPhoneNumber.value,
+  address: editAddress.value
   };
 
   // clear banners
@@ -72,7 +75,10 @@ editMemberForm.addEventListener('submit', async (event) => {
     currentPage = 1;
     loadMembers();
   } catch (error) {
-    if (error.response && error.response.status === 422) {
+    if (error.response && error.response.status === 409) {
+      document.getElementById('edit-email-error').textContent =
+        'Email already exists';
+    } else if (error.response && error.response.status === 422) {
       const errors = error.response.data.errors;
 
       document.getElementById('edit-full_name-error').textContent =
@@ -86,9 +92,13 @@ editMemberForm.addEventListener('submit', async (event) => {
 
       document.getElementById('edit-address-error').textContent =
         errors.address ? `*${errors.address}` : '';
+
+      document.getElementById('edit-password-error').textContent =
+        errors.password ? `*${errors.password}` : '';
     } else {
       memberFailed.textContent =
-      error.response?.data?.message || 'An error occurred while updating the member.';
+        error.response?.data?.message ||
+        'An error occurred while updating the member.';
 
       memberFailed.hidden = false;
       console.error('Failed to update member:', error);
@@ -103,7 +113,7 @@ addMemberForm.addEventListener('submit', async (event) => {
   event.preventDefault();
 
   // Clear previous validation errors
-  const errorFields = ['full_name', 'email', 'phone_number', 'address'];
+  const errorFields = ['full_name', 'email', 'password', 'phone_number', 'address'];
 
   errorFields.forEach((field) => {
     document.getElementById(`${field}-error`).textContent = '';
@@ -117,11 +127,12 @@ addMemberForm.addEventListener('submit', async (event) => {
   memberFailed.hidden = true;
 
   const memberData = {
-    full_name: document.getElementById('full_name').value,
-    email: document.getElementById('email').value,
-    phone_number: document.getElementById('phone_number').value,
-    address: document.getElementById('address').value
-  };
+  full_name: document.getElementById('full_name').value,
+  email: document.getElementById('email').value,
+  password: document.getElementById('password').value,
+  phone_number: document.getElementById('phone_number').value,
+  address: document.getElementById('address').value
+};
 
   try {
     // pass yung object as post
@@ -142,7 +153,9 @@ addMemberForm.addEventListener('submit', async (event) => {
     memberFailed.textContent = '';
     memberFailed.hidden = true;
   } catch (error) {
-    if (error.response && error.response.status === 422) {
+    if (error.response && error.response.status === 409) {
+      document.getElementById('email-error').textContent ='Email already exists';
+    } else if (error.response && error.response.status === 422) {
       const errors = error.response.data.errors;
 
       // Display validation errors
@@ -174,6 +187,7 @@ membersTable.addEventListener('click', async (event) => {
     editEmail.value = editButton.dataset.email;
     editPhoneNumber.value = editButton.dataset.phoneNumber;
     editAddress.value = editButton.dataset.address;
+    editPassword.value = '';
 
     const errorFields = [
       'edit-full_name-error',

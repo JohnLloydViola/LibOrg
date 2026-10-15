@@ -27,7 +27,8 @@ function getTotalBooks(PDO $conn): int
 function getTotalMembers(PDO $conn): int
 {
   $sql = "SELECT COUNT(*)
-          FROM members";
+          FROM members
+          WHERE role = 'member'";
 
   $stmt = $conn->query($sql);
 

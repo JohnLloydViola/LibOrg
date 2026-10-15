@@ -42,6 +42,17 @@ if ($member_id <= 0) {
 
 $memberData = getMember($conn, $member_id);
 
+if (!$memberData) {
+  http_response_code(422);
+  echo json_encode([
+    "message" => "Invalid member selected.",
+    "errors" => [
+      "memberSelect" => "Please select a valid member."
+    ]
+  ]);
+  exit;
+}
+
 //Dito ako guamit ng src class na member
 $member = new App\Member(
   $memberData["full_name"],
@@ -51,6 +62,17 @@ $member = new App\Member(
 );
 
 $bookData = getBook($conn, $book_id);
+
+if (!$bookData) {
+  http_response_code(422);
+  echo json_encode([
+    "message" => "Invalid book selected.",
+    "errors" => [
+      "bookSelect" => "Please select a valid book."
+    ]
+  ]);
+  exit;
+}
 
 //Dito ako gumamit ng src class na book.
 $book = new App\Book(
@@ -94,11 +116,12 @@ exit;
 function getMember(
   PDO $conn,
   int $member_id
-): array
+): array|false
 {
   $sql = "SELECT *
           FROM members
-          WHERE id = :id";
+          WHERE id = :id
+          AND role = 'member'";
 
   $stmt = $conn->prepare($sql);
 
@@ -112,7 +135,7 @@ function getMember(
 function getBook(
   PDO $conn,
   int $book_id
-): array
+): array|false
 {
   $sql = "SELECT *
           FROM books
@@ -151,9 +174,6 @@ function addTransaction(
   int $book_id
 ): void
 {
-  $memberName = getMemberName($conn, $member_id);
-  $bookName = getBookName($conn, $book_id);
-
   $sql = "INSERT INTO transactions (member_id, book_id, status)
           VALUES (:member_id, :book_id, :status)";
 

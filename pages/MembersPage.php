@@ -87,6 +87,15 @@
 
     <div class="modal-input">
       <div class="input-label">
+        <label for="password">Password</label><br>
+        <p class="error" id="password-error"></p>
+      </div>
+
+      <input type="password" id="password" name="password" placeholder="Enter Password" minlength="8" maxlength="64" required><br>
+    </div>
+
+    <div class="modal-input">
+      <div class="input-label">
         <label for="phone_number">Phone Number</label><br>
         <p class="error" id="phone_number-error"></p>
       </div>
@@ -133,6 +142,22 @@
         </div>
 
         <input type="email" id="edit-email" name="email" placeholder="Enter Email" required><br>
+      </div>
+
+      <div class="modal-input">
+        <div class="input-label">
+          <label for="edit-password">Password</label><br>
+          <p class="error" id="edit-password-error"></p>
+        </div>
+
+        <input
+          type="password"
+          id="edit-password"
+          name="password"
+          placeholder="Leave blank to keep current password"
+          minlength="8"
+          maxlength="64"
+        >
       </div>
 
       <div class="modal-input">

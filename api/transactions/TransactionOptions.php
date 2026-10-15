@@ -35,7 +35,8 @@ function getTransactions(PDO $conn): array
 function getMembers(PDO $conn): array
 {
   $sql = "SELECT id, full_name
-          FROM members";
+          FROM members
+          WHERE role = 'member'";
 
   $stmt = $conn->query($sql);
 

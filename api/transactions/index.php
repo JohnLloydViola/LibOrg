@@ -31,7 +31,8 @@ function searchTransactions(
           ON transactions.member_id = members.id
           INNER JOIN books
           ON transactions.book_id = books.id
-          WHERE members.full_name LIKE :name";
+          WHERE members.full_name LIKE :name
+          AND members.role = 'member'";
 
   $parameters = [
     ":name" => "%$name%"
@@ -47,7 +48,8 @@ function searchTransactions(
                FROM transactions
                INNER JOIN members
                ON transactions.member_id = members.id
-               WHERE members.full_name LIKE :name";
+               WHERE members.full_name LIKE :name
+               AND members.role = 'member'";
 
   $countParameters = [
     ":name" => "%$name%"

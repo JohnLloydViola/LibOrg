@@ -14,6 +14,7 @@ try {
 
     $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
+    // Create yung database
     $conn->exec(
         "CREATE DATABASE IF NOT EXISTS liborg_db
         CHARACTER SET utf8mb4
@@ -23,6 +24,7 @@ try {
 
     $conn->exec("USE liborg_db");
 
+    // Create yung books table
     $bookTable = "CREATE TABLE IF NOT EXISTS books(
         id INT AUTO_INCREMENT PRIMARY KEY,
         title VARCHAR(255) NOT NULL,
@@ -37,18 +39,23 @@ try {
 
     echo "Books table created successfully.<br>";
 
+     // Create yung members table
     $memberTable = "CREATE TABLE IF NOT EXISTS members(
         id INT AUTO_INCREMENT PRIMARY KEY,
         full_name VARCHAR(255) NOT NULL,
-        email VARCHAR(255) NOT NULL,
+        email VARCHAR(255) NOT NULL UNIQUE,
+        password_hash VARCHAR(255) NOT NULL,
         phone_number VARCHAR(20) NOT NULL,
-        address VARCHAR(255) NOT NULL
+        address VARCHAR(255) NOT NULL,
+        role ENUM('admin', 'member') NOT NULL DEFAULT 'member',
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
     ) ENGINE=InnoDB;";
 
     $conn->exec($memberTable);
 
     echo "Members table created successfully.<br>";
 
+     // Create yung transactions table
     $transactionTable = "CREATE TABLE IF NOT EXISTS transactions(
         id INT AUTO_INCREMENT PRIMARY KEY,
         book_id INT NOT NULL,

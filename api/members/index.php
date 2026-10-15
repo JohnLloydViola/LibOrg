@@ -32,12 +32,14 @@ function searchName(
 {
   $sql = "SELECT *
           FROM members
-          WHERE full_name LIKE :name";
+          WHERE full_name LIKE :name
+          AND role = 'member'";
 
   // Get total matching members
   $countSql = "SELECT COUNT(*)
                FROM members
-               WHERE full_name LIKE :name";
+               WHERE full_name LIKE :name
+               AND role = 'member'";
 
   $countStmt = $conn->prepare($countSql);
   $countStmt->execute([

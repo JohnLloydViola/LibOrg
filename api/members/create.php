@@ -22,10 +22,17 @@ if (!is_array($data)) {
 
 $full_name = trim($data["full_name"] ?? "");
 $email = trim($data["email"] ?? "");
+$password = $data["password"] ?? "";
 $phone_number = trim($data["phone_number"] ?? "");
 $address = trim($data["address"] ?? "");
 
-$errors = validateMember($full_name, $email, $phone_number, $address);
+$errors = validateMember(
+  $full_name,
+  $email,
+  $password,
+  $phone_number,
+  $address
+);
 
 if (!empty($errors)) {
   http_response_code(422);
@@ -49,6 +56,7 @@ try {
     $conn,
     $member->getFullName(),
     $member->getEmail(),
+    password_hash($password, PASSWORD_DEFAULT),
     $member->getPhoneNumber(),
     $member->getAddress()
   );
@@ -58,6 +66,11 @@ try {
     "message" => 'Member "' . $member->getFullName() . '" added successfully.'
   ]);
 } catch (PDOException $e) {
+  if ($e->getCode() === "23000") {
+    http_response_code(409);
+    exit;
+  }
+
   http_response_code(500);
   echo json_encode([
     "message" => "Failed to add member."
@@ -69,19 +82,21 @@ function addMember(
   PDO $conn,
   string $full_name,
   string $email,
+  string $password_hash,
   string $phone_number,
   string $address
 ): void 
 {
   $sql = "INSERT 
-          INTO members (full_name, email, phone_number, address)
-          VALUES (:full_name, :email, :phone_number, :address)";
+          INTO members (full_name, email, password_hash, phone_number, address, role)
+          VALUES (:full_name, :email, :password_hash, :phone_number, :address, 'member')";
   
   $stmt = $conn->prepare($sql);
 
   $stmt->execute([
     ":full_name" => $full_name,
     ":email" => $email,
+    ":password_hash" => $password_hash,
     ":phone_number" => $phone_number,
     ":address" => $address
   ]);
@@ -90,6 +105,7 @@ function addMember(
 function validateMember(
   string $full_name,
   string $email,
+  string $password,
   string $phone_number,
   string $address
 ): array
@@ -104,6 +120,14 @@ function validateMember(
     $errors["email"] = "Email Is Required";
   } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
     $errors["email"] = "Invalid Email";
+  }
+
+  if (trim($password) === "") {
+    $errors["password"] = "Password is required";
+  } elseif (strlen($password) < 8) {
+    $errors["password"] = "Password must be at least 8 characters";
+  } elseif (strlen($password) > 64) {
+    $errors["password"] = "Password must not exceed 64 characters";
   }
 
   if ($phone_number === "") {
