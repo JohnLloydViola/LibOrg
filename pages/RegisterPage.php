@@ -1,3 +1,17 @@
+<?php
+declare(strict_types=1);
+
+session_start();
+
+//Pag logged in na do not give access
+if (isset($_SESSION["member_id"])) {
+    if (($_SESSION["role"] ?? "") === "admin") {
+        header("Location: ./DashboardPage.php");
+        exit;
+    }
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -30,8 +44,6 @@
       <p class="success" id="register-success" hidden></p>
 
       <p class="deleted" id="register-failed" hidden></p>
-
-      <p class="login-info-title">Register</p>
 
       <form id="register-form">
         <div class="modal-input"> 
@@ -82,7 +94,7 @@
         <button class="login-submit" type="submit">Register</button>
       </form>
 
-      <p class="register">Already have an account? <a href="./Login.php">Go back</a></p>
+      <p class="register">Already have an account? <a href="./LoginPage.php">Go back</a></p>
     </div>
   </main>
 

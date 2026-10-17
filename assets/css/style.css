@@ -91,10 +91,6 @@ body {
   color: white;
 }
 
-.login-info-title {
-  margin: 0.7rem 0;
-}
-
 .login-submit {
   border: none;
   background-color: var(--primary-purple);
@@ -165,6 +161,15 @@ body {
   height: 1.563rem;
 }
 
+.logout {
+  margin-top: 3rem;
+}
+
+.logout-button {
+  margin: auto;
+  display:block;
+  width: 80%;
+}
 /*Dashbaord styling*/
 .dashboard-stats{
   display: grid;

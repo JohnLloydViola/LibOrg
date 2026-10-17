@@ -34,4 +34,12 @@ $currentPage = basename($_SERVER["PHP_SELF"]);
       </a> 
     </div>
   </div>
+
+  <div class="logout">
+      <form id="logout-form">
+          <button type="submit" class="logout-button">
+              Logout
+          </button>
+      </form>
+  </div>
 </div>  

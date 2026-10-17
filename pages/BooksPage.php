@@ -1,3 +1,15 @@
+<?php 
+declare(strict_types=1);
+
+// Login check ito
+session_start();
+
+if (!isset($_SESSION["member_id"]) || ($_SESSION["role"] ?? "") !== "admin") {
+    header("Location: ./LoginPage.php");
+    exit;
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -224,5 +236,6 @@
 
   <script src="../assets/js/axios.min.js"></script>
   <script src="../assets/js/BooksPage.js"></script>
+  <script src="../assets/js/Logout.js"></script>
 </body>
 </html>
