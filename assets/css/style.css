@@ -256,7 +256,9 @@ body {
 .dashboard-container,
 .book-container,
 .member-container,
-.transaction-container {
+.transaction-container,
+.browse-book-container,
+.borrowed-book-container {
   display: flex;
   flex-direction: row;
 }

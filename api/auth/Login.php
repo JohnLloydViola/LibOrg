@@ -34,7 +34,7 @@ if (!empty($errors)) {
 
 $member = loginMember($conn, $email);
 
-if (!$member || !password_verify($password, $member["password_hash"]) || $member["role"] !== "admin") {
+if (!$member || !password_verify($password, $member["password_hash"])) {
     http_response_code(401);
     echo json_encode([
         "message" => "Invalid email or password."
@@ -49,9 +49,14 @@ $_SESSION["member_id"] = $member["id"];
 $_SESSION["role"] = $member["role"];
 $_SESSION["email"] = $member["email"];
 
+$redirect = $member["role"] === "admin"
+    ? "./DashboardPage.php"
+    : "./member/BrowseBooksPage.php";
+
 http_response_code(200);
 echo json_encode([
-    "message" => "Login successful."
+    "message" => "Login successful.",
+    "redirect" => $redirect
 ]);
 
 exit;

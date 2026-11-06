@@ -9,6 +9,11 @@ if (isset($_SESSION["member_id"])) {
         header("Location: ./DashboardPage.php");
         exit;
     }
+
+    if (($_SESSION["role"] ?? "") === "member") {
+          header("Location: ./member/BrowseBooksPage.php");
+          exit;
+    }
 }
 ?>
 

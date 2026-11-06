@@ -24,7 +24,7 @@ loginForm.addEventListener("submit", async (event) => {
     loginSuccess.textContent = response.data.message;
     loginSuccess.hidden = false;
 
-    window.location.href = "./DashboardPage.php";
+    window.location.href = response.data.redirect;
   } catch (error) {
     if (error.response && error.response.data) {
       const responseData = error.response.data;
