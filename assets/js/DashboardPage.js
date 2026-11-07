@@ -81,7 +81,7 @@ function escapeHtml(value) {
 }
 
 
-// hover sa truncate cells, if truncated, show tooltip
+// Hanapin yung mga cell na na-cut off (may "..."), tapos lagyan ng class para sa hover at pointer
 function markTruncatedCells() {
   recentTransactionsTable.querySelectorAll('.truncate').forEach((cell) => {
     if (cell.classList.contains('expanded')) return;
