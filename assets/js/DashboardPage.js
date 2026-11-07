@@ -1,9 +1,15 @@
-
 // Dashboard elements
 const totalBooks = document.getElementById('total-books');
 const totalMembers = document.getElementById('total-members');
 const totalBorrowed = document.getElementById('total-borrowed');
 const recentTransactionsTable = document.getElementById('recent-transactions-table-body');
+
+const transactionsTable = document.querySelector('.table-section table');
+const viewAllSection = document.getElementById('view-all');
+
+const noTransactions = document.createElement('div');
+noTransactions.className = 'no-dashboard-transactions';
+noTransactions.innerHTML = `<img src="../assets/images/NoTransactions.svg" alt="No transactions"> <p>No recent transactions.</p>`;
 
 //banner msg
 const recentTransactionsFailed = document.getElementById('recent-transactions-failed');
@@ -17,6 +23,17 @@ async function loadDashboard() {
     const members = response.data.totalMembers;
     const borrowed = response.data.totalBorrowed;
     const transactions = response.data.transactions;
+
+    //check kung may recent transactions or wala, if wala, show no recent transactions message
+    const hasNoTransactions = transactions.length === 0;
+
+    if (hasNoTransactions) {
+      transactionsTable.replaceWith(noTransactions);
+    } else {
+      noTransactions.replaceWith(transactionsTable);
+    }
+
+    viewAllSection.hidden = hasNoTransactions;
 
     //Hide the error message and clear
     recentTransactionsFailed.innerHTML = '';

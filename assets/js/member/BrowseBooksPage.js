@@ -48,6 +48,13 @@ pagination.addEventListener('click', (event) => {
   }
 });
 
+const booksTableElement = document.querySelector('.table-section table');
+const entriesSection = document.querySelector('.entries');
+
+const noBooks = document.createElement('div');
+noBooks.className = 'no-books';
+noBooks.innerHTML = `<img src="../../assets/images/NoBooks.svg" alt="No books"> <p>No books found.</p>`;
+
 async function loadBooks() {
   const search = bookSearch.value;
   const category = bookCategory.value;
@@ -64,6 +71,14 @@ async function loadBooks() {
     });
 
     const totalBooks = response.data.total;
+
+    if (totalBooks === 0) {
+      booksTableElement.replaceWith(noBooks);
+    } else {
+      noBooks.replaceWith(booksTableElement);
+    }
+
+    entriesSection.hidden = totalBooks === 0;
 
     totalPages = Math.ceil(totalBooks / 6);
 

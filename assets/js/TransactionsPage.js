@@ -127,6 +127,13 @@ transactionStatus.addEventListener('change', () => {
   loadTransactions();
 });
 
+const transactionTableElement = document.querySelector('.table-section table');
+const entriesSection = document.querySelector('.entries');
+
+const noTransactions = document.createElement('div');
+noTransactions.className = 'no-transactions';
+noTransactions.innerHTML = `<img src="../assets/images/NoTransactions.svg" alt="No transactions"> <p>No transactions found.</p>`;
+
 async function loadTransactions() {
   const search = transactionSearch.value;
   const status = transactionStatus.value;
@@ -141,6 +148,15 @@ async function loadTransactions() {
     });
 
     const totalTransactions = response.data.total;
+
+    //check kung may transactions or wala, if wala, show no transactions message
+    if (totalTransactions === 0) {
+      transactionTableElement.replaceWith(noTransactions);
+    } else {
+      noTransactions.replaceWith(transactionTableElement);
+    }
+
+    entriesSection.hidden = totalTransactions === 0;
 
     totalPages = Math.ceil(totalTransactions / 6);
 

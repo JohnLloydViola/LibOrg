@@ -401,8 +401,30 @@ dialog {
   box-shadow: var(--box-shadow);
 }
 
+.no-books,
+.no-transactions,
+.no-members,
+.no-dashboard-transactions {
+  text-align: center;
+  padding: 3rem 1.5rem;
+  color: #777;
+}
+
+.no-books img,
+.no-transactions img,
+.no-members img,
+.no-dashboard-transactions img {
+  width: 7.5rem;
+  display: block;
+  margin: 0 auto 0.75rem;
+}
+
+.entries[hidden] {
+  display: none;
+}
+
 .table-section table {
-  width:100%;
+  width: 100%;
   border-collapse: collapse;
 }
 

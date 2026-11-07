@@ -275,6 +275,13 @@ pagination.addEventListener('click', (event) => {
   }
 });
 
+const entriesSection = document.querySelector('.entries');
+const booksTable = document.querySelector('.table-section table');
+const emptyState = document.createElement('div');
+
+emptyState.className = 'no-books';
+emptyState.innerHTML = `<img src="../assets/images/NoBooks.svg" alt="No books"> <p>No books found.</p>`;
+
 async function loadBooks() {
   const search = bookSearch.value;
   const category = bookCategory.value;
@@ -289,8 +296,16 @@ async function loadBooks() {
         page: currentPage
       }
     });
-
     const totalBooks = response.data.total;
+
+    //check kung may books or wala, if wala, show no books message
+    if (totalBooks === 0) {
+      booksTable.replaceWith(emptyState);
+    } else {
+      emptyState.replaceWith(booksTable);
+    }
+
+    entriesSection.hidden = totalBooks === 0;
 
     totalPages = Math.ceil(totalBooks / 6);
 

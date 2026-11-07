@@ -283,6 +283,12 @@ pagination.addEventListener('click', (event) => {
   }
 });
 
+const memberTableElement = document.querySelector('.table-section table');
+const entriesSection = document.querySelector('.entries');
+
+const noMembers = document.createElement('div');
+noMembers.className = 'no-members';
+noMembers.innerHTML = `<img src="../assets/images/NoMembers.svg" alt="No members"> <p>No members found.</p>`;
 
 async function loadMembers() {
   const search = memberSearch.value;
@@ -296,6 +302,15 @@ async function loadMembers() {
   });
 
     const totalMembers = response.data.total;
+
+    //check kung may members or wala, if wala, show no members message
+    if (totalMembers === 0) {
+      memberTableElement.replaceWith(noMembers);
+    } else {
+      noMembers.replaceWith(memberTableElement);
+    }
+
+    entriesSection.hidden = totalMembers === 0;
 
     totalPages = Math.ceil(totalMembers / 6);
 

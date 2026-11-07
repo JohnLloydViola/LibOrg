@@ -9,6 +9,13 @@ const pagination = document.getElementById('book-pagination');
 let currentPage = 1;
 let totalPages = 0;
 
+const booksTableElement = document.querySelector('.table-section table');
+const entriesSection = document.querySelector('.entries');
+
+const noBooks = document.createElement('div');
+noBooks.className = 'no-books';
+noBooks.innerHTML = `<img src="../../assets/images/NoBooks.svg" alt="No borrowed books"> <p>No borrowed books found.</p>`;
+
 // Load borrowed books using Axios
 async function loadBooks() {
   const search = bookSearch.value;
@@ -26,6 +33,14 @@ async function loadBooks() {
     console.log("API response:", response.data);
 
     const totalBooks = response.data.total;
+
+    if (totalBooks === 0) {
+      booksTableElement.replaceWith(noBooks);
+    } else {
+      noBooks.replaceWith(booksTableElement);
+    }
+
+    entriesSection.hidden = totalBooks === 0;
 
     totalPages = Math.ceil(totalBooks / 6);
 
