@@ -71,6 +71,10 @@ async function loadBooks() {
     });
 
     const totalBooks = response.data.total;
+    
+    // hide banner msgs
+    bookFailed.textContent = '';
+    bookFailed.hidden = true;
 
     if (totalBooks === 0) {
       booksTableElement.replaceWith(noBooks);
@@ -122,14 +126,15 @@ function renderBooks(books) {
   books.forEach((book) => {
     booksTableBody.innerHTML += `
       <tr>
-        <td>${book.title}</td>
-        <td>${book.author}</td>
+        <td class="truncate" title="${escapeHtml(book.title)}">${escapeHtml(book.title)}</td>
+        <td class="truncate" title="${escapeHtml(book.author)}">${escapeHtml(book.author)}</td>
         <td>${book.category}</td>
         <td>${book.publication_year}</td>
         <td>${book.available_quantity}</td>
       </tr>
     `;
   });
+  markTruncatedCells();
 }
 
 function renderPagination() {
@@ -178,4 +183,31 @@ function renderPagination() {
   `;
 }
 
+function escapeHtml(value) {
+  return String(value)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
+// hover sa truncate cells, if truncated, show tooltip
+function markTruncatedCells() {
+  booksTableBody.querySelectorAll('.truncate').forEach((cell) => {
+    if (cell.classList.contains('expanded')) return;
+
+    cell.classList.toggle('is-truncated', cell.scrollWidth > cell.clientWidth);
+  });
+}
+
+window.addEventListener('resize', markTruncatedCells);
+
+booksTableBody.addEventListener('click', (event) => {
+  const cell = event.target.closest('.truncate.is-truncated, .truncate.expanded');
+
+  if (cell) {
+    cell.classList.toggle('expanded');
+  }
+});
 loadBooks();

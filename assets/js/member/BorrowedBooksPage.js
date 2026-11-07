@@ -5,6 +5,7 @@ const bookCategory = document.getElementById('book-category');
 const booksTableBody = document.getElementById('books-table-body');
 const bookEntries = document.getElementById('book-entries');
 const pagination = document.getElementById('book-pagination');
+const bookFailed = document.getElementById('borrowed-failed');
 
 let currentPage = 1;
 let totalPages = 0;
@@ -34,6 +35,10 @@ async function loadBooks() {
 
     const totalBooks = response.data.total;
 
+    //hide banner msgs
+    bookFailed.textContent = '';
+    bookFailed.hidden = true;
+
     if (totalBooks === 0) {
       booksTableElement.replaceWith(noBooks);
     } else {
@@ -58,16 +63,8 @@ async function loadBooks() {
     renderPagination();
 
   } catch (error) {
-    booksTableBody.innerHTML = `
-      <tr>
-        <td colspan="4">Unable to load borrowed books.</td>
-      </tr>
-    `;
-
-    bookEntries.textContent = 'Showing 0 to 0 of 0 entries';
-
-    pagination.innerHTML = '';
-
+    bookFailed.textContent = 'An error occurred while loading the borrowed books.';
+    bookFailed.hidden = false;
     console.error('Failed to load borrowed books:', error);
   }
 }
@@ -81,13 +78,14 @@ function renderBooks(books) {
   books.forEach((book) => {
     booksTableBody.innerHTML += `
       <tr>
-        <td>${book.title}</td>
-        <td>${book.author}</td>
+        <td class="truncate" title="${escapeHtml(book.title)}">${escapeHtml(book.title)}</td>
+        <td class="truncate" title="${escapeHtml(book.author)}">${escapeHtml(book.author)}</td>
         <td>${book.category}</td>
         <td>${book.publication_year}</td>
       </tr>
     `;
   });
+  markTruncatedCells();
 }
 
 
@@ -194,6 +192,34 @@ bookSearch.addEventListener('input', () => {
 bookCategory.addEventListener('change', () => {
   currentPage = 1;
   loadBooks();
+});
+
+function escapeHtml(value) {
+  return String(value)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
+// hover sa truncate cells, if truncated, show tooltip
+function markTruncatedCells() {
+  booksTableBody.querySelectorAll('.truncate').forEach((cell) => {
+    if (cell.classList.contains('expanded')) return;
+
+    cell.classList.toggle('is-truncated', cell.scrollWidth > cell.clientWidth);
+  });
+}
+
+window.addEventListener('resize', markTruncatedCells);
+
+booksTableBody.addEventListener('click', (event) => {
+  const cell = event.target.closest('.truncate.is-truncated, .truncate.expanded');
+
+  if (cell) {
+    cell.classList.toggle('expanded');
+  }
 });
 
 // Initial load

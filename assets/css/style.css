@@ -450,12 +450,46 @@ td {
   border-bottom: 1px solid rgba(211, 210, 210, 0.4);
 }
 
+.truncate {
+  max-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  transition: color 0.3s ease;
+}
+
+.truncate.is-truncated {
+  cursor: pointer;
+}
+
+.truncate.is-truncated:hover,
+.truncate.expanded:hover {
+  color: var(--primary-purple);
+}
+
+.truncate.expanded {
+  white-space: normal;
+  word-break: break-word;
+  cursor: pointer;
+}
+
 #books-table-body td:last-child,
 #member-table-body td:last-child,
 #transaction-table-body td:last-child {
-  display: flex;
-  align-items: center;
-  gap: 0.7rem;
+  white-space: nowrap;
+}
+
+#books-table-body td:last-child button,
+#member-table-body td:last-child button,
+#transaction-table-body td:last-child button {
+  vertical-align: middle;
+  margin-right: 0.7rem;
+}
+
+#books-table-body td:last-child button:last-child,
+#member-table-body td:last-child button:last-child,
+#transaction-table-body td:last-child button:last-child {
+  margin-right: 0;
 }
 
 #books-table-body td:last-child button,

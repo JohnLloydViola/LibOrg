@@ -23,6 +23,8 @@ if (!isset($_SESSION["member_id"]) || ($_SESSION["role"] ?? "") !== "member") {
     <?php include "../../includes/member/Sidebar.php"; ?>
 
     <div class="content"> 
+      <p class="deleted" id="borrowed-failed" hidden></p>
+      
       <div class="table-section">
         <div class="filter"> 
           <div>

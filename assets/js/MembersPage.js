@@ -238,6 +238,14 @@ membersTable.addEventListener('click', async (event) => {
   }
 });
 
+membersTable.addEventListener('click', (event) => {
+  const cell = event.target.closest('.truncate.is-truncated, .truncate.expanded');
+
+  if (cell) {
+    cell.classList.toggle('expanded');
+  }
+});
+
 // Loading members according to members search input
 const memberSearch = document.getElementById('member-search');
 
@@ -344,19 +352,19 @@ function renderMembers(members) {
     membersTable.innerHTML += `
       <tr>
         <td>M${String(member.id).padStart(3, '0')}</td>
-        <td>${member.full_name}</td>
-        <td>${member.email}</td>
-        <td>${member.phone_number}</td>
-        <td>${member.address}</td>
+        <td class="truncate" title="${escapeHtml(member.full_name)}">${escapeHtml(member.full_name)}</td>
+        <td class="truncate" title="${escapeHtml(member.email)}">${escapeHtml(member.email)}</td>
+        <td>${escapeHtml(member.phone_number)}</td>
+        <td class="truncate" title="${escapeHtml(member.address)}">${escapeHtml(member.address)}</td>
         <td>
           <button
             type="button"
             class="open-edit-member-modal-btn"
             data-id="${member.id}"
-            data-full-name="${member.full_name}"
-            data-email="${member.email}"
-            data-phone-number="${member.phone_number}"
-            data-address="${member.address}">
+            data-full-name="${escapeHtml(member.full_name)}"
+            data-email="${escapeHtml(member.email)}"
+            data-phone-number="${escapeHtml(member.phone_number)}"
+            data-address="${escapeHtml(member.address)}">
 
             <img src="../assets/images/Edit.svg" alt="Edit">
           </button>
@@ -371,6 +379,7 @@ function renderMembers(members) {
       </tr>
     `;
   });
+  markTruncatedCells();
 }
 
 function renderPagination() {
@@ -414,5 +423,25 @@ function renderPagination() {
     <li><a href="#" class="next">Next &raquo;</a></li>
   `;
 }
+
+function escapeHtml(value) {
+  return String(value)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
+// hover sa truncate cells, if truncated, show tooltip
+function markTruncatedCells() {
+  membersTable.querySelectorAll('.truncate').forEach((cell) => {
+    if (cell.classList.contains('expanded')) return;
+
+    cell.classList.toggle('is-truncated', cell.scrollWidth > cell.clientWidth);
+  });
+}
+
+window.addEventListener('resize', markTruncatedCells);
 
 loadMembers();

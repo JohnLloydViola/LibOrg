@@ -51,8 +51,8 @@ async function loadDashboard() {
       recentTransactionsTable.innerHTML += `
         <tr>
           <td>T${String(transaction.id).padStart(3, '0')}</td>
-          <td>${transaction.full_name}</td>
-          <td>${transaction.title}</td>
+          <td class="truncate" title="${escapeHtml(transaction.full_name)}">${escapeHtml(transaction.full_name)}</td>
+          <td class="truncate" title="${escapeHtml(transaction.title)}">${escapeHtml(transaction.title)}</td>
           <td>
             <span class="${transaction.status === 'borrowed' ? 'borrowed' : 'returned'} status">
               ${transaction.status}
@@ -62,6 +62,7 @@ async function loadDashboard() {
       `;
     });
 
+    markTruncatedCells();
   } catch (error) {
     recentTransactionsFailed.innerHTML = "Failed to Load Recent Transactions";
     recentTransactionsFailed.hidden = false;
@@ -69,6 +70,35 @@ async function loadDashboard() {
     console.error('Failed to load dashboard:', error);
   }
 }
+
+function escapeHtml(value) {
+  return String(value)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
+
+// hover sa truncate cells, if truncated, show tooltip
+function markTruncatedCells() {
+  recentTransactionsTable.querySelectorAll('.truncate').forEach((cell) => {
+    if (cell.classList.contains('expanded')) return;
+
+    cell.classList.toggle('is-truncated', cell.scrollWidth > cell.clientWidth);
+  });
+}
+
+window.addEventListener('resize', markTruncatedCells);
+
+recentTransactionsTable.addEventListener('click', (event) => {
+  const cell = event.target.closest('.truncate.is-truncated, .truncate.expanded');
+
+  if (cell) {
+    cell.classList.toggle('expanded');
+  }
+});
 
 // Automatically load data pag bukas ng transactions page
 loadDashboard();

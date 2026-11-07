@@ -224,6 +224,14 @@ booksTableBody.addEventListener('click', async (event) => {
   }
 });
 
+booksTableBody.addEventListener('click', (event) => {
+  const cell = event.target.closest('.truncate.is-truncated, .truncate.expanded');
+
+  if (cell) {
+    cell.classList.toggle('expanded');
+  }
+});
+
 closeEditBookModalBtn.addEventListener('click', () => {
   editBookModal.close();
 });
@@ -350,8 +358,8 @@ function renderBooks(books) {
     booksTableBody.innerHTML += `
       <tr>
         <td>B${String(book.id).padStart(3, '0')}</td>
-        <td>${book.title}</td>
-        <td>${book.author}</td>
+        <td class="truncate" title="${escapeHtml(book.title)}">${escapeHtml(book.title)}</td>
+        <td class="truncate" title="${escapeHtml(book.author)}">${escapeHtml(book.author)}</td>
         <td>${book.category}</td>
         <td>${book.publication_year}</td>
         <td>${book.quantity}</td>
@@ -361,8 +369,8 @@ function renderBooks(books) {
             type="button"
             class="open-edit-book-modal-btn"
             data-id="${book.id}"
-            data-title="${book.title}"
-            data-author="${book.author}"
+            data-title="${escapeHtml(book.title)}"
+            data-author="${escapeHtml(book.author)}"
             data-category="${book.category}"
             data-publication_year="${book.publication_year}"
             data-quantity="${book.quantity}">
@@ -380,7 +388,29 @@ function renderBooks(books) {
       </tr>
     `;
   });
+
+  markTruncatedCells();
 }
+
+function escapeHtml(value) {
+  return String(value)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
+// hover sa truncate cells, if truncated, show tooltip
+function markTruncatedCells() {
+  booksTableBody.querySelectorAll('.truncate').forEach((cell) => {
+    if (cell.classList.contains('expanded')) return;
+
+    cell.classList.toggle('is-truncated', cell.scrollWidth > cell.clientWidth);
+  });
+}
+
+window.addEventListener('resize', markTruncatedCells);
 
 function renderPagination() {
   if (totalPages === 0) {
