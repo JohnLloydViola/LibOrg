@@ -20,9 +20,11 @@ if (!isset($_SESSION["member_id"]) || ($_SESSION["role"] ?? "") !== "member") {
 </head>
 <body>
   <div class="browse-book-container">
-    <?php include "../../includes/member/Sidebar.php"; ?>
+    <?php require_once __DIR__ .  "/../../includes/member/Sidebar.php"; ?>
 
     <div class="content">
+      <?php require_once __DIR__ . "/../../includes/MenuButton.php"; ?>
+
       <p class="success" id="browse-success" hidden></p>
 
       <p class="deleted" id="browse-failed" hidden></p>
@@ -91,5 +93,6 @@ if (!isset($_SESSION["member_id"]) || ($_SESSION["role"] ?? "") !== "member") {
   <script src="../../assets/js/axios.min.js"></script>
   <script src="../../assets/js/member/BrowseBooksPage.js"></script>
   <script src="../../assets/js/member/Logout.js"></script>
+  <script src="../../assets/js/member/Menu.js"></script>
 </body>
 </html>

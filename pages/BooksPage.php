@@ -21,9 +21,11 @@ if (!isset($_SESSION["member_id"]) || ($_SESSION["role"] ?? "") !== "admin") {
 </head>
 <body>
   <div class="book-container">
-    <?php include "../includes/Sidebar.php"; ?>
+    <?php require_once __DIR__ . "/../includes/Sidebar.php"; ?>
 
     <div class="content">
+      <?php require_once __DIR__ . "/../includes/MenuButton.php"; ?>
+
       <p class="success" id="book-success" hidden></p>
 
       <p class="deleted" id="book-failed" hidden></p>
@@ -237,5 +239,6 @@ if (!isset($_SESSION["member_id"]) || ($_SESSION["role"] ?? "") !== "admin") {
   <script src="../assets/js/axios.min.js"></script>
   <script src="../assets/js/BooksPage.js"></script>
   <script src="../assets/js/Logout.js"></script>
+  <script src="../assets/js/Menu.js"></script>
 </body>
 </html>

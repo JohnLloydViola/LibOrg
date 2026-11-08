@@ -25,8 +25,56 @@
 }
 
 body {
-  font-family: 'Poppins', sans-serif;
+  font-family: 'inter', sans-serif;
   background-color: var(--page-background);
+}
+
+@font-face {
+  font-family: 'inter';
+  src: url('../fonts/inter/Inter-VariableFont_opsz,wght.ttf') format('truetype');
+  font-weight: 100 900;
+  font-style: normal;
+}
+
+#menu-button {
+  position: fixed;
+  left: 12%;
+  top: 1.7rem;
+  transform: translateX(-50%);
+  z-index: 1000;
+  width: 2.5rem;
+  height: 2.5rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid rgba(211, 210, 210, 0.4);
+  border-radius: 50%;
+  background-color: white;
+  padding: 0.3rem;
+  transition: all 0.3s ease;
+}
+
+.sidebar.collapsed {
+  width: 0;
+  padding: 0;
+}
+
+#menu-icon {
+  filter: brightness(100%) invert(100%);
+}
+
+#menu-button:hover {
+  cursor: pointer;
+  background-color: var(--primary-purple);
+}
+
+#menu-button:hover #menu-icon {
+  filter: brightness(0) invert(1);
+}
+
+#menu-button.collapsed {
+  left: 1rem;
+  transform: translateX(0);
 }
 
 /* Login stuff */
@@ -113,6 +161,9 @@ body {
   color: white;
   height: 100vh;
   width: 10%;
+  flex-shrink: 0;
+  overflow: hidden;
+  transition: width 0.3s ease;
 }
 
 .container {
@@ -249,8 +300,11 @@ body {
 
 /*Book page styling */
 .content {
+  margin-top: 2.5rem;
   padding: 1rem 10rem;
   width: 90%;
+  flex: 1;
+  min-width: 0;
 }
 
 .dashboard-container,
@@ -350,10 +404,13 @@ dialog {
 
 .modal-information {
   width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .modal-information > div {
-  margin: 1rem 0;
+  margin: 0.5rem 0;
 }
 
 .modal-information div > * {
@@ -439,6 +496,7 @@ tr {
 
 table thead tr:first-child {
   background-color: var(--page-background);
+  border-bottom: 1px solid rgba(211, 210, 210, 0.4);
 }
 
 th,
@@ -545,7 +603,7 @@ td {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding-bottom: 1rem;
+  padding-bottom: 1.5rem;
 }
 
 .entries {
@@ -634,4 +692,67 @@ select {
 button:hover,
 select:hover {
   cursor: pointer;
+}
+
+
+@media (min-width: 1440px) {
+  #add-book-modal,
+  #edit-book-modal,
+  #add-member-modal,
+  #edit-member-modal,
+  #borrow-book-modal {
+    width: 20%;
+  }
+}
+
+@media (max-width: 1696px) {
+  #add-book-modal,
+  #edit-book-modal,
+  #add-member-modal,
+  #edit-member-modal,
+  #borrow-book-modal {
+    width: 25%;
+  }
+}
+
+
+@media (max-width: 1440px) {
+  #add-book-modal,
+  #edit-book-modal,
+  #add-member-modal,
+  #edit-member-modal,
+  #borrow-book-modal {
+    width: 30%;
+  }
+}
+
+
+@media (max-width: 1024px) {
+  #add-book-modal,
+  #edit-book-modal,
+  #add-member-modal,
+  #edit-member-modal,
+  #borrow-book-modal {
+    width: 50%;
+  }
+}
+
+@media (max-width: 768px) {
+  #add-book-modal,
+  #edit-book-modal,
+  #add-member-modal,
+  #edit-member-modal,
+  #borrow-book-modal {
+    width: 70%;
+  }
+}
+
+@media (max-width: 480px) {
+  #add-book-modal,
+  #edit-book-modal,
+  #add-member-modal,
+  #edit-member-modal,
+  #borrow-book-modal {
+    width: 90%;
+  }
 }

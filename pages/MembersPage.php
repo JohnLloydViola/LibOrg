@@ -21,9 +21,11 @@ if (!isset($_SESSION["member_id"]) || ($_SESSION["role"] ?? "") !== "admin") {
 </head>
 <body>
   <div class="member-container"> 
-    <?php include "../includes/Sidebar.php" ?>
+    <?php require_once __DIR__ .  "/../includes/Sidebar.php" ?>
 
     <div class="content">
+      <?php require_once __DIR__ . "/../includes/MenuButton.php"; ?>
+      
       <p class="success" id="member-success" hidden></p>
 
       <p class="deleted" id="member-failed" hidden></p>
@@ -78,57 +80,57 @@ if (!isset($_SESSION["member_id"]) || ($_SESSION["role"] ?? "") !== "admin") {
   <dialog id="add-member-modal"> 
     <div><h1>ADD MEMBER</h1> </div>
     
-  <form class="modal-information" id="add-member-form">
-    <div class="modal-input">
-      <div class="input-label">
-        <label for="full_name">Full Name</label><br>
-        <p class="error" id="full_name-error"></p>
+    <form class="modal-information" id="add-member-form">
+      <div class="modal-input">
+        <div class="input-label">
+          <label for="full_name">Full Name</label><br>
+          <p class="error" id="full_name-error"></p>
+        </div>
+
+        <input type="text" id="full_name" name="full_name" placeholder="Enter Member Name" required><br>
       </div>
 
-      <input type="text" id="full_name" name="full_name" placeholder="Enter Member Name" required><br>
-    </div>
+      <div class="modal-input">
+        <div class="input-label">
+          <label for="email">Email</label><br>
+          <p class="error" id="email-error"></p>
+        </div>
 
-    <div class="modal-input">
-      <div class="input-label">
-        <label for="email">Email</label><br>
-        <p class="error" id="email-error"></p>
+        <input type="email" id="email" name="email" placeholder="Enter Email" required><br>
       </div>
 
-      <input type="email" id="email" name="email" placeholder="Enter Email" required><br>
-    </div>
+      <div class="modal-input">
+        <div class="input-label">
+          <label for="password">Password</label><br>
+          <p class="error" id="password-error"></p>
+        </div>
 
-    <div class="modal-input">
-      <div class="input-label">
-        <label for="password">Password</label><br>
-        <p class="error" id="password-error"></p>
+        <input type="password" id="password" name="password" placeholder="Enter Password" minlength="8" maxlength="64" required><br>
       </div>
 
-      <input type="password" id="password" name="password" placeholder="Enter Password" minlength="8" maxlength="64" required><br>
-    </div>
+      <div class="modal-input">
+        <div class="input-label">
+          <label for="phone_number">Phone Number</label><br>
+          <p class="error" id="phone_number-error"></p>
+        </div>
 
-    <div class="modal-input">
-      <div class="input-label">
-        <label for="phone_number">Phone Number</label><br>
-        <p class="error" id="phone_number-error"></p>
+        <input type="text" id="phone_number" name="phone_number" placeholder="eg. 09xxxxxxxxx" maxlength="11" required><br>
       </div>
 
-      <input type="text" id="phone_number" name="phone_number" placeholder="eg. 09xxxxxxxxx" maxlength="11" required><br>
-    </div>
+      <div class="modal-input">
+        <div class="input-label">
+          <label for="address">Address</label><br>
+          <p class="error" id="address-error"></p>
+        </div>
 
-    <div class="modal-input">
-      <div class="input-label">
-        <label for="address">Address</label><br>
-        <p class="error" id="address-error"></p>
+        <input type="text" id="address" name="address" placeholder="Enter Address" required><br>
       </div>
 
-      <input type="text" id="address" name="address" placeholder="Enter Address" required><br>
-    </div>
-
-    <div>
-      <button class="modal-submit" type="submit">Save Member</button>
-      <button class="modal-cancel" type="button" id="close-add-member-modal-btn">cancel</button>
-    </div>
-  </form>
+      <div>
+        <button class="modal-submit" type="submit">Save Member</button>
+        <button class="modal-cancel" type="button" id="close-add-member-modal-btn">cancel</button>
+      </div>
+    </form>
   </dialog>
 
 <!-- Modal dialogue para sa Edit Member button -->
@@ -200,5 +202,6 @@ if (!isset($_SESSION["member_id"]) || ($_SESSION["role"] ?? "") !== "admin") {
   <script src="../assets/js/axios.min.js"></script>
   <script src="../assets/js/MembersPage.js"></script>
   <script src="../assets/js/Logout.js"></script>
+  <script src="../assets/js/Menu.js"></script>
 </body>
 </html>

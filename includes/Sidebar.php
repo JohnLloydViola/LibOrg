@@ -4,7 +4,7 @@ declare(strict_types=1);
 $currentPage = basename($_SERVER["PHP_SELF"]);
 ?>
 
-<div class="sidebar">
+<div class="sidebar" id="sidebar">
   <div class="container">
     <div class="system-title-sidebar">
       <div>
