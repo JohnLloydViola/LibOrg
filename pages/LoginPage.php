@@ -34,14 +34,14 @@ if (isset($_SESSION["member_id"])) {
 <body>
   <main class="login">
     <div class="welcome">
-        <div class="login-logo">
-          <img src="../assets/images/Logo.svg" alt="Logo">
-        </div>
+      <div class="login-logo">
+        <img src="../assets/images/Logo.svg" alt="Logo">
+      </div>
 
-        <div class="welcome-desc"> 
-          <p class="welcome-title">Library Organizer</p>
-          <p class="welcome-text">Welcome back! Please log in to continue.</p>
-        </div>
+      <div class="welcome-desc"> 
+        <p class="welcome-title">Library Organizer</p>
+        <p class="welcome-text">Welcome back! Please log in to continue.</p>
+      </div>
     </div>
 
     <div class="login-info">

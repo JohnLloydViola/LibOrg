@@ -22,6 +22,7 @@
   --border-grey-color: rgba(53, 53, 53);
   --box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
   --border-radius: 0.4rem;
+  --logout-bg: rgba(220, 38, 38, 0.15);
 }
 
 body {
@@ -80,17 +81,19 @@ body {
 /* Login stuff */
 .login {
   width: 30%;
-  margin: 6rem auto;
+  margin: 10rem auto;
   color: white;
-  border-radius: var(--border-radius);
-  border: 1px solid black;
+  border-radius: 1.5rem;
+  overflow: hidden;
+  border: 1px solid rgba(211, 210, 210, 0.4);
+  color: black;
 }
 
 .welcome {
   display: flex;
   justify-content: center;
   flex-direction: column;
-  background-color: var(--dark-purple);
+  background-color: white;
   padding: 1.2rem;
   width: 100%;
 }
@@ -98,15 +101,15 @@ body {
 .welcome-desc {
   text-align: center;
   line-height: 1.5;
-  font-size: 0.8rem;
 }
 
 .welcome-title {
-  font-size: 1.2rem;
+  font-size: 1.7rem;
+  font-weight: 600;
 }
 
 .welcome-text {
-  font-size: 0.7rem;
+  font-size: 0.9rem;
 }
 
 .login-logo img {
@@ -119,8 +122,8 @@ body {
 }
 
 .login-info {
-  background-color: var(--grey-color);
-  padding: 1rem;
+  background-color: white;
+  padding: 1rem 2.5rem;
 }
 
 .login-info form div {
@@ -129,14 +132,14 @@ body {
 }
 
 .login-info form label {
-  font-size: 0.7rem;
+  font-size: 0.8rem;
 }
 
 .login-info form div input {
   width: 100%;
-  background-color: var(--grey-color);
-  border-color: var(--border-grey-color);
-  color: white;
+  background-color: var(--page-background);
+  border: none;
+  border: 1px solid rgba(211, 210, 210, 0.4);
 }
 
 .login-submit {
@@ -164,6 +167,9 @@ body {
   flex-shrink: 0;
   overflow: hidden;
   transition: width 0.3s ease;
+  font-size: 0.9rem;
+  display: flex;
+  flex-direction: column;
 }
 
 .container {
@@ -213,14 +219,53 @@ body {
 }
 
 .logout {
-  margin-top: 3rem;
+  margin-top: auto;
+  padding-bottom: 1.5rem;
+}
+
+.user-info {
+  display: flex;
+  align-items: center;
+  padding-left: 1rem;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.user-info p {
+  font-size: 0.7rem;
+  min-width: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .logout-button {
   margin: auto;
   display:block;
   width: 80%;
+  display:flex;
+  justify-content: center;
+  align-items: center;
+  background-color: var(--logout-bg);
+  border: 1px solid rgba(238, 53, 53, 0.15);
+  color: white;
+  gap: 0.5rem;
+  padding: 0.4rem;
+  transition: all 0.3s ease;
+  border-radius: var(--border-radius);
 }
+
+.logout-button img {
+  width: 1.2rem;
+  height: 1.2rem;
+}
+
+.logout-button:hover {
+  background-color: var(--error-color); /* #dc2626 */
+  color: white;
+  border-color: var(--error-color);
+}
+
 /*Dashbaord styling*/
 .dashboard-stats{
   display: grid;

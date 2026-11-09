@@ -36,9 +36,16 @@ $currentPage = basename($_SERVER["PHP_SELF"]);
   </div>
 
   <div class="logout">
+    <div class="user-info">
+      <img src="../assets/images/UserLogo.svg" alt="User Logo">
+      <p title="<?= htmlspecialchars($_SESSION['email'] ?? '') ?>">
+        <?= htmlspecialchars($_SESSION['email'] ?? '') ?>
+      </p>
+    </div>
       <form id="logout-form">
           <button type="submit" class="logout-button">
-              Logout
+              <p>Logout</p>
+              <img src="../assets/images/Exit.svg" alt="Logout icon">
           </button>
       </form>
   </div>
