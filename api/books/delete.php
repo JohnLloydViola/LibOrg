@@ -3,16 +3,29 @@ declare(strict_types=1);
 
 require_once __DIR__ . "/../../config/Database.php";
 
+header("Content-Type: application/json");
+
 if($_SERVER['REQUEST_METHOD'] !== 'POST') {
   http_response_code(405);
   echo json_encode(["message" => "Method not allowed"]);
   exit;
 }
 
-//Kunin yung id from the request body instead of $_POST
 $data = json_decode(file_get_contents("php://input"), true);
 
-$id = (int) ($data['id'] ?? '');
+if (!is_array($data) || !isset($data["id"])) {
+  http_response_code(400);
+  echo json_encode(["message" => "Invalid request data"]);
+  exit;
+}
+
+$id = filter_var($data["id"], FILTER_VALIDATE_INT);
+
+if ($id === false || $id <= 0) {
+  http_response_code(422);
+  echo json_encode(["message" => "Invalid Book ID"]);
+  exit;
+}
 
 try {
   $bookName = getBookName($conn, $id);
@@ -70,7 +83,7 @@ function deleteBook(
     ':id' => $id
   ]);
 
-  return true;
+  return $stmt->rowCount() === 1;
 }
 
 function getBookName(

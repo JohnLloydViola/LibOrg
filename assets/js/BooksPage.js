@@ -155,11 +155,8 @@ errorFields.forEach((field) => {
 
       document.getElementById('edit-quantity-error').textContent =
         errors.quantity ? `*${errors.quantity}` : '';
-
-      bookFailed.textContent = error.response.data.message || "Validation errors occurred.";
-      bookFailed.hidden = false;
     } else {
-      bookFailed.textContent = error.response.data.message || "An error occurred while updating the book.";
+      bookFailed.textContent = error.response?.data?.message || "An error occurred while updating the book.";
       bookFailed.hidden = false;
       console.error('Failed to update book:', error);
     }
@@ -212,12 +209,15 @@ booksTableBody.addEventListener('click', async (event) => {
     bookSuccess.textContent = response.data.message;
     bookSuccess.hidden = false;
 
+    bookFailed.textContent = "";
+    bookFailed.hidden = true;
+
     loadBooks();
   } catch (error) {
     bookSuccess.textContent = "";
     bookSuccess.hidden = true;
 
-    bookFailed.textContent = error.response.data.message || 'An error occurred while deleting the book.';
+    bookFailed.textContent = error.response?.data?.message || 'An error occurred while deleting the book.';
     bookFailed.hidden = false;
 
     console.error('Failed to delete book:', error);
@@ -317,6 +317,16 @@ async function loadBooks() {
 
     totalPages = Math.ceil(totalBooks / 6);
 
+    if (totalPages > 0 && currentPage > totalPages) {
+      currentPage = totalPages;
+      loadBooks();
+      return;
+    }
+
+    if (totalPages === 0) {
+      currentPage = 1;
+    }
+
     // About sa showing or display of entries
     const startEntry = totalBooks === 0 ? 0 : (currentPage - 1) * 6 + 1;
     const endEntry = Math.min(currentPage * 6, totalBooks);
@@ -360,7 +370,7 @@ function renderBooks(books) {
         <td>B${String(book.id).padStart(3, '0')}</td>
         <td class="truncate" title="${escapeHtml(book.title)}">${escapeHtml(book.title)}</td>
         <td class="truncate" title="${escapeHtml(book.author)}">${escapeHtml(book.author)}</td>
-        <td>${book.category}</td>
+        <td>${escapeHtml(book.category)}</td>
         <td>${book.publication_year}</td>
         <td>${book.quantity}</td>
         <td>${book.available_quantity}</td>
@@ -371,7 +381,7 @@ function renderBooks(books) {
             data-id="${book.id}"
             data-title="${escapeHtml(book.title)}"
             data-author="${escapeHtml(book.author)}"
-            data-category="${book.category}"
+            data-category="${escapeHtml(book.category)}"
             data-publication_year="${book.publication_year}"
             data-quantity="${book.quantity}">
 

@@ -18,8 +18,19 @@ if ($_SERVER["REQUEST_METHOD"] !== "POST") {
 // Get JSON data from Axios
 $data = json_decode(file_get_contents("php://input"), true);
 
-// Get member ID
-$id = (int) ($data["id"] ?? '');
+if (!is_array($data)) {
+  http_response_code(400);
+  echo json_encode(["message" => "Invalid JSON data."]);
+  exit;
+}
+
+$id = filter_var($data["id"] ?? null, FILTER_VALIDATE_INT);
+
+if ($id === false || $id === null || $id <= 0) {
+  http_response_code(400);
+  echo json_encode(["message" => "Invalid member ID."]);
+  exit;
+}
 
 if (!$id || $id <= 0) {
   http_response_code(400);

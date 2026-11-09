@@ -8,6 +8,14 @@ require_once __DIR__ . "/../../config/Database.php";
 $name = trim($_GET["name"] ?? "");
 $status = trim($_GET["status"] ?? "");
 
+if (!in_array($status, ["", "borrowed", "returned"], true)) {
+  http_response_code(422);
+  echo json_encode([
+    "message" => "Invalid transaction status."
+  ]);
+  exit;
+}
+
 // Para sa pagination
 $page = max(1, (int) ($_GET["page"] ?? 1));
 $limit = 6;

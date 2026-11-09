@@ -56,7 +56,7 @@ if (isset($_SESSION["member_id"])) {
             <p class="error" id="login-email-error"></p>
           </div>
           
-          <input type="email" id="email" name="email" placeholder="Enter your email address">
+          <input type="email" id="email" name="email" placeholder="Enter your email address" required autocomplete="email">
         </div>
 
         <div class="modal-input"> 
@@ -65,7 +65,7 @@ if (isset($_SESSION["member_id"])) {
             <p class="error" id="login-password-error"></p>
           </div>
           
-          <input type="password" id="password" name="password" placeholder="Enter your password">
+          <input type="password" id="password" name="password" placeholder="Enter your password" required autocomplete="current-password">
         </div>
 
         <button class="login-submit" type="submit">Login</button>

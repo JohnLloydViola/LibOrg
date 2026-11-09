@@ -17,24 +17,41 @@ if ($_SERVER["REQUEST_METHOD"] !== "POST") {
 // Read JSON data sent by Axios
 $data = json_decode(file_get_contents("php://input"), true);
 
-$member_id = (int) ($data["member_id"] ?? "");
-$book_id = (int) ($data["book_id"] ?? "");
+if (!is_array($data)) {
+  http_response_code(400);
+  echo json_encode([
+    "message" => "Invalid JSON data."
+  ]);
+  exit;
+}
 
-if ($member_id <= 0) {
+$member_id = filter_var(
+  $data["member_id"] ?? null,
+  FILTER_VALIDATE_INT
+);
+
+$book_id = filter_var(
+  $data["book_id"] ?? null,
+  FILTER_VALIDATE_INT
+);
+
+if ($member_id === false || $member_id === null || $member_id <= 0) {
   http_response_code(422);
   echo json_encode([
     "message" => "Member Is Required",
     "errors" => [
-      "memberSelect" => "Member Is Required"
+      "memberSelect" => "Please select a valid member."
     ]
   ]);
   exit;
-} elseif ($book_id <= 0) {
+}
+
+if ($book_id === false || $book_id === null || $book_id <= 0) {
   http_response_code(422);
   echo json_encode([
     "message" => "Book Is Required",
     "errors" => [
-      "bookSelect" => "Book Is Required"
+      "bookSelect" => "Please select a valid book."
     ]
   ]);
   exit;

@@ -5,7 +5,15 @@ header("Content-Type: application/json");
 
 require_once __DIR__ . "/../../config/Database.php";
 
-$name = trim($_GET["name"] ?? "");
+$name = $_GET["name"] ?? "";
+
+if (!is_string($name)) {
+  http_response_code(400);
+  echo json_encode(["message" => "Invalid search parameter"]);
+  exit;
+}
+
+$name = trim($name);
 
 // Para sa pagination
 $page = (int) ($_GET["page"] ?? 1);

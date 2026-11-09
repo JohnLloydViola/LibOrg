@@ -19,8 +19,23 @@ if (!is_array($data)) {
     exit;
 }
 
-$email = trim($data["email"] ?? "");
+$email = $data["email"] ?? "";
 $password = $data["password"] ?? "";
+
+if (!is_string($email) || !is_string($password)) {
+    http_response_code(422);
+
+    echo json_encode([
+        "errors" => [
+            "email" => "Invalid email",
+            "password" => "Invalid password"
+        ]
+    ]);
+
+    exit;
+}
+
+$email = trim($email);
 
 $errors = validateLogin($email, $password);
 
@@ -87,12 +102,17 @@ function validateLogin(
 
     if ($email === "") {
         $errors["email"] = "Email Is Required";
+    } elseif (strlen($email) > 255) {
+        $errors["email"] = "Email must not exceed 255 characters";
     } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
         $errors["email"] = "Invalid Email";
     }
 
+     // Password
     if (trim($password) === "") {
         $errors["password"] = "Password Is Required";
+    } elseif (strlen($password) > 64) {
+        $errors["password"] = "Password must not exceed 64 characters";
     }
 
     return $errors;

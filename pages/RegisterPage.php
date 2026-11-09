@@ -57,7 +57,7 @@ if (isset($_SESSION["member_id"])) {
             <p class="error" id="register-full_name-error"></p>
           </div>
 
-          <input type="text" id="full_name" name="full_name" placeholder="Enter your full name">
+          <input type="text" id="full_name" name="full_name" placeholder="Enter your full name" minlength="2" maxlength="100" required>
         </div>
 
         <div class="modal-input"> 
@@ -66,7 +66,7 @@ if (isset($_SESSION["member_id"])) {
             <p class="error" id="register-email-error"></p>
           </div>
 
-          <input type="email" id="email" name="email" placeholder="Enter your email address">
+          <input type="email" id="email" name="email" placeholder="Enter your email address" maxlength="255" required>
         </div>
 
         <div class="modal-input"> 
@@ -75,7 +75,7 @@ if (isset($_SESSION["member_id"])) {
             <p class="error" id="register-password-error"></p>
           </div>
 
-          <input type="password" id="password" name="password" placeholder="Enter your password" minlength="8" maxlength="64">
+          <input type="password" id="password" name="password" placeholder="Enter your password" minlength="8" maxlength="64" required>
         </div>
 
         <div class="modal-input"> 
@@ -84,7 +84,7 @@ if (isset($_SESSION["member_id"])) {
             <p class="error" id="register-phone_number-error"></p>
           </div>
 
-          <input type="text" id="phone_number" name="phone_number" placeholder="eg. 09xxxxxxxxx" maxlength="11">
+          <input type="text" id="phone_number" name="phone_number" placeholder="eg. 09xxxxxxxxx" maxlength="11" pattern="09[0-9]{9}" required>
         </div>
 
         <div class="modal-input"> 
@@ -93,7 +93,7 @@ if (isset($_SESSION["member_id"])) {
             <p class="error" id="register-address-error"></p>
           </div>
 
-          <input type="text" id="address" name="address" placeholder="Enter address">
+          <input type="text" id="address" name="address" placeholder="Enter address" minlength="5" maxlength="255" required>
         </div>
 
         <button class="login-submit" type="submit">Register</button>

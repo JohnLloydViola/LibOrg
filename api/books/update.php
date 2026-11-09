@@ -14,17 +14,51 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 
 $data = json_decode(file_get_contents("php://input"), true);
 
-$id = (int) ($data['id'] ?? '');
-$title = trim($data['title'] ?? '');
-$author = trim($data['author'] ?? '');
-$category = trim($data['category'] ?? '');
-$publication_year = trim($data['publication_year'] ?? '');
-$quantity = trim($data['quantity'] ?? '');
+if (!is_array($data)) {
+  http_response_code(400);
+  echo json_encode([
+      "message" => "Invalid JSON data"
+  ]);
+  exit;
+}
+
+// Reject non-string values (numbers, arrays, objects, booleans) before they get cast para hindi amg crash website
+$typeErrors = [];
+
+foreach (["title", "author", "category", "publication_year", "quantity"] as $field) {
+  if (isset($data[$field]) && !is_string($data[$field])) {
+    $typeErrors[$field] = "Invalid Value";
+  }
+}
+
+if (!empty($typeErrors)) {
+  http_response_code(422);
+  echo json_encode(["errors" => $typeErrors]);
+  exit;
+}
+
+$title = trim((string) ($data['title'] ?? ''));
+$author = trim((string) ($data['author'] ?? ''));
+$category = trim((string) ($data['category'] ?? ''));
+$publication_year = trim((string) ($data['publication_year'] ?? ''));
+$quantity = trim((string) ($data['quantity'] ?? ''));
+
+$id = filter_var($data['id'] ?? null, FILTER_VALIDATE_INT);
+
+if ($id === false || $id === null || $id <= 0) {
+  http_response_code(422);
+  echo json_encode([
+    "message" => "Edit Failed",
+    "errors" => [
+      "id" => "Invalid Book ID"
+    ]
+  ]);
+  exit;
+}
 
 if (!validateBook($title, $author, $category, $publication_year, $quantity)) {
   http_response_code(422);
   echo json_encode([
-    "message" => "Edit Failed",
     "errors" => $errors ?? []
   ]);
   exit;
@@ -33,15 +67,13 @@ if (!validateBook($title, $author, $category, $publication_year, $quantity)) {
 $publication_year = (int) $publication_year;
 $quantity = (int) $quantity;
 
-$updated = updateBook(
-  $conn,
-  $id,
-  $title,
-  $author,
-  $category,
-  $publication_year,
-  $quantity
-);
+try {
+  $updated = updateBook($conn, $id, $title, $author, $category, $publication_year, $quantity);
+} catch (PDOException $e) {
+  http_response_code(500);
+  echo json_encode(["message" => "Failed to edit book"]);
+  exit;
+}
 
 if ($updated) {
   echo json_encode([
@@ -59,70 +91,64 @@ function updateBook(
   int $quantity
 ): bool 
 {
-  // Kunin ang current quantity at available quantity
-  $sql = "SELECT quantity, available_quantity
-          FROM books
-          WHERE id = :id";
+  $conn->beginTransaction();
 
-  $stmt = $conn->prepare($sql);
+  try {
+    // Lock the row so a borrow can't change the counts mid-edit
+    $stmt = $conn->prepare("SELECT quantity, available_quantity FROM books WHERE id = :id FOR UPDATE");
+    $stmt->execute([':id' => $id]);
+    $book = $stmt->fetch();
 
-  $stmt->execute([
-    ':id' => $id
-  ]);
+    if (!$book) {
+      $conn->rollBack();
+      http_response_code(404);
+      echo json_encode([
+        "message" => "Failed to Edit book",
+        "errors" => ["id" => "Book not found"]
+      ]);
+      return false;
+    }
 
-  $book = $stmt->fetch();
+    $borrowedQuantity = $book['quantity'] - $book['available_quantity'];
 
-  if (!$book) {
-    http_response_code(404);
-    echo json_encode([
-      "message" => "Failed to Edit book",
-      "errors" => [
-        "id" => "Book not found"
-      ]
+    if ($quantity < $borrowedQuantity) {
+      $conn->rollBack();
+      http_response_code(422);
+      echo json_encode([
+        "message" => "Failed to Edit book",
+        "errors" => [
+          "quantity" => "New Quantity should not be lower than the borrowed quantity"
+        ]
+      ]);
+      return false;
+    }
+
+    $stmt = $conn->prepare(
+      "UPDATE books 
+       SET title = :title, author = :author, category = :category,
+           publication_year = :publication_year, quantity = :quantity,
+           available_quantity = :available_quantity
+       WHERE id = :id"
+    );
+
+    $stmt->execute([
+      ':title' => $title,
+      ':author' => $author,
+      ':category' => $category,
+      ':publication_year' => $publication_year,
+      ':quantity' => $quantity,
+      ':available_quantity' => $quantity - $borrowedQuantity,
+      ':id' => $id
     ]);
-    return false;
+
+    $conn->commit();
+    return true;
+  } catch (PDOException $e) {
+    if ($conn->inTransaction()) {
+      $conn->rollBack();
+    }
+    throw $e;
   }
-
-  // Bilangin kung ilang copies ang na borrowed
-  $borrowedQuantity = $book['quantity'] - $book['available_quantity'];
-
-  // wag payagan ang bagong quantity na mas mababa sa borrowed copies
-  if ($quantity < $borrowedQuantity) {
-    http_response_code(422);
-    echo json_encode([
-      "message" => "Failed to Edit book",
-      "errors" => [
-        "quantity" => "New Quantity should not be lower than the borrowed quantity"
-      ]
-    ]);
-    return false;
-  }
-
-  // Calculate ang bagong available quantity
-  $availableQuantity = $quantity - $borrowedQuantity;
-
-  $sql = "UPDATE books 
-          SET title = :title,
-              author = :author,
-              category = :category,
-              publication_year = :publication_year,
-              quantity = :quantity,
-              available_quantity = :available_quantity
-          WHERE id = :id";
-
-  $stmt = $conn->prepare($sql);
-
-  $stmt->execute([
-    ':title' => $title,
-    ':author' => $author,
-    ':category' => $category,
-    ':publication_year' => $publication_year,
-    ':quantity' => $quantity,
-    ':available_quantity' => $availableQuantity,
-    ':id' => $id
-  ]);
-
-  return true;
 }
 
 function validateBook(
@@ -136,23 +162,47 @@ function validateBook(
   global $errors;
   $errors = [];
 
+  $allowedCategories = [
+    "science",
+    "technology",
+    "fantasy",
+    "romance",
+    "education",
+    "business",
+    "health"
+  ];
+
+  // Title
+  $titleLength = mb_strlen($title);
+
   if ($title === "") {
     $errors["title"] = "Title is Required";
+  } elseif ($titleLength < 2 || $titleLength > 150) {
+    $errors["title"] = "Title Must Be 2 To 150 Characters";
   }
+
+  // Author
+  $authorLength = mb_strlen($author);
 
   if ($author === "") {
     $errors["author"] = "Author is Required";
-  } elseif (!preg_match('/[a-zA-Z]/', $author)) {
+  } elseif ($authorLength < 2 || $authorLength > 100) {
+    $errors["author"] = "Author Must Be 2 To 100 Characters";
+  } elseif (!preg_match('/\p{L}/u', $author)) {
     $errors["author"] = "Author must contain letters";
-  } 
-
-  if ($category === "") {
-    $errors["category"] = "Category is Required";
   }
 
+  // Category
+  if ($category === "") {
+    $errors["category"] = "Category is Required";
+  } elseif (!in_array($category, $allowedCategories, true)) {
+    $errors["category"] = "Invalid Category";
+  }
+
+  // Publication Year
   if ($publication_year === "") {
     $errors["publication_year"] = "Publication Year is Required";
-  } elseif ((int) $publication_year <= 0) {
+  } elseif (!ctype_digit($publication_year)) {
     $errors["publication_year"] = "Invalid Year";
   } elseif ((int) $publication_year < 1000) {
     $errors["publication_year"] = "Invalid Year";
@@ -160,10 +210,13 @@ function validateBook(
     $errors["publication_year"] = "Publication Year Cannot Be In The Future";
   }
 
+  // Quantity
   if ($quantity === "") {
     $errors["quantity"] = "Quantity is Required";
-  } elseif ((int) $quantity <= 0) {
+  } elseif (!ctype_digit($quantity)) {
     $errors["quantity"] = "Invalid Quantity";
+  } elseif ((int) $quantity < 1 || (int) $quantity > 999) {
+    $errors["quantity"] = "Quantity Must Be Between 1 And 999";
   }
 
   return empty($errors);

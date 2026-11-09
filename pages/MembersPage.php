@@ -87,7 +87,7 @@ if (!isset($_SESSION["member_id"]) || ($_SESSION["role"] ?? "") !== "admin") {
           <p class="error" id="full_name-error"></p>
         </div>
 
-        <input type="text" id="full_name" name="full_name" placeholder="Enter Member Name" required><br>
+        <input type="text" id="full_name" name="full_name" placeholder="Enter Member Name" minlength="2" maxlength="100" required><br>
       </div>
 
       <div class="modal-input">
@@ -96,7 +96,7 @@ if (!isset($_SESSION["member_id"]) || ($_SESSION["role"] ?? "") !== "admin") {
           <p class="error" id="email-error"></p>
         </div>
 
-        <input type="email" id="email" name="email" placeholder="Enter Email" required><br>
+        <input type="email" id="email" name="email" placeholder="Enter Email" maxlength="255" required><br>
       </div>
 
       <div class="modal-input">
@@ -114,7 +114,7 @@ if (!isset($_SESSION["member_id"]) || ($_SESSION["role"] ?? "") !== "admin") {
           <p class="error" id="phone_number-error"></p>
         </div>
 
-        <input type="text" id="phone_number" name="phone_number" placeholder="eg. 09xxxxxxxxx" maxlength="11" required><br>
+        <input type="text" id="phone_number" name="phone_number" placeholder="eg. 09xxxxxxxxx" pattern="09[0-9]{9}" maxlength="11" required><br>
       </div>
 
       <div class="modal-input">
@@ -123,7 +123,7 @@ if (!isset($_SESSION["member_id"]) || ($_SESSION["role"] ?? "") !== "admin") {
           <p class="error" id="address-error"></p>
         </div>
 
-        <input type="text" id="address" name="address" placeholder="Enter Address" required><br>
+        <input type="text" id="address" name="address" placeholder="Enter Address" minlength="5" maxlength="255" required><br>
       </div>
 
       <div>
@@ -146,7 +146,7 @@ if (!isset($_SESSION["member_id"]) || ($_SESSION["role"] ?? "") !== "admin") {
           <p class="error" id="edit-full_name-error"></p>
         </div>
 
-        <input type="text" id="edit-full-name" name="full_name" placeholder="Enter Full Name" required><br>
+        <input type="text" id="edit-full-name" name="full_name" placeholder="Enter Full Name" minlength="2" maxlength="100" required><br>
       </div>
 
       <div class="modal-input">
@@ -155,7 +155,7 @@ if (!isset($_SESSION["member_id"]) || ($_SESSION["role"] ?? "") !== "admin") {
           <p class="error" id="edit-email-error"></p>
         </div>
 
-        <input type="email" id="edit-email" name="email" placeholder="Enter Email" required><br>
+        <input type="email" id="edit-email" name="email" placeholder="Enter Email" maxlength="255" required><br>
       </div>
 
       <div class="modal-input">
@@ -180,7 +180,7 @@ if (!isset($_SESSION["member_id"]) || ($_SESSION["role"] ?? "") !== "admin") {
           <p class="error" id="edit-phone_number-error"></p>
         </div>
 
-        <input type="text" id="edit-phone-number" name="phone_number" placeholder="Enter Phone Number" maxlength="11" required><br>
+        <input type="text" id="edit-phone-number" name="phone_number" placeholder="Enter Phone Number" pattern="09[0-9]{9}" maxlength="11" required><br>
       </div>
 
       <div class="modal-input">
@@ -189,7 +189,7 @@ if (!isset($_SESSION["member_id"]) || ($_SESSION["role"] ?? "") !== "admin") {
           <p class="error" id="edit-address-error"></p>
         </div>
 
-        <input type="text" id="edit-address" name="address" placeholder="Enter Address" required><br>
+        <input type="text" id="edit-address" name="address" placeholder="Enter Address" minlength="5" maxlength="255" required><br>
       </div>
 
       <div>

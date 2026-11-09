@@ -110,7 +110,7 @@ if (!isset($_SESSION["member_id"]) || ($_SESSION["role"] ?? "") !== "admin") {
           <p class="error" id="title-error"></p>
         </div>
 
-        <input type="text" id="title" name="title" placeholder="Enter Book title" required><br>
+        <input type="text" id="title" name="title" placeholder="Enter Book title" minlength="2" maxlength="150" required><br>
       </div>
       
       <div class="modal-input"> 
@@ -119,7 +119,7 @@ if (!isset($_SESSION["member_id"]) || ($_SESSION["role"] ?? "") !== "admin") {
            <p class="error" id="author-error"></p>
         </div>
 
-        <input type="text" id="author" name="author" placeholder="Enter author" required><br>
+        <input type="text" id="author" name="author" placeholder="Enter author" minlength="2" maxlength="100" required><br>
       </div>
   
       <div class="modal-input">
@@ -146,7 +146,7 @@ if (!isset($_SESSION["member_id"]) || ($_SESSION["role"] ?? "") !== "admin") {
           <p class="error" id="year-error"></p>
         </div>
     
-        <input type="number" id="year" name="publication_year" placeholder="Enter publication year" min="1" required><br>
+        <input type="number" id="year" name="publication_year" placeholder="Enter publication year" min="1000" max="<?= date('Y') ?>" step="1" required><br>
       </div>
     
       <div class="modal-input"> 
@@ -155,7 +155,7 @@ if (!isset($_SESSION["member_id"]) || ($_SESSION["role"] ?? "") !== "admin") {
           <p class="error" id="quantity-error"></p>
         </div>
         
-        <input type="number" id="quantity" name="quantity" placeholder="Enter quantity" min="1" required><br>
+        <input type="number" id="quantity" name="quantity" placeholder="Enter quantity" min="1" max="999" step="1" required><br>
       </div>
       
       <div> 
@@ -178,7 +178,7 @@ if (!isset($_SESSION["member_id"]) || ($_SESSION["role"] ?? "") !== "admin") {
         <p class="error" id="edit-title-error"></p>
       </div>
 
-      <input type="text" id="edit-title" name="title" placeholder="Enter Book title" required><br>
+      <input type="text" id="edit-title" name="title" placeholder="Enter Book title" minlength="2" maxlength="150" required><br>
     </div>
 
     <div class="modal-input"> 
@@ -188,7 +188,7 @@ if (!isset($_SESSION["member_id"]) || ($_SESSION["role"] ?? "") !== "admin") {
         <p class="error" id="edit-author-error"></p>
       </div>
 
-      <input type="text" id="edit-author" name="author" placeholder="Enter author" required><br>
+      <input type="text" id="edit-author" name="author" placeholder="Enter author" minlength="2" maxlength="100" required><br>
     </div>
 
     <div class="modal-input">
@@ -216,7 +216,7 @@ if (!isset($_SESSION["member_id"]) || ($_SESSION["role"] ?? "") !== "admin") {
         <p class="error" id="edit-year-error"></p>
       </div>
 
-      <input type="number" id="edit-year" name="publication_year" placeholder="Enter publication year" min="1" required><br>
+      <input type="number" id="edit-year" name="publication_year" placeholder="Enter publication year" min="1000" max="<?= date('Y') ?>" step="1" required><br>
     </div>
 
     <div class="modal-input"> 
@@ -226,7 +226,7 @@ if (!isset($_SESSION["member_id"]) || ($_SESSION["role"] ?? "") !== "admin") {
         <p class="error" id="edit-quantity-error"></p>
       </div>
 
-      <input type="number" id="edit-quantity" name="quantity" placeholder="Enter quantity" min="1" required><br>
+      <input type="number" id="edit-quantity" name="quantity" placeholder="Enter quantity" min="1" max="999" step="1" required><br>
     </div>
 
     <div> 

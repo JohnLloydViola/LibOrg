@@ -15,9 +15,18 @@ if ($_SERVER["REQUEST_METHOD"] !== "GET") {
 //Search using search input
 $search = trim($_GET["title"] ?? "");
 $category = trim($_GET["category"] ?? "");
-$sort = trim($_GET["sort"] ?? "");
+$sort = $_GET["sort"] ?? "";
 
-//Validate sorting parameter
+
+//validate search parameter
+if (!is_string($sort)) {
+  http_response_code(400);
+  echo json_encode(["message" => "Invalid sort parameter"]);
+  exit;
+}
+
+$sort = trim($sort);
+
 if (!in_array($sort, ["", "asc", "desc"], true)) {
   http_response_code(400);
   echo json_encode(["message" => "Invalid sort parameter"]);

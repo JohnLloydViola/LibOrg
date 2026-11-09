@@ -80,8 +80,8 @@ function renderBooks(books) {
       <tr>
         <td class="truncate" title="${escapeHtml(book.title)}">${escapeHtml(book.title)}</td>
         <td class="truncate" title="${escapeHtml(book.author)}">${escapeHtml(book.author)}</td>
-        <td>${book.category}</td>
-        <td>${book.publication_year}</td>
+        <td>${escapeHtml(book.category)}</td>
+        <td>${escapeHtml(book.publication_year)}</td>
       </tr>
     `;
   });

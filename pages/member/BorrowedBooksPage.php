@@ -16,6 +16,7 @@ if (!isset($_SESSION["member_id"]) || ($_SESSION["role"] ?? "") !== "member") {
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Borrowed Books</title>
   <link rel="stylesheet" href="../../assets/css/style.css">
+  <link rel="icon" href="../../assets/images/Book.svg" type="image/x-icon">
 </head>
 <body>
 

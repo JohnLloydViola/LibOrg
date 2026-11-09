@@ -15,9 +15,33 @@ if ($_SERVER["REQUEST_METHOD"] !== "POST") {
 
 $data = json_decode(file_get_contents("php://input"), true);
 
-$id = (int) ($data["id"] ?? "");
+if (!is_array($data)) {
+  http_response_code(400);
+  echo json_encode([
+    "message" => "Invalid JSON data."
+  ]);
+  exit;
+}
+
+$id = filter_var($data["id"] ?? null, FILTER_VALIDATE_INT);
+
+if ($id === false || $id === null || $id <= 0) {
+  http_response_code(422);
+  echo json_encode([
+    "message" => "Invalid transaction ID."
+  ]);
+  exit;
+}
 
 $transaction = getTransaction($conn, $id);
+
+if (!$transaction) {
+  http_response_code(404);
+  echo json_encode([
+    "message" => "Transaction not found."
+  ]);
+  exit;
+}
 
 if ($transaction["status"] === "borrowed") {
   restoreBookAvailability($conn, $transaction["book_id"]);
