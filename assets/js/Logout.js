@@ -4,7 +4,8 @@ logoutForm.addEventListener("submit", async (event) => {
     event.preventDefault();
 
     try {
-        await axios.post("../api/auth/Logout.php");
+        await api.post("../api/auth/Logout.php");
+        sessionStorage.removeItem("csrf_token");
 
         window.location.href = "./LoginPage.php";
     } catch (error) {

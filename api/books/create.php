@@ -3,13 +3,16 @@ declare(strict_types=1);
 
 header("Content-Type: application/json");
 
-require_once __DIR__ . "/../../config/Database.php"; 
+require_once __DIR__ . "/../../config/Database.php";
+require_once __DIR__ . "/../../config/session.php";
 
 if ($_SERVER["REQUEST_METHOD"] !== "POST") {
   http_response_code(405);
   echo json_encode(["message" => "Method not allowed"]);
   exit;
 }
+
+verify_csrf_token();
 
 //Get submitted data from form darta
 $data = json_decode(file_get_contents("php://input"), true);
@@ -56,6 +59,7 @@ if (!empty($errors)) {
 
 $publication_year = (int) $publication_year;
 $quantity = (int) $quantity;
+
 
 try {
   addBook(

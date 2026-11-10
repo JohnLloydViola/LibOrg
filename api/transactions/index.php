@@ -4,6 +4,7 @@ declare(strict_types=1);
 header("Content-Type: application/json");
 
 require_once __DIR__ . "/../../config/Database.php";
+require_once __DIR__ . "/../../config/session.php";
 
 $name = trim($_GET["name"] ?? "");
 $status = trim($_GET["status"] ?? "");

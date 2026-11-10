@@ -23,7 +23,7 @@ async function loadBooks() {
   const category = bookCategory.value;
 
   try {
-    const response = await axios.get('../../api/member_page/BorrowedBooks.php', {
+    const response = await api.get('../../api/member_page/BorrowedBooks.php', {
       params: {
         title: search,
         category: category,

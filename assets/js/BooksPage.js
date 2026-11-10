@@ -42,7 +42,7 @@ addBookForm.addEventListener('submit', async (event) => {
 
   try {
     //pass yung object as post
-    const response = await axios.post('../api/books/create.php', bookData);
+    const response = await api.post('../api/books/create.php', bookData);
 
     // Display success message
     bookSuccess.textContent = response.data.message;
@@ -123,7 +123,7 @@ errorFields.forEach((field) => {
   bookSuccess.hidden = true;
 
   try {
-    const response = await axios.post('../api/books/update.php', bookData);
+    const response = await api.post('../api/books/update.php', bookData);
 
     bookSuccess.textContent = response.data.message;
     bookSuccess.hidden = false;
@@ -204,7 +204,7 @@ booksTableBody.addEventListener('click', async (event) => {
   const id = deleteButton.dataset.id;
 
   try {
-    const response = await axios.post('../api/books/delete.php', { id: id });
+    const response = await api.post('../api/books/delete.php', { id: id });
 
     bookSuccess.textContent = response.data.message;
     bookSuccess.hidden = false;
@@ -296,7 +296,7 @@ async function loadBooks() {
   const sort = bookSort.value;
 
   try {
-    const response = await axios.get("../api/books/index.php", {
+    const response = await api.get("../api/books/index.php", {
       params: {
         title: search,
         category: category,

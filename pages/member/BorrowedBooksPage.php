@@ -2,7 +2,7 @@
 declare(strict_types=1);
 
 // Login check ito
-session_start();
+require_once __DIR__ . "../../../config/session.php";
 
 if (!isset($_SESSION["member_id"]) || ($_SESSION["role"] ?? "") !== "member") {
     header("Location: ../LoginPage.php");
@@ -83,6 +83,7 @@ if (!isset($_SESSION["member_id"]) || ($_SESSION["role"] ?? "") !== "member") {
   </div>
   
   <script src="../../assets/js/axios.min.js"></script>
+  <script src="../../assets/js/api.js"></script>
   <script src="../../assets/js/member/BorrowedBooksPage.js"></script>
   <script src="../../assets/js/member/Logout.js"></script>
   <script src="../../assets/js/member/Menu.js"></script>

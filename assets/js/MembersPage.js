@@ -64,7 +64,7 @@ editMemberForm.addEventListener('submit', async (event) => {
   memberFailed.textContent = '';
   memberFailed.hidden = true;
   try {
-    const response = await axios.post('../api/members/update.php', memberData);
+    const response = await api.post('../api/members/update.php', memberData);
 
     memberSuccess.textContent = response.data.message;
     memberSuccess.hidden = false;
@@ -136,7 +136,7 @@ addMemberForm.addEventListener('submit', async (event) => {
 
   try {
     // pass yung object as post
-    const response = await axios.post('../api/members/create.php', memberData);
+    const response = await api.post('../api/members/create.php', memberData);
 
     // Display success message
     memberSuccess.textContent = response.data.message;
@@ -217,7 +217,7 @@ membersTable.addEventListener('click', async (event) => {
   const id = deleteButton.dataset.id;
 
   try {
-    const response = await axios.post('../api/members/delete.php', { id: id });
+    const response = await api.post('../api/members/delete.php', { id: id });
 
     memberSuccess.textContent = response.data.message;
     memberSuccess.hidden = false;
@@ -302,7 +302,7 @@ async function loadMembers() {
   const search = memberSearch.value;
 
   try {
-    const response = await axios.get('../api/members/index.php', {
+    const response = await api.get('../api/members/index.php', {
     params: {
     name: search,
     page: currentPage

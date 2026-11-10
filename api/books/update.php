@@ -2,6 +2,7 @@
 declare(strict_types=1);
 
 require_once __DIR__ . "/../../config/Database.php";
+require_once __DIR__ . "/../../config/session.php";
 
 header("Content-Type: application/json");
 
@@ -11,6 +12,8 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
   echo json_encode(["message" => "Method not allowed"]);
   exit;
 }
+
+verify_csrf_token();
 
 $data = json_decode(file_get_contents("php://input"), true);
 

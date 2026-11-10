@@ -61,7 +61,7 @@ async function loadBooks() {
   const sort = bookSort.value;
 
   try {
-    const response = await axios.get("../../api/books/index.php", {
+    const response = await api.get("../../api/books/index.php", {
       params: {
         title: search,
         category: category,

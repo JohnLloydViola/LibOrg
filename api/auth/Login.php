@@ -4,6 +4,7 @@ declare(strict_types=1);
 header("Content-Type: application/json");
 
 require_once __DIR__ . "/../../config/Database.php";
+require_once __DIR__ . "/../../config/session.php";
 
 if ($_SERVER["REQUEST_METHOD"] !== "POST") {
     http_response_code(405);
@@ -57,8 +58,12 @@ if (!$member || !password_verify($password, $member["password_hash"])) {
     exit;
 }
 
-session_start();
 session_regenerate_id(true);
+
+// Generate CSRF token for the session if it doesn't exist yet
+if (empty($_SESSION["csrf_token"])) {
+    $_SESSION["csrf_token"] = bin2hex(random_bytes(32));
+}
 
 $_SESSION["member_id"] = $member["id"];
 $_SESSION["role"] = $member["role"];
@@ -71,7 +76,8 @@ $redirect = $member["role"] === "admin"
 http_response_code(200);
 echo json_encode([
     "message" => "Login successful.",
-    "redirect" => $redirect
+    "redirect" => $redirect,
+    "csrf_token" => $_SESSION["csrf_token"]
 ]);
 
 exit;

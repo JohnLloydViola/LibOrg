@@ -19,7 +19,12 @@ loginForm.addEventListener("submit", async (event) => {
   };
 
   try {
-    const response = await axios.post("../api/auth/Login.php", formData);
+    const response = await api.post("../api/auth/Login.php", formData);
+
+    // Save csrf token to session storage
+    if (response.data.csrf_token) {
+      sessionStorage.setItem("csrf_token", response.data.csrf_token);
+    }
 
     loginSuccess.textContent = response.data.message;
     loginSuccess.hidden = false;

@@ -87,7 +87,7 @@ borrowBookForm.addEventListener('submit', async (event) => {
 
   try {
     // Pass the object as POST data
-    const response = await axios.post('../api/transactions/Create.php', transactionData);
+    const response = await api.post('../api/transactions/Create.php', transactionData);
 
     // Display success message
     transactionSucces.textContent = response.data.message;
@@ -139,7 +139,7 @@ async function loadTransactions() {
   const status = transactionStatus.value;
 
   try {
-    const response = await axios.get('../api/transactions/index.php', {
+    const response = await api.get('../api/transactions/index.php', {
       params: {
         name: search,
         status: status,
@@ -213,7 +213,7 @@ transactionsTable.addEventListener('click', async (event) => {
   const id = returnButton.dataset.id;
 
   try {
-    const response = await axios.post('../api/transactions/Return.php',{id});
+    const response = await api.post('../api/transactions/Return.php',{id});
 
     // Clear error message if the transaction is successful
     transactionFailed.textContent = '';
@@ -245,7 +245,7 @@ transactionsTable.addEventListener('click', async (event) => {
   const id = deleteButton.dataset.id;
 
   try {
-    const response = await axios.post('../api/transactions/Delete.php', { id });
+    const response = await api.post('../api/transactions/Delete.php', { id });
 
     transactionSucces.textContent = response.data.message;
     transactionSucces.hidden = false;
@@ -316,7 +316,7 @@ function renderPagination() {
 
 async function loadTransactionOptions() {
   try {
-    const response = await axios.get(
+    const response = await api.get(
       '../api/transactions/TransactionOptions.php'
     );
 
