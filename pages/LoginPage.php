@@ -2,7 +2,7 @@
 declare(strict_types=1);
 
 // Login check ito
-require_once __DIR__ . "/../../config/session.php";
+require_once __DIR__ . "/../config/session.php";
 
 //Pag logged in na do not give access
 if (isset($_SESSION["member_id"])) {
