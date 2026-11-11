@@ -26,6 +26,11 @@ loginForm.addEventListener("submit", async (event) => {
       sessionStorage.setItem("csrf_token", response.data.csrf_token);
     }
 
+    // Save laravel api token to session storage
+    if (response.data.token) {
+      sessionStorage.setItem("token", response.data.token);
+    }
+
     loginSuccess.textContent = response.data.message;
     loginSuccess.hidden = false;
 

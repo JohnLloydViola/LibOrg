@@ -58,6 +58,16 @@ if (!$member || !password_verify($password, $member["password_hash"])) {
     exit;
 }
 
+//Generate authentication token for laravel api
+$apiToken = bin2hex(random_bytes(32));
+//Store token on database
+$updateSql = "UPDATE members SET api_token = :token WHERE id = :id";
+$updateStmt = $conn->prepare($updateSql);
+$updateStmt->execute([
+    ":token" => $apiToken,
+    ":id" => $member["id"]
+]);
+
 session_regenerate_id(true);
 
 // Generate CSRF token for the session if it doesn't exist yet
@@ -77,7 +87,8 @@ http_response_code(200);
 echo json_encode([
     "message" => "Login successful.",
     "redirect" => $redirect,
-    "csrf_token" => $_SESSION["csrf_token"]
+    "csrf_token" => $_SESSION["csrf_token"],
+    "token" => $apiToken
 ]);
 
 exit;

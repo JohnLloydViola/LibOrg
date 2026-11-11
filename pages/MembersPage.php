@@ -201,6 +201,7 @@ if (!isset($_SESSION["member_id"]) || ($_SESSION["role"] ?? "") !== "admin") {
 
   <script src="../assets/js/axios.min.js"></script>
   <script src="../assets/js/api.js"></script>
+  <script src="../assets/js/laravelApi.js"></script>
   <script src="../assets/js/MembersPage.js"></script>
   <script src="../assets/js/Logout.js"></script>
   <script src="../assets/js/Menu.js"></script>
