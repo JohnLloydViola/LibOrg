@@ -13,7 +13,7 @@ Follow the steps below.
    ```
 
 
-3. **laravel-backend folder and in that folder there is ".env.example" file. remove the ".example" the file should be ".env"**
+3. **Navigate to laravel-backend folder and in that folder there is ".env.example" file. remove the ".example" the file should be ".env"**
 
 4. **Go to that .env file and under the DB_CONNECTION theres database credentials. Remove the hastags(#) to apply the credentials for this project**
 
