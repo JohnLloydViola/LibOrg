@@ -7,23 +7,29 @@
    localhost/LibOrg/config/setup.php
    ```
 
-3. **Create the members and transactions table through Laravel by running these on the terminal:**
+
+3. **laravel-backend folder and in that folder there is ".env.example" file. remove the ".example" the file should be ".env"**
+
+4. **Go to that .env file and under the DB_CONNECTION theres database credentials. Remove the hastags(#) to apply the credentials for this project**
+
+5. **Create the members and transactions table through Laravel by running these on the terminal:**
    ```bash
    cd {htdocs location}/LibOrg/laravel-backend
+   composer install
    php artisan migrate
    ```
 
-4. **Create the database seeds by running this on the same terminal:**
+6. **Create the database seeds by running this on the same terminal:**
    ```bash
    php artisan db:seed
    ```
 
-5. **Run the Laravel server on the same terminal using this command:**
+7. **Run the Laravel server on the same terminal using this command:**
    ```bash
    php artisan serve
    ```
 
-6. **Open the app on the browser:**
+8. **Open the app on the browser:**
    ```text
    localhost/LibOrg/index.php
    ```
