@@ -16,8 +16,21 @@ if (session_status() === PHP_SESSION_NONE) {
 }
 
 function verify_csrf_token(): void {
-    $headers = getallheaders();
-    $incomingToken = $headers['X-CSRF-TOKEN'] ?? '';
+    $incomingToken = '';
+    $headers = function_exists('getallheaders') ? getallheaders() : [];
+
+    if (is_array($headers)) {
+        foreach ($headers as $name => $value) {
+            if (strcasecmp((string) $name, 'X-CSRF-TOKEN') === 0 && is_string($value)) {
+                $incomingToken = $value;
+                break;
+            }
+        }
+    }
+
+    if ($incomingToken === '' && isset($_SERVER['HTTP_X_CSRF_TOKEN'])) {
+        $incomingToken = $_SERVER['HTTP_X_CSRF_TOKEN'];
+    }
 
     if (!isset($_SESSION['csrf_token']) || !hash_equals($_SESSION['csrf_token'], $incomingToken)) {
         http_response_code(403);
