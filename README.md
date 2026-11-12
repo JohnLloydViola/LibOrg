@@ -1,3 +1,8 @@
+Download this project as a ZIP and extract it into the htdocs folder.
+Rename the folder to LibOrg.
+Follow the steps below.
+
+
 ## Steps to run app:
 
 1. **Run Apache and MySQL on xampp**
