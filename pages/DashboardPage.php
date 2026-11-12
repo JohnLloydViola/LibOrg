@@ -1,8 +1,8 @@
 <?php 
 declare(strict_types=1);
 
-//Login check ito
-session_start();
+// Login check ito
+require_once __DIR__ . "/../config/session.php";
 
 if (!isset($_SESSION["member_id"]) || ($_SESSION["role"] ?? "") !== "admin") {
   header("Location: ./LoginPage.php");
@@ -94,6 +94,7 @@ if (!isset($_SESSION["member_id"]) || ($_SESSION["role"] ?? "") !== "admin") {
 </div>
 
 <script src="../assets/js/axios.min.js"></script>
+<script src="../assets/js/api.js"></script>
 <script src="../assets/js/DashboardPage.js"></script>
 <script src="../assets/js/Logout.js"></script>
 <script src="../assets/js/Menu.js"></script>

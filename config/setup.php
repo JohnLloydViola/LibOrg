@@ -39,37 +39,6 @@ try {
 
     echo "Books table created successfully.<br>";
 
-     // Create yung members table
-    $memberTable = "CREATE TABLE IF NOT EXISTS members(
-        id INT AUTO_INCREMENT PRIMARY KEY,
-        full_name VARCHAR(255) NOT NULL,
-        email VARCHAR(255) NOT NULL UNIQUE,
-        password_hash VARCHAR(255) NOT NULL,
-        phone_number VARCHAR(20) NOT NULL,
-        address VARCHAR(255) NOT NULL,
-        role ENUM('admin', 'member') NOT NULL DEFAULT 'member',
-        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-    ) ENGINE=InnoDB;";
-
-    $conn->exec($memberTable);
-
-    echo "Members table created successfully.<br>";
-
-     // Create yung transactions table
-    $transactionTable = "CREATE TABLE IF NOT EXISTS transactions(
-        id INT AUTO_INCREMENT PRIMARY KEY,
-        book_id INT NOT NULL,
-        member_id INT NOT NULL,
-        status VARCHAR(20) NOT NULL,
-
-        CONSTRAINT fk_transaction_book FOREIGN KEY (book_id) REFERENCES books(id),
-
-        CONSTRAINT fk_transaction_member FOREIGN KEY (member_id) REFERENCES members(id)
-    ) ENGINE=InnoDB;";
-
-    $conn->exec($transactionTable);
-
-    echo "Transactions table created successfully.<br>";
 } catch (PDOException $e) {
     die('Setup failed: ' . $e->getMessage());
 }

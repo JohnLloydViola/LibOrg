@@ -1,11 +1,10 @@
 <?php
 declare(strict_types=1);
 
-session_start();
+require_once __DIR__ . "/../../config/Database.php";
+require_once __DIR__ . "/../../config/session.php";
 
 header("Content-Type: application/json");
-
-require_once __DIR__ . "/../../config/Database.php";
 
 $memberId = (int) ($_SESSION["member_id"] ?? 0);
 $title = trim($_GET["title"] ?? "");

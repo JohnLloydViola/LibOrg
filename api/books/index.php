@@ -4,6 +4,7 @@ declare(strict_types=1);
 header("Content-Type: application/json");
 
 require_once __DIR__ . "/../../config/Database.php";
+require_once __DIR__ . "/../../config/session.php";
 
 //Check if the request method is GET
 if ($_SERVER["REQUEST_METHOD"] !== "GET") {

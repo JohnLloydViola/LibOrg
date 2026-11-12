@@ -25,7 +25,7 @@ registerForm.addEventListener("submit", async (event) => {
   };
 
   try {
-    const response = await axios.post("../api/auth/Register.php", formData);
+    const response = await api.post("../api/auth/Register.php", formData);
 
     registerSuccess.textContent = response.data.message;
     registerSuccess.hidden = false;

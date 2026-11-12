@@ -17,7 +17,7 @@ const recentTransactionsFailed = document.getElementById('recent-transactions-fa
 // Load dashboard data
 async function loadDashboard() {
   try {
-    const response = await axios.get('../api/dashboard/index.php');
+    const response = await api.get('../api/dashboard/index.php');
 
     const books = response.data.totalBooks;
     const members = response.data.totalMembers;

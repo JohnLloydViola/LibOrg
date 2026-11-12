@@ -64,7 +64,8 @@ editMemberForm.addEventListener('submit', async (event) => {
   memberFailed.textContent = '';
   memberFailed.hidden = true;
   try {
-    const response = await axios.post('../api/members/update.php', memberData);
+    // Standard Laravel REST route: PUT /api/members/{id}
+    const response = await laravelApi.put(`/members/${editId.value}`, memberData);
 
     memberSuccess.textContent = response.data.message;
     memberSuccess.hidden = false;
@@ -136,7 +137,7 @@ addMemberForm.addEventListener('submit', async (event) => {
 
   try {
     // pass yung object as post
-    const response = await axios.post('../api/members/create.php', memberData);
+    const response = await laravelApi.post('/members', memberData);
 
     // Display success message
     memberSuccess.textContent = response.data.message;
@@ -217,7 +218,8 @@ membersTable.addEventListener('click', async (event) => {
   const id = deleteButton.dataset.id;
 
   try {
-    const response = await axios.post('../api/members/delete.php', { id: id });
+    // Standard Laravel REST route: DELETE /api/members/{id}
+    const response = await laravelApi.delete(`/members/${id}`);
 
     memberSuccess.textContent = response.data.message;
     memberSuccess.hidden = false;
@@ -302,7 +304,7 @@ async function loadMembers() {
   const search = memberSearch.value;
 
   try {
-    const response = await axios.get('../api/members/index.php', {
+    const response = await laravelApi.get('/members', {
     params: {
     name: search,
     page: currentPage
@@ -335,7 +337,7 @@ async function loadMembers() {
     memberFailed.textContent = error.response?.data?.message || 'An error occurred while fetching members.';
     memberFailed.hidden = false;
 
-    console.log('Errormember search');
+    console.log('Error member search');
   }
 }
 
